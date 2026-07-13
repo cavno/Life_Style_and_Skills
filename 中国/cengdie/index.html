@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>层叠的中国 · 一次滚动完成的论证</title>
+<meta name="description" content="滚动叙事地图：22 步看清中国省界与方言、族群、山川的系统性错位——「犬牙交错」。市级精度，末附完整自由探索地图。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@400;600;900&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="progress" aria-hidden="true"></div>
+
+<!-- ============ 开场 ============ -->
+<header class="hero">
+  <div class="hero-seal" aria-hidden="true">界</div>
+  <h1>层叠的中国</h1>
+  <p class="hero-sub">省界之下：方言、族群与山川的另一张地图</p>
+  <p class="hero-how">往下滚动。地图会自己讲。</p>
+  <div class="hero-cue" aria-hidden="true">↓</div>
+  <div id="boot-badge">边界数据加载中…</div>
+</header>
+
+<!-- ============ 滚动叙事 ============ -->
+<section id="scrolly">
+  <div class="map-stick">
+    <svg id="story-map" role="img" aria-label="叙事地图"></svg>
+    <div id="story-load">
+      <div class="spinner" aria-hidden="true"></div>
+      <p>正在加载省级底图…</p>
+    </div>
+  </div>
+  <div id="steps"><!-- 由 app.js 生成 22 步 --></div>
+</section>
+
+<!-- ============ 自由探索 ============ -->
+<section id="explore">
+  <div class="ex-head">
+    <h2>自由探索 · 全图</h2>
+    <div class="ex-tabs" role="tablist">
+      <button class="ex-tab on" data-mode="dialect" role="tab">方言</button>
+      <button class="ex-tab" data-mode="culture" role="tab">文化圈</button>
+    </div>
+  </div>
+  <div class="ex-wrap">
+    <div class="ex-map-frame">
+      <svg id="explore-map" role="img" aria-label="全国市级文化地图"></svg>
+    </div>
+    <aside id="ex-side">
+      <div id="ex-legend"></div>
+      <div id="ex-detail">
+        <div class="p-detail-empty">悬停查看归类，点击任一市州看注释。</div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ============ 方法与注记 ============ -->
+<section id="notes">
+  <details>
+    <summary>方法与注记</summary>
+    <div class="notes-body">
+      <p><strong>归类依据</strong>：全国 330 余个地级单位按《中国语言地图集》（第 2 版）大区划分逐一归类（169 条显式条目 + 各省默认规则）。过渡地带从主；徐州、信阳、汉中、九江、上饶、镇江等争议或有趣的点位，点击地图可见专门注释。本图为文化示意，非学术精确边界。</p>
+      <p><strong>「犬牙交错」</strong>：与「山川形便」相对的划界原则，自元代行省制度系统化，明清沿袭。其对象不止文化连续体，更是地形完整、文化同质、资源自足的「自然防御单元」——故汉中离蜀、徐州离豫。</p>
+      <p><strong>结构反铸主体</strong>：区划是「人为设计」与「历史路径依赖」的叠加。同时，省界在七十余年运行中反过来生成了新的认同——推普以省级电视台为中介、菜系按省命名、婚姻圈沿省界收敛。「四川人」「广东人」已是真实的次级身份。</p>
+      <p><strong>数据</strong>：行政边界来自阿里云 DataV.GeoAtlas（运行时加载，jsDelivr / GitHub 备援），仅用于可视化。字体：ZCOOL XiaoWei / Noto Serif SC / EB Garamond。</p>
+    </div>
+  </details>
+</section>
+
+<footer class="site-foot">
+  <p>层叠的中国 v3 · 滚动叙事地图 — 纯静态，本地一条命令即跑，亦可直接部署 GitHub Pages</p>
+</footer>
+
+<div id="tooltip" aria-hidden="true"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
