@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>科目一核心知识点速查 · 肖肖3小时精华课整理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --parch:#F3EAD3; --parch2:#ECE1C6; --card:#FBF7EC; --card2:#F6EEDC;
+  --teal:#3F7E6B; --teal-dk:#2E5E50; --teal-soft:#DCE7E2;
+  --terra:#BC4B33; --terra-soft:#F6DFD7; --amber:#E29A48;
+  --ink:#2B2820; --muted:#6E664F; --line:#D8CDAF; --line2:#E4DAC0;
+  --serif:'Noto Serif SC',Georgia,'Songti SC',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--parch); color:var(--ink); font-family:var(--sans);
+  font-size:15px; line-height:1.65; -webkit-font-smoothing:antialiased; padding-bottom:48px}
+.wrap{max-width:760px; margin:0 auto; padding:0 14px}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--teal); outline-offset:2px}
+
+.hero{padding:22px 0 14px}
+.hero .kicker{font-size:12px; letter-spacing:.22em; color:var(--teal); font-weight:600; text-transform:uppercase}
+.hero h1{font-family:var(--serif); font-weight:700; font-size:26px; line-height:1.25; margin:6px 0 4px; color:var(--teal-dk)}
+.hero .sub{color:var(--muted); font-size:13.5px}
+.hero .sub b{color:var(--terra)}
+
+.sticky{position:sticky; top:0; z-index:20; background:linear-gradient(var(--parch) 78%,rgba(243,234,211,0)); padding-top:8px}
+.tabs{display:flex; gap:6px; background:var(--card2); border:1px solid var(--line); border-radius:12px; padding:5px}
+.tab{flex:1; text-align:center; font-family:var(--serif); font-weight:600; font-size:14px; padding:9px 4px; border-radius:8px;
+  color:var(--muted); cursor:pointer; user-select:none; border:none; background:transparent; transition:.15s}
+.tab .n{display:block; font-family:var(--sans); font-size:10.5px; font-weight:500; opacity:.75; margin-top:1px}
+.tab.active{background:var(--teal); color:#fff; box-shadow:0 2px 6px rgba(46,94,80,.25)}
+.tab.active .n{opacity:.85}
+
+.searchrow{display:flex; gap:8px; padding:11px 2px 4px}
+.search{flex:1; border:1px solid var(--line); background:var(--card); border-radius:20px; padding:8px 14px;
+  font-size:13.5px; color:var(--ink); font-family:var(--sans)}
+.search::placeholder{color:#A79D82}
+.rtoggle{flex:none; display:inline-flex; align-items:center; gap:7px; font-size:12.5px; color:var(--teal-dk);
+  cursor:pointer; user-select:none; background:var(--card); border:1px solid var(--line); border-radius:20px; padding:5px 13px}
+.rtoggle.on{background:var(--terra); color:#fff; border-color:var(--terra)}
+.rtoggle .sw{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.55}
+.rtoggle.on .sw{opacity:1}
+.chips{display:flex; gap:7px; overflow-x:auto; padding:8px 2px 6px; -ms-overflow-style:none; scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none; border:1px solid var(--line); background:var(--card); border-radius:18px; padding:5px 13px;
+  font-size:12.5px; color:var(--teal-dk); font-weight:600; cursor:pointer}
+.progress{padding:4px 2px 10px}
+.pbar{height:7px; background:var(--parch2); border-radius:6px; overflow:hidden; border:1px solid var(--line2)}
+.pfill{height:100%; background:var(--teal); width:0; transition:width .25s}
+.ptext{font-size:11.5px; color:var(--muted); margin-top:5px}
+.ptext b{color:var(--teal-dk)}
+.hint{font-size:11.5px; color:var(--muted); padding:0 2px 8px; display:none}
+.recite-on .hint{display:block}
+
+.msec{scroll-margin-top:70px}
+.mbanner{display:flex; align-items:baseline; gap:10px; margin:20px 0 10px; padding-bottom:7px; border-bottom:2px solid var(--teal-soft)}
+.mnum{font-family:var(--serif); font-weight:700; font-size:13px; color:#fff; background:var(--teal);
+  width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:none; align-self:center}
+.mname{font-family:var(--serif); font-weight:700; font-size:19px; color:var(--teal-dk)}
+.mdesc{font-size:12px; color:var(--muted)}
+.kcard{background:var(--card); border:1px solid var(--line); border-radius:13px; padding:13px 15px 14px; margin-bottom:10px; box-shadow:0 1px 0 rgba(0,0,0,.03)}
+.kcard.mastered{opacity:.62}
+.khead{display:flex; align-items:flex-start; gap:10px}
+.kname{font-family:var(--serif); font-weight:700; font-size:16.5px; color:var(--teal-dk); line-height:1.35; flex:1}
+.mark{flex:none; width:26px; height:26px; border-radius:50%; border:1.5px solid var(--line); background:var(--card2);
+  cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:14px; margin-top:1px; padding:0}
+.kcard.mastered .mark{background:var(--teal); border-color:var(--teal); color:#fff}
+.kou{margin:8px 0 0; font-family:var(--serif); font-weight:600; font-size:16.5px; color:var(--terra); line-height:1.55}
+.kou::before{content:'「'; color:rgba(188,75,51,.5); margin-right:1px}
+.kou::after{content:'」'; color:rgba(188,75,51,.5); margin-left:1px}
+.knote{margin-top:7px; font-size:13px; color:#4A4636}
+.veil{display:none; margin-top:9px; border:1.5px dashed var(--line); border-radius:9px; padding:11px;
+  text-align:center; color:var(--muted); font-size:12.5px; background:var(--card2)}
+.recite-on .kcard:not(.revealed) .kbody{display:none}
+.recite-on .kcard:not(.revealed) .veil{display:block}
+.recite-on .kcard{cursor:pointer}
+.empty{display:none; text-align:center; color:var(--muted); font-size:13px; padding:26px 0}
+
+.gsec{margin:18px 0}
+.gsec .gh{font-family:var(--serif); font-weight:700; font-size:17px; color:var(--teal-dk); margin:0 0 4px}
+.gsec .gd{font-size:12.5px; color:var(--muted); margin:0 0 11px}
+.plain{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; font-size:13.5px}
+.chipset{display:flex; flex-wrap:wrap; gap:7px; margin:6px 0 2px}
+.c2{border-radius:16px; padding:4px 12px; font-size:13px; font-weight:600}
+.c2.yes{background:#E3EEE9; border:1px solid #BFD6CC; color:var(--teal-dk)}
+.c2.no{background:var(--terra-soft); border:1px solid #E4BCAE; color:#8A3B1E}
+.setlab{font-size:12.5px; font-weight:700; margin:10px 0 2px}
+.setlab.yes{color:var(--teal-dk)} .setlab.no{color:#8A3B1E}
+.jlist{list-style:none; margin:6px 0 0; padding:0; display:flex; flex-direction:column; gap:6px}
+.jlist li{background:var(--card); border:1px solid var(--line); border-radius:9px; padding:8px 12px 8px 34px; position:relative; font-size:13px}
+.jlist li::before{position:absolute; left:11px; top:8px; font-weight:700}
+.jlist.yes li::before{content:'✓'; color:var(--teal)}
+.jlist.no li::before{content:'✕'; color:var(--terra)}
+.find{list-style:none; margin:0; padding:0; counter-reset:f; display:flex; flex-direction:column; gap:7px}
+.find li{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:9px 12px 9px 42px; position:relative; font-size:13.5px; line-height:1.5}
+.find li::before{counter-increment:f; content:counter(f); position:absolute; left:11px; top:9px; width:22px; height:22px; border-radius:50%;
+  background:var(--terra); color:#fff; font-family:var(--serif); font-weight:700; font-size:12px; display:flex; align-items:center; justify-content:center}
+.find b{color:var(--teal-dk)}
+.find .arr{color:var(--terra); font-weight:700; margin:0 4px}
+.find.teal li::before{background:var(--teal)}
+.warn{background:#FBF1E2; border:1px solid #E8CFA4; border-left:4px solid var(--amber); border-radius:10px; padding:11px 14px; font-size:13px}
+.warn b{color:#8A5A12}
+
+.foot{margin:26px 0 8px; font-size:11.5px; color:var(--muted); text-align:center; line-height:1.7}
+.foot b{color:var(--teal-dk)}
+@media (max-width:420px){ .hero h1{font-size:23px} .kname{font-size:16px} }
+@media (prefers-reduced-motion:reduce){*{transition:none!important; scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">科目一 · 道路交通法规 · 2026 新规版</div>
+    <h1>核心知识点速查</h1>
+    <div class="sub">肖肖 3 小时精华课三节（课件＋字幕）整理 · 只收知识点与<b>口诀</b>，不含例题 · 开「背诵模式」自测</div>
+  </header>
+
+  <div class="sticky">
+    <nav class="tabs" id="tabs"></nav>
+  </div>
+
+  <div id="controls"></div>
+  <main id="view"></main>
+
+  <footer class="foot">
+    数据来源：肖肖科目一 3 小时精华课 第 1–3 课（课件＋视频字幕完整版）。<br>
+    <b>进考场前：过一遍「关键词答题法」页 + 背诵模式抽查口诀。</b>
+  </footer>
+</div>
+
+<script>
+/* ---------------- 知识点数据（18 类） ---------------- */
+var MODULES=[
+{id:'m01',num:'一',name:'考试与流程概览',chip:'概览',desc:'先分清考什么',items:[
+ {k:'科一考试结构',kou:'',note:'100 道题、每题 1 分、90 分合格，限时 45 分钟（判断＋单选）。不会的先跳过，简单题先做，难题回头看。'},
+ {k:'四类题型分布',kou:'',note:'重灾区＝扣分、罚款、驾驶证、判刑；高频＝标志标线；常识题＝考场爱挖坑；生僻题（英文缩写、急救）出得偏但考得少。'},
+ {k:'考试科目',kou:'',note:'全国统一标准。俗称的"科四"其实是科目三的理论笔试部分——科三＝路考＋笔试。'},
+ {k:'学习驾驶证明',kou:'手动 30 日、自动 20 日',note:'科一合格后取得，有效期 3 年，须在 3 年内考完剩余科目；手动挡 30 日内可预约科三，自动挡 20 日后预约。'},
+ {k:'预约次数与合格线',kou:'',note:'科二、科三各可约考 5 次（分别计算，不是加起来）；除科二 80 分合格外，科一、科三路考、科三笔试都是 90 分合格。'}
+]},
+{id:'m02',num:'二',name:'记分体系（扣几分）',chip:'记分',desc:'新规 1/3/6/9/12 分',items:[
+ {k:'记分档位',kou:'看见 2 分直接选错',note:'新规只有 1、3、6、9、12 分五档，没有 2 分。'},
+ {k:'扣 1 分',kou:'普倒掉、会车、年检、安全带、灯光、禁令',note:'普通路不按规定倒车掉头；不按规定会车；未按规定年检；不系安全带 / 摩托不戴头盔；不按规定使用灯光；违反禁令标志标线。'},
+ {k:'扣 3 分',kou:'三不让通通 3 分',note:'不让行人、不礼让校车、不按规定让行＝3 分；另有：普通路逆行、手持接打电话、强行穿插（加塞）、高速低于最低时速（龟速）、高速不按车道行驶、故障停车不按规定使用灯光。'},
+ {k:'扣 6 分',kou:'看见"应急"找 6 分',note:'占用应急车道；不按信号灯（闯红灯）；驾驶证暂扣期间驾驶；肇事逃逸未构成犯罪（轻微伤 / 财产损失）；运输危险品未挂警示标志、未按规定路线（进入市区）。'},
+ {k:'扣 9 分',kou:'看见"不符"找 9 分',note:'准驾车型不符；高速 / 城市快速路违法停车；无校车驾驶资格驾驶校车（无校资，错误率极高）。'},
+ {k:'扣 12 分',kou:'',note:'饮酒驾驶；高速倒车、掉头、逆行；代替记分 / 买分卖分谋取利益（新规新增）；肇事逃逸未构成犯罪但致轻伤以上或死亡；使用伪造变造号牌。'},
+ {k:'灯光三层级',kou:'不按规定 1、故障停车 3、信号灯 6',note:'不按规定使用灯光＝1 分；发生故障停车后不按规定使用灯光＝3 分；不按信号灯（闯红灯）＝6 分。'},
+ {k:'肇事逃逸（不构成犯罪）两档',kou:'轻微 6、伤亡 12',note:'致轻微伤或财产损失＝6 分；致轻伤以上或死亡＝12 分。'},
+ {k:'号牌三层级',kou:'三、九、十二',note:'不按规定安装（少螺丝、翘起弯折）＝3 分；不挂 / 故意遮挡污损＝9 分；伪造变造＝12 分（性质最恶劣）。'},
+ {k:'饮酒 vs 醉酒（处理差异）',kou:'饮酒 12 分可学回，醉酒吊销学不回',note:'饮酒＝扣 12 分＋暂扣 6 个月，可参加满分学习拿回；醉酒（≥80mg/100ml）＝吊销 5 年，不能靠学习拿回。'}
+]},
+{id:'m03',num:'三',name:'超速·超员·超载·疲劳',chip:'三超疲劳',desc:'表记不住就记口诀',items:[
+ {k:'超速三句口诀',kou:'普普三六；高速只有 6 和 12；看见"以外"找 6',note:'普通车普通路：超 20–50%＝3 分、超 50% 以上＝6 分；普通车上高速直接翻倍，只有 6 和 12 两档；超速题里出现"××以外的机动车"直接找 6 分。'},
+ {k:'校车开头特殊车辆·普通路',kou:'一、六、九',note:'校车、中型以上载客载货、危险品运输车在普通路超速三档：10–20%＝1 分、20–50%＝6 分、50% 以上＝9 分（不常考）。'},
+ {k:'校车开头特殊车辆·高速',kou:'20 定生死',note:'高速上只有两档：超 20% 以下＝6 分，超 20% 以上＝12 分。'},
+ {k:'超员口诀',kou:'七下三六、七上六九',note:'7 座以下载客汽车超员两档 3 / 6 分；7 座以上两档 6 / 9 分。'},
+ {k:'超员·校公旅',kou:'校公旅 20 定生死',note:'校车、公路客运、旅游客运超员：20% 以下＝6 分、20% 以上＝12 分；无论超员还是超速，超过 100% 一律顶格 12 分。'},
+ {k:'超载口诀',kou:'一、三、六',note:'货车超载三档 1 / 3 / 6 分——比超员超速罚得轻，50% 以上最多 6 分。'},
+ {k:'疲劳驾驶',kou:'4 小时休 20 分钟；货三客九',note:'连续驾驶 4 小时须停车休息至少 20 分钟；疲劳驾驶扣分分车型：货车 3 分、客车 9 分。'}
+]},
+{id:'m04',num:'四',name:'满分学习与学法减分',chip:'学习减分',desc:'三种学习分清',items:[
+ {k:'满分学习',kou:'满 12 学 7 天，每多 12 加 7，封顶 60',note:'扣满 12 分必须参加：学 7 天科目一（网上 5 天＋现场 2 天）；满 24 分加考科三路考；满 36 分科一、科二、科三都要学考。'},
+ {k:'学法减分',kou:'未满 12 可减，最高减 6',note:'未记满 12 分可自愿参加，一个记分周期最高减 6 分；实习期不能参加。'},
+ {k:'减分方式口诀',kou:'公益 1-1-1、现场 1-1-2、网上 3-30-1',note:'公益活动满 1 小时一次减 1 分；现场学习满 1 小时一次减 2 分；网上学习 3 日内累计满 30 分钟一次减 1 分。'},
+ {k:'三种学习区分',kou:'',note:'审验教育＝B 证以上大车有记分（未满 12）必须学；学法减分＝未满 12 分自愿学；满分学习＝扣满 12 分必须学。三者的作假罚款标准相同。'}
+]},
+{id:'m05',num:'五',name:'罚款档位',chip:'罚款',desc:'最常考一句先背',items:[
+ {k:'最常考罚款',kou:'拼装报废超五十，两百两千除吊销',note:'驾驶拼装 / 报废车上路、超速 50%：罚 200–2000 并处吊销驾驶证（注意吊的是驾驶证不是行驶证）；此档若问"除吊销外并处什么"——答拘留。'},
+ {k:'200 元以下',kou:'转让、车身、安检',note:'30 日内未办转移登记；擅自改车身颜色未登记 / 车身广告不符规定；未按期安全技术检验。'},
+ {k:'20–200 元',kou:'实习期、用原证',note:'实习期单独上高速 / 牵引挂车；补领新驾驶证后仍用原证。特例：轻微事故不撤离造成拥堵＝罚 200。'},
+ {k:'200–500 元',kou:'逾期、隐瞒（二百五）',note:'逾期不审验仍驾驶；以隐瞒欺骗手段补领驾驶证；身体不适仍驾驶（不常考）。'},
+ {k:'200–2000 元',kou:'',note:'除"拼装报废超五十"外还有：非法安装警报器（责令拆除）、无教练随车自行练车、肇事逃逸不构成犯罪、损毁公共设施、违反交通管制强行通行、非法拦截扣留车辆、强迫驾驶人违法、暂扣期间驾驶。'},
+ {k:'伪造变造牌证罚款',kou:'四个选项找最高',note:'问伪造变造证书牌证罚多少——直接选四个选项里数额最高的那个。'},
+ {k:'酒驾罚款与处理',kou:'饮酒一至二，醉驾吊五年',note:'饮酒（含再次饮酒）罚 1000–2000；首次饮酒＝暂扣 6 个月；再次饮酒＝吊销＋拘留；醉酒＝吊销 5 年；酒驾发生重大事故构成犯罪＝吊销终生。'},
+ {k:'虚假材料与考试贿赂',kou:'虚假材料 500，考试贿赂 2000',note:'提交虚假材料申领＝罚 500、一年内不得再申领；考试过程中贿赂舞弊＝2000 以下。'},
+ {k:'审验学习作假',kou:'假审一、代审二、组三倍高两万',note:'自己在审验教育中弄虚作假＝1000；代替他人＝2000；组织作假＝违法所得 3 倍以下、最高 2 万。'},
+ {k:'买分卖分罚款',kou:'代记分三倍五、五倍十',note:'代替记分谋利＝违法所得 3 倍以下、最高 5 万；组织＝5 倍以下、最高 10 万；"看见五倍找十"。'}
+]},
+{id:'m06',num:'六',name:'驾驶证管理',chip:'驾驶证',desc:'年龄 · 增驾 · 审验 · 时间',items:[
+ {k:'申领年龄三档',kou:'22、20、18；有上限都是 60',note:'A1A2（天花板车）＝22 岁；其余 A、B 类及 C6＝20 岁；C3C4＝18 岁；C1C2 无年龄上限（70、80 岁也能考）；凡有上限的，上限一律 60 岁。'},
+ {k:'C6 轻型牵引挂车',kou:'轻牵挂 20，重牵挂 22',note:'新增车型（拖小房车），申领年龄 20–60 岁；重型牵引挂车 A2＝22 岁。'},
+ {k:'准驾兼容',kou:'自动挡只能开自动挡',note:'C2 只能开自动挡小车；C1 向下兼容 C2C3C4；B2 可开 C1–C4。'},
+ {k:'不得初次申领',kou:'客、牵不得初次申',note:'大型客车（A1）、牵引挂车（A2）不能初次申领，必须通过增驾取得。'},
+ {k:'增驾条件',kou:'轻一、中二、大三',note:'增 C6＝1 个记分周期无满分记录＋持证 1 年；增 B1 中型客车＝2 个周期＋2 年；B2 增 A1 大客车＝3 个周期＋3 年（补充：A2 增 A1 只需 1 年）。'},
+ {k:'不得申领年限',kou:'假一、吊二、撤三、醉五、逃终生',note:'虚假材料未取得＝1 年；一般吊销＝2 年；非法取得后被撤销＝3 年；醉驾非营运＝5 年；逃逸构成犯罪 / 酒驾重大事故构成犯罪＝终生。补充：营运车饮酒 5 年、醉酒 10 年。'},
+ {k:'驾驶证有效期',kou:'6 → 10 → 长期',note:'初次 6 年；6 年内每个周期都未记满 12 分换 10 年证；10 年后同理换长期——没有"20 年"的说法。'},
+ {k:'时间类考点',kou:'满九变三；受理三、调解十、补发罚款都是 15',note:'有效期满换证＝90 日；信息变更备案＝30 日；事后报警 3 日内决定是否受理；赔偿争议 10 日内申请调解；补证换证、缴罚款＝15 日。'},
+ {k:'补证换证去哪',kou:'车找登记地，照找核发地',note:'跟车相关（号牌、行驶证）找登记地；跟人相关（驾驶证）找核发地或核发地以外；增驾找核发地；从业单位信息变更找单位。'},
+ {k:'驾驶证审验',kou:'审证不审车',note:'记分周期结束后 30 日内审；换证时审（含体检）；出国 / 服兵役可延期不超 3 年、延期期间不得驾驶；审验内容＝记分和事故处理情况、体检；凡说"审验机动车"＝错。'},
+ {k:'70 岁以上',kou:'每年三力测试',note:'70 岁以上每年提交身体条件证明并做"三力"测试（记忆力、判断力、反应力），不提交则注销。'},
+ {k:'注销情形',kou:'',note:'死亡；身体条件不适；自愿申请；超有效期 1 年未换证；临时入境驾驶许可记满 12 分；70 岁以上未按规定提交身体证明。注销不一定是处罚。'},
+ {k:'实习期',kou:'不能单独上高速、不能牵引挂车',note:'实习期 12 个月，挂统一实习标志；上高速须由持相应或更高准驾车型 3 年以上驾驶人陪同；不能参加学法减分；实习期记满 12 分＝注销。'}
+]},
+{id:'m07',num:'七',name:'机动车管理',chip:'机动车',desc:'带什么 · 扣什么 · 变什么',items:[
+ {k:'扣证类判断',kou:'看见扣行驶证、扣身份证都是错',note:'驾考中只有扣留机动车、扣留驾驶证的说法。'},
+ {k:'上路必带',kou:'两证两标一号牌',note:'驾驶证、行驶证、检验合格标志、保险标志、号牌（新车也要挂临牌，没有号牌坚决不能上路）。'},
+ {k:'扣车情形',kou:'',note:'证、标伪造变造；拼装 / 报废 / 严重超载等安全隐患；未投保交强险（标志贴前挡风玻璃）；涉案配合调查取证。'},
+ {k:'注册变更登记',kou:'加装防撞不变更',note:'改车身颜色、更换车架、发动机、整车都必须变更登记；只有加装前后防撞装置不需要变更。'},
+ {k:'不予注册',kou:'',note:'技术参数不符、走私车、查封扣押车、已达报废标准、盗抢骗嫌疑车辆——不予办理注册登记。'}
+]},
+{id:'m08',num:'八',name:'判刑（刑事责任）',chip:'判刑',desc:'两种罪 + 找"逃"字',items:[
+ {k:'危险驾驶罪',kou:'有拘役选拘役',note:'醉酒驾驶、追逐竞驶（飙车）——行为危险但未造成严重后果，处拘役。'},
+ {k:'交通肇事罪',kou:'',note:'已发生重大事故、致人重伤 / 死亡且负主要责任才构成；与危险驾驶罪的区别在"是否已造成严重后果"。'},
+ {k:'量刑三档',kou:'找"逃"字：无逃 3 以下、死后逃 3–7、逃致死 7 以上',note:'题目中没有"逃"字＝3 年以下；先死亡后逃逸＝3–7 年；因逃逸致人死亡（最恶劣）＝7 年以上。'},
+ {k:'补充罪名',kou:'',note:'组织考试作弊：一般 3 年以下，情节严重 3–7 年；在公共交通工具上殴打驾驶人、抢夺方向盘构成犯罪＝1 年以下。'}
+]},
+{id:'m09',num:'九',name:'信号灯与交警手势',chip:'信号手势',desc:'灯听交警的',items:[
+ {k:'信号灯四类',kou:'',note:'机动车信号灯（三色圆灯）、方向指示信号灯（箭头）、车道信号灯、闪光警告信号灯。'},
+ {k:'红灯',kou:'圆灯右转不受限，箭头红灯禁右转',note:'红灯不得越过停止线；圆形红灯确认安全后可以右转；箭头式红灯亮时不得右转。'},
+ {k:'两种黄灯区分',kou:'',note:'三色灯中的黄灯闪烁＝交通信号暂时解除（路口警示）；单独的闪光警告黄灯＝前方危险路段，注意瞭望、确认安全后通过。'},
+ {k:'绿灯也不能走的情况',kou:'不堵上添堵',note:'前方路口交通阻塞时，即使绿灯也应停在路口以外等待，不得进入。'},
+ {k:'车道信号灯',kou:'直行绿、左转红，可进左弯待转区',note:'只能走绿色箭头指示的车道；本车道直行为绿灯、左转为红灯时，可提前驶入左弯待转区等候。'},
+ {k:'加速通过',kou:'任何灯＋"加速通过"＝错',note:'不符合安全文明驾驶理念。'},
+ {k:'交警指挥优先',kou:'灯让交警三分',note:'交警手势与信号灯不一致时听交警的——绿灯亮但交警示意停止，必须停车等待。'},
+ {k:'交警手势 7 个',kou:'左高右低要喊停；双手从未放下是直行',note:'停止＝左高右低；直行＝双手打平从未放下（手折向哪侧、放行哪侧）；左转弯待转＝单左手下压；减速慢行＝单右手下压；变道＝单右手向中间摆（摆向左胸口）。'},
+ {k:'转弯手势特征',kou:'一手掌心朝前、一手在下——哪只手在下朝哪转',note:'左手在下＝左转弯，右手在下＝右转弯。'},
+ {k:'左右分不清',kou:'看见臂章选左转',note:'图中能看见交警臂章的手势＝左转弯（速记技巧）。'}
+]},
+{id:'m10',num:'十',name:'交通标志',chip:'标志',desc:'四大类 · 易混对照',items:[
+ {k:'标志四大类',kou:'黄警告、红禁令、蓝指示、绿高速',note:'警告＝黄底黑边三角；禁令＝红色禁止限制（黑色斜杠＝解除）；指示＝蓝色；指路＝普通路蓝色、高速绿色。两种问法：认标志、问作用。'},
+ {k:'弯路',kou:'一急、二反、三连续',note:'一个弯＝急转弯（箭头指哪往哪拐），两个弯＝反向弯路，三个弯＝连续弯路。'},
+ {k:'窄路 vs 窄桥',kou:'上下一样宽是窄桥',note:'窄桥＝上桥必下桥、标志上下同宽；窄路＝开着开着两侧（或单侧）变窄。'},
+ {k:'路面类',kou:'一凸高凸、二凸不平、门洞找桥',note:'单凸＝路面高凸（旧称）＝减速丘（新称，两个说法都对）；双凸＝路面不平；门洞＝驼峰桥；凹下去＝路面低洼。"桥头跳车"只与路面不平相关。'},
+ {k:'新增警告标志',kou:'',note:'注意前方施工（拿锹）；注意前方事故（紫色）；注意积水（先停车观察再决定能否通过）。'},
+ {k:'动物与村镇',kou:'牛是牲畜，鹿是野生',note:'带角的鹿＝注意野生动物；房子＋树＝村庄集镇。'},
+ {k:'铁路道口',kou:'火车头无人、栅栏有人；一杠 50、二杠 100、三杠 150',note:'火车头＝无人看守道口，栅栏＝有人看守；斜杠数＝距道口距离（米）。无灯无人道口"一停二看三通过"，中途不换挡。'},
+ {k:'易滑 vs 堤坝',kou:'',note:'车身歪扭＝易滑路段；车＋梯形临水＝堤坝路。'},
+ {k:'落石与傍山险路',kou:'看见啥找啥',note:'有石头＝注意落石；栏杆下临悬崖＝傍山险路。'},
+ {k:'倒 Y 区分',kou:'无箭头 Y 形口，有箭头是合流',note:'倒 Y 无箭头＝Y 形交叉口；带箭头（两向汇合）＝注意合流。'},
+ {k:'注意危险 vs 事故易发',kou:'驾考没有"追尾"标志',note:'大感叹号＝注意危险；看着像"追尾"的小图＝事故易发路段——凡说"追尾标志"都是错。'},
+ {k:'禁停标志',kou:'大叉禁停放，斜杠可临停',note:'大叉＝禁止停车（长短时都不行）；一条斜杠＝禁止长时停放（可临时停）。违反禁令标志标线记 1 分。'},
+ {k:'禁止驶入 vs 禁止通行',kou:'驶入禁车不禁人',note:'禁止驶入＝车不能进、人可以；禁止通行＝圈内空白，人车都不能进。'},
+ {k:'车型标志',kou:'正脸机动车，侧身看车型',note:'小车正脸＝（禁止）机动车；侧身＝对应车型（如小型客车）；自行车＝非机动车；带电箱＝电动自行车（新增）。'},
+ {k:'限速与限宽高',kou:'红高蓝低黄建议；上下限高、左右限宽',note:'红圈数字＝最高限速（黑斜杠＝解除限制）、蓝圈＝最低限速、黄底＝建议速度；数字带上下箭头＝限高，左右箭头＝限宽。'},
+ {k:'让行标志',kou:'三减八停',note:'倒三角"让"＝减速让行；八边形"停"＝停车让行。有"检查"二字＝停车检查（海关检查会写"海关"）。'},
+ {k:'圆直方单',kou:'圆形直行、方形单行',note:'圆形直行箭头＝只准直行（一条道走到黑）；方形箭头＝单行路（可在允许处转弯驶出）。'},
+ {k:'车道类指示',kou:'看见虚线找车道',note:'图案两侧带车道虚线的都是车道标志：直行车道、分向行驶车道、多乘员专用（3＋）、快速公交 BRT、有轨电车专用道。'},
+ {k:'高速指路',kou:'到终点才冲红线',note:'带红色斜杠＝高速终点，无红线＝起点；"出口"二字＝出口预告；ETC＝不停车电子收费，人工车道＝取卡。'},
+ {k:'服务设施',kou:'能干饭的才是服务区',note:'P＝停车场；咖啡杯＝停车区；有加油、修车、餐饮的才是服务区。救援电话＝电话号码，紧急电话＝电话亭。'},
+ {k:'紧急停车带 vs 错车道',kou:'',note:'紧急停车带＝高速上应急临停区；错车道＝窄路加宽一截、供两车错让通过。'},
+ {k:'会车让行 / 先行',kou:'哪边箭头粗哪边先走',note:'以右边为基准：箭头大（粗）的一方先行；箭头带"火箭"＝路口优先通行。靠山让临崖——临崖一方先走。'},
+ {k:'注意行人 vs 人行横道',kou:'黄色找注意，蓝色是横道',note:'黄色三角＝注意行人（警告）；蓝色方牌＝人行横道（指示）。轮椅＝注意残疾人；蹦跳小人＝注意儿童。'},
+ {k:'通行方向类',kou:'找顶角：顶角朝哪边哪边通行',note:'看小三角（顶角箭头）指向判断哪侧通行，两侧都有＝双向通行；新规颜色由红改黄不影响判断。另：上下双箭头＝注意双向交通。'},
+ {k:'公路编号',kou:'国 G、省 S、县 X、乡 Y',note:'乡道 Y——"乡"字草写像 Y、像树杈，以形找形。'}
+]},
+{id:'m11',num:'十一',name:'交通标线',chip:'标线',desc:'黄高白低 · 虚实分清',items:[
+ {k:'标线三类',kou:'',note:'禁止标线（如双黄实线禁跨）、警告标线（提示前方障碍）、指示标线（箭头导向）。'},
+ {k:'虚实与颜色',kou:'只有虚线可跨；白同黄对',note:'虚线一侧可越线（对侧实线不可反向跨入）；白色分隔同向车流，黄色分隔对向车流。'},
+ {k:'潮汐车道',kou:'双黄虚线是潮汐',note:'车道两侧双黄虚线＝潮汐车道，按交通流量变换方向。'},
+ {k:'路缘石标线',kou:'黄实禁停，黄虚可临停',note:'路缘黄色实线＝禁止停车；黄色虚线＝禁止长时停放（临时可停）。'},
+ {k:'减速标线',kou:'横条是横向，菱形是纵向',note:'路面平行横条＝横向减速标线；车道边菱形块（视觉收紧）＝纵向减速标线。'},
+ {k:'可变导向车道',kou:'锯齿车道看灯走',note:'锯齿状＝可变导向车道线，按前方指示灯确定方向，不能凭印象开。'},
+ {k:'左弯待转区',kou:'直行绿、左转红可进入',note:'提高左转车道通行效率；待转区前端同样不得越线。路口导向线＝按线行驶避免轨迹冲突。'},
+ {k:'停车让行 vs 减速让行线',kou:'双白实停车，双白虚减速',note:'视距不足、路况复杂处设停车让行线（配"停"字），必须停车观察；视野良好处设减速让行线。'},
+ {k:'停止线与网状线',kou:'网状线不能停车',note:'红灯时不得越过白色停止线；黄色网状线内禁止停车——前方拥堵时不得驶入网状线。'},
+ {k:'其他常考标线',kou:'',note:'三车道变双车道渐变线；接近障碍物标线（中间有物块）；立面标记（桥涵隧道、反光）；禁止掉头标线（掉头＋叉）；港湾式停靠站；菱形＝人行横道预告；方形或圆形都叫中心圈（绕行、不得压线）。地面限速数字"黄高白低"。'}
+]},
+{id:'m12',num:'十二',name:'通行原则与特殊路段',chip:'通行路段',desc:'谁先走 · 坡隧环岛',items:[
+ {k:'让行总口诀',kou:'右让左、弯让直，右方道路来车先行',note:'同为转弯时右转让左转；转弯让直行；同为直行时右方来车先行。'},
+ {k:'非机动车与行人优先',kou:'路权 CBA',note:'非机动车、行人的优先级高于机动车——先非机动车（C），再直行（B），后转弯（A）。'},
+ {k:'坡道会车',kou:'下坡让上坡；下到中途先来后到',note:'一般下坡车让上坡车先行；但下坡车已行至中途时，由下坡车先行。'},
+ {k:'狭窄山路与障碍',kou:'靠山让临崖、有障让无障',note:'不靠山体（临崖）一方先行；有障碍一方让无障碍一方先行。'},
+ {k:'让特殊车辆',kou:'警消救工——让',note:'执行任务的警车、消防车、救护车、工程救险车，一律让行，让出生命通道。'},
+ {k:'校车让行',kou:'一、二车道停，三车道最左侧减',note:'同向一条或两条车道：后方及相邻车道全部停车等候；三条车道：最左侧车道可减速通过。'},
+ {k:'超车规则',kou:'只能从左侧超',note:'变换远近光或鸣喇叭一次示意；尽快超越、减少并行；驶回原车道提前开右转向灯；前车不让＝放弃超车；被超时确认安全后靠右让行。'},
+ {k:'不得超车的情形',kou:'',note:'前车正在左转、掉头、超车；对面有会车可能；隧道、窄桥窄路等特殊路段；执行任务的特殊车辆——都不能超。'},
+ {k:'高速通行',kou:'入左离右；错过出口下一个',note:'小车最高 120、大车 100、最低 60（加速车道加速到 60 以上再汇入）；不得频繁变道；错过出口去下一出口，严禁倒车、掉头、逆行（12 分）；高速禁止学车。'},
+ {k:'上坡与下坡',kou:'低挡爬坡；下坡发动机制动',note:'上坡提前减挡、踏加速踏板，坡顶鸣喇叭一次示意；下坡挂低速挡、利用发动机制动，不能空挡滑行、不能长踩脚刹（过热失灵）。'},
+ {k:'坡道临时停车打方向',kou:'下坡向右、上坡向左',note:'方向朝能顶住马路牙子的一侧打，溜车时车轮抵住路缘阻止下滑。'},
+ {k:'山区·隧道·环岛',kou:'环岛：进不打灯出打右转',note:'山区减速鸣喇叭靠右行（坡长弯急视距不足）；隧道提前开近光灯示廓灯，禁止停车倒车掉头超车；环岛逆时针，环岛外让环岛内。'},
+ {k:'过水路面 / 漫水桥',kou:'先停车查明水情',note:'确认安全后低速平稳通过，过后间断轻踏制动蒸发水分；泥泞路选平整坚实路段或前车车辙通过，侧滑向侧滑一侧修正。'},
+ {k:'特殊路段判断词',kou:'空挡滑行、中途换挡、持续重踏＝错',note:'看到这些直接判错；间断轻踏、减速慢行、稳住方向＝对。'}
+]},
+{id:'m13',num:'十三',name:'特殊天气',chip:'天气',desc:'雨雾雪风',items:[
+ {k:'雨天',kou:'刚下雨时最滑',note:'雨水混灰尘成润滑膜，刚下雨路面最滑；暴雨到雨刮刮不清＝选安全地点靠边停车（不是立即停在路中间）。'},
+ {k:'雾天',kou:'雾天与雾灯锁死',note:'雾天开雾灯，绝不开远光；浓雾看不清也要选安全地点停车。'},
+ {k:'冰雪路',kou:'看见雪天想路滑',note:'制动距离延长（不是缩短）；防滑链装在驱动轮上；沿前车车辙行驶；上坡遇前车爬坡，等其通过后再上；积雪反光注意眩目。'},
+ {k:'大风天',kou:'大风不得超车',note:'不是"尽量不超"而是不能超；稳住方向，向来风方向适当修正。'},
+ {k:'天气题判断词',kou:'',note:'急转猛打方向、急刹、加速通过＝错；安全间距、发动机制动、稳住方向＝对；鸣喇叭提醒一次可以，连续鸣、催促＝错；看见"临时停车"直接找"危险报警闪光灯"。'}
+]},
+{id:'m14',num:'十四',name:'速度与停车距离',chip:'速度距离',desc:'数字题一网打尽',items:[
+ {k:'城市与公路限速',kou:'无线城 3 公 4，有线城 5 公 7',note:'没有中心线：城市 30、公路 40；有中心线：城市 50、公路 70。区分：城市有高楼、公路有树。'},
+ {k:'特殊情形限速',kou:'特殊找 30',note:'急弯、铁路道口、窄路窄桥、冰雪泥泞等特殊路段；雾雨雪沙尘能见度 50 米内；牵引故障车——通通 30。'},
+ {k:'高速车道速度',kou:'三车道 60 / 90 / 110',note:'高速最高 120、最低 60；三车道从右到左 60、90、110；两车道右 60、左 100。'},
+ {k:'高速跟车距离',kou:'只有 50 和 100 两档',note:'车速超过 100km/h 时车距 100 米以上；低于 100 时不少于 50 米。'},
+ {k:'高速低能见度',kou:'261 / 145 / 520',note:'能见度＜200 米：≤60km/h、车距≥100 米；＜100 米：≤40、≥50 米；＜50 米：≤20、从最近出口尽快驶离（"0"＝离）。能见度低还要开双闪。'},
+ {k:'限速标志与标线',kou:'牌红高蓝低，地黄高白低',note:'立牌：红圈最高、蓝圈最低、黄底建议；地面数字：黄色最高、白色最低。'},
+ {k:'停车禁区',kou:'口 5 站 3 不得停',note:'交叉路口、铁路道口、急弯、陡坡、窄桥＝50 米内禁停；公共汽车站、急救站、加油站、消防站＝30 米内禁停（有"站"的是 30）；人行横道、施工路段、网状线也不得停车。'}
+]},
+{id:'m15',num:'十五',name:'灯光·仪表·装置',chip:'灯光仪表',desc:'认灯 · 认表 · 认故障',items:[
+ {k:'近光 vs 远光',kou:'斜下是近光，平行是远光',note:'驾考中基本不用远光——仅夜间无照明道路可用；题目说开远光基本都是错。'},
+ {k:'近光的场合',kou:'起步、跟车、路口、隧道都用近光',note:'夜间会车 150 米外改用近光防眩目；跟车同样用近光。'},
+ {k:'危险报警闪光灯（双闪）',kou:'看见临时停车找双闪',note:'故障停车、临时停车、牵引故障车（前后车都开）、低能见度行驶时开启。'},
+ {k:'交替变换远近光',kou:'',note:'超车前示意；夜间通过无信号灯的交叉路口；提醒对向车关闭远光。'},
+ {k:'转向灯',kou:'超车掉头打左转，靠边停车打右转',note:'超车、掉头从左侧＝左转向灯；我国靠右行驶，靠边停车向右＝右转向灯。'},
+ {k:'示廓灯与雾灯',kou:'左绿前、右黄后',note:'示廓灯（前后位灯）夜间标识车身轮廓；仪表上前雾灯为绿色（光束朝左）、后雾灯为黄色（朝右），图标像"烤串"。'},
+ {k:'点火开关四挡',kou:'LOCK→ACC→ON→START',note:'LOCK 切断电源锁方向盘；ACC 接通附件电源（收音机）；ON 接通除启动机外全部电源；START 启动发动机。'},
+ {k:'踏板与拨杆',kou:'左灯右水',note:'方向盘左侧拨杆＝灯光转向，右侧＝雨刮洗涤；手动挡踏板左离合、中制动、右加速，自动挡左制动、右加速。'},
+ {k:'ABS 防抱死',kou:'有 ABS 急刹可用力踏',note:'ABS 让急刹时车轮保持转向能力，可用力踏下制动踏板。'},
+ {k:'安全带与头枕',kou:'头枕保护颈部，放在后脑',note:'安全带与气囊配合双重保护，作用是减轻驾乘人员伤害；不系安全带时气囊冲击反而加重伤害；头枕位置要支撑后脑，不是顶在颈椎。'},
+ {k:'仪表识别',kou:'个位数找转速',note:'表盘个位数（×1000r/min）＝转速表；两三位数＝速度里程表（km/h）；加油机图标＝燃油表（左空右满）；温度计＋波浪＝水温表（左蓝冷右红热）。'},
+ {k:'常见指示图标',kou:'前扇后方',note:'前盖开＝发动机罩、后盖开＝行李舱；喷水柱＝洗涤器、只吹风＝除雾（扇形＝前风窗、方形＝后风窗）；箭头向内＝内循环；太阳状＝车灯总开关；红人带＝未系好安全带；小孩在圈＝儿童安全锁。'},
+ {k:'故障灯组',kou:'只有 P 不是故障',note:'圆圈感叹号＝制动系统故障；电池＝电路故障；ABS 亮＝防抱死故障；闪电＝发动机控制系统故障；气囊亮＝气囊故障；P＝驻车制动器处于制动状态（手刹未放，在工作、非故障）。'},
+ {k:'燃油 vs 机油',kou:'低油是机油',note:'油枪图标＝燃油（不足）；油壶滴油＝机油压力过低。凡问"温度"都是过高，其他都是"不足 / 过低"。'}
+]},
+{id:'m16',num:'十六',name:'事故处理与赔偿',chip:'事故赔偿',desc:'爆胎 · 故障 · 协商 · 赔偿',items:[
+ {k:'爆胎',kou:'先稳方向再减速，非必要不急刹',note:'磨损、扎钉、胎压过高过低都会爆（过低也会爆是易错点）；处置一个字"稳"：松油门、低挡发动机制动、平稳停车；预防＝定期检查、清理异物、磨损严重更换。'},
+ {k:'故障停车五步',kou:'打灯、放标、人转移、报警、等救援',note:'开双闪→车后放警告标志（高速 150 米外、普通路 50–100 米）→人员撤到右侧路肩外、不留车内→报警→等专业救援（私家车不得私自拖曳）。'},
+ {k:'自行协商前提',kou:'无伤亡、无争议',note:'轻微财产损失事故：标明位置、拍照、撤离后再协商；不撤离造成拥堵罚 200。'},
+ {k:'必须报警的情形',kou:'',note:'有人员伤亡；有争议；对方涉嫌酒驾毒驾；车辆有问题（拼装 / 报废 / 无牌）；单方损坏公共设施。'},
+ {k:'全责情形',kou:'伪造破坏现场＝全责',note:'一方伪造现场、毁灭证据＝全责；货车货物掉落砸到后车＝货车全责。'},
+ {k:'不予赔偿',kou:'碰瓷不赔、静止不赔',note:'对方故意碰撞（碰瓷）不赔；本车处于静止状态的不赔。'},
+ {k:'机动车与行人事故',kou:'无过错也赔不超 10%',note:'机动车一方没有过错的，出于人道主义承担不超过 10% 的赔偿责任。'}
+]},
+{id:'m17',num:'十七',name:'医疗急救',chip:'急救',desc:'考点就这几个',items:[
+ {k:'出血',kou:'有出血先止血',note:'骨折处出血也是先止血再固定——"先固定"是挖坑。'},
+ {k:'动脉出血',kou:'按压近心端',note:'动脉血从心脏流出，压住靠近心脏的一端才是掐源头。'},
+ {k:'包扎',kou:'不用细麻绳',note:'细麻绳勒紧伤口、阻断血液循环，加重伤情。'},
+ {k:'昏迷三考点',kou:'抢救先查呼吸，搬运先开放气道',note:'无呼吸立即心肺复苏；搬运昏迷伤员先开放气道、采取侧卧位（仰卧位错误）。'},
+ {k:'胸外按压频率',kou:'100–120 次 / 分',note:'心肺复苏按压频率，记"最高 120"。'},
+ {k:'骨折',kou:'不乱动、三角巾固定、不用软担架',note:'核心是制动；软担架颠簸造成二次伤害；脊柱骨折切勿扶持走动。'},
+ {k:'烧伤',kou:'喷冷水、保鲜膜覆盖、喝淡盐水',note:'冷水降温止痛；保鲜膜隔尘隔菌；补少量淡盐水（钠盐体液流失，口渴感越重伤势越重）；干粉灭火器不能对人喷（有毒）；粘连衣物不强行脱。'},
+ {k:'中毒',kou:'第一时间离开毒区',note:'转移到空气新鲜处，不要停留。'}
+]},
+{id:'m18',num:'十八',name:'英文缩写与新能源',chip:'缩写新能源',desc:'生僻题速记',items:[
+ {k:'缩写速记（重点）',kou:'T 找交通、CC 找巡、W 会歪、BS 找盲点',note:'含 T＝交通类（如 TSR 交通标志识别）；含 CC＝巡航（ACC 自适应巡航、CCS 定速巡航）；含 W＝偏离 / 碰撞预警（LDW 车道偏离，带 F 的是碰撞 FCW）；含 BS＝盲点监测。'},
+ {k:'缩写速记（次重点）',kou:'A 在最前是自动，A 在最后是辅助',note:'EB＝制动刹车（AEB 自动紧急制动、EBA 制动辅助）；ESP 带 P＝车身稳定（"平"＝稳）；ALC 谐音"爱乱窜"＝自动变道；全称最长的选牵引力控制；AFS＝自适应大灯（"艾弗森 / 爱迪生"找大灯）。'},
+ {k:'新能源汽车',kou:'专用灭火器、能量回收',note:'出门先查电量；充电前预热电池；须配专用车载灭火器（说"普通灭火器"＝错）；能量回收＝把减速时的动能转化为电能。'}
+]}
+];
+
+/* ---------------- 关键词答题法数据 ---------------- */
+var STUDY='科一核心考"安全＋文明"意识：字面上安全、文明的说法大概率对；不安全、不文明的大概率错。45 分钟 100 题，不会的先跳过、简单题先做、难题回头看。';
+var SAFE_YES=['减速','停车','观察','让行','依次','缓慢平稳','保持安全距离','礼让'];
+var SAFE_NO=['加速','快速','随意','紧急制动','猛打方向','急转','空挡滑行','连续鸣喇叭','紧跟','催促'];
+var SAFE_NOTE='紧急制动只有"事故无法避免"时才对；鸣喇叭示意一次可以，连续鸣、长时间鸣、催促人车动物都是错。';
+var FIND=[
+ '看见"扣 2 分" → 直接选错（记分只有 1 / 3 / 6 / 9 / 12）',
+ '超速题看见"以外" → 找 6 分',
+ '看见"应急车道" → 找 6 分',
+ '看见"准驾不符" → 找 9 分',
+ '行人过马路 → 选项直接找"停车"',
+ '看见"临时停车" → 找"危险报警闪光灯"',
+ '看见"空挡滑行、中途换挡、持续重踏" → 错',
+ '看见"追尾"标志 → 错（那是事故易发，驾考没有追尾标志）',
+ '雾天 → 找雾灯（雾天与雾灯锁死）',
+ '仪表个位数 → 转速表；两三位数 → 速度表',
+ '"低油" → 机油压力过低；故障灯组只有 P 不是故障',
+ '凡问"温度" → 都是过高；其他 → 不足 / 过低',
+ '看见"五倍" → 找十（万）',
+ '拼装报废超五十 → 两百两千除吊销（吊的是驾驶证）',
+ '判刑题找"逃"字 → 无逃 3 年以下；先死后逃 3–7；逃逸致死 7 年以上',
+ '看见校车 → 一、二车道停，三车道最左侧减'
+];
+var NUMS=[
+ '超速：普普三六；高速只有 6 和 12；校车特殊车高速"20 定生死"',
+ '超员：七下三六、七上六九；校公旅 20 定生死；超 100% 一律 12 分',
+ '超载：一、三、六（最多 6 分）',
+ '疲劳：连驾 4 小时休 20 分钟；扣分"货三客九"',
+ '学法减分：公益 1-1-1、现场 1-1-2、网上 3-30-1，最高减 6 分',
+ '时间："满九变三"（期满换证 90 日、信息变更 30 日）；受理 3、调解 10、补发罚款都是 15 日',
+ '驾驶证有效期：6 年 → 10 年 → 长期（没有 20 年）',
+ '不得申领：假一、吊二、撤三、醉五、逃终生',
+ '增驾：轻一、中二、大三',
+ '高速：三车道 60 / 90 / 110；车距只有 50 和 100 两档',
+ '低能见度：261 / 145 / 520（0＝尽快驶离）',
+ '停车禁区：口 5 站 3（有"站"的是 30 米）'
+];
+var EXAM_TIPS=[
+ '把握时间：45 分钟 100 题，不会的先跳过，简单题先做、难题回头看。',
+ '注意问法：看清问的是"正确做法"还是"错误做法"，别一激动选反。',
+ '避开挖坑：选项顺序会变换——图 B 可能排在 A 选项的位置，看清图和选项的对应再选。',
+ '图片看不清可以点击放大，看清楚再作答；放松心态。'
+];
+
+/* ---------------- 状态与存储 ---------------- */
+var store={_m:{},
+  get:function(k){try{return localStorage.getItem(k)}catch(e){return this._m[k]||null}},
+  set:function(k,v){try{localStorage.setItem(k,v)}catch(e){this._m[k]=v}}};
+var TABS=['核心知识点','关键词答题法·临考'];
+var current='核心知识点';
+var recite=false;
+var FLAT=[];
+MODULES.forEach(function(m){ m.items.forEach(function(it,i){ FLAT.push({key:m.id+'_'+i, m:m, it:it}); }); });
+var TOTAL=FLAT.length;
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function renderTabs(){
+  var el=document.getElementById('tabs'); el.innerHTML='';
+  TABS.forEach(function(t){
+    var b=document.createElement('button');
+    b.className='tab'+(t===current?' active':'');
+    var sub=(t==='核心知识点')?('18 类 '+TOTAL+' 条'):'好感词 · 口诀 · 考场技巧';
+    b.innerHTML=esc(t)+'<span class="n">'+sub+'</span>';
+    b.onclick=function(){current=t; render();};
+    el.appendChild(b);
+  });
+}
+function doneCount(){
+  var n=0; FLAT.forEach(function(f){ if(store.get('sk1_'+f.key)==='1') n++; });
+  return n;
+}
+function updateProgress(){
+  var d=doneCount(), pct=Math.round(d/TOTAL*100);
+  var pf=document.getElementById('pfill'), pt=document.getElementById('ptext');
+  if(pf){pf.style.width=pct+'%'}
+  if(pt){pt.innerHTML='已掌握 <b>'+d+'</b> / '+TOTAL+' 条 · 点卡片右上圆圈标记'}
+}
+function renderControls(){
+  var el=document.getElementById('controls');
+  if(current!=='核心知识点'){ el.innerHTML=''; return; }
+  var chips=MODULES.map(function(m){
+    return '<button class="chip" data-t="'+m.id+'">'+esc(m.chip)+'</button>';
+  }).join('');
+  el.innerHTML=
+    '<div class="searchrow">'+
+      '<input class="search" id="q" type="search" placeholder="搜索知识点 / 口诀，如：超速、审验、雾灯、ABS…">'+
+      '<button class="rtoggle'+(recite?' on':'')+'" id="rt"><i class="sw"></i>背诵模式</button>'+
+    '</div>'+
+    '<div class="hint">背诵模式已开：只显示知识点名称，点卡片显示口诀与要点。</div>'+
+    '<div class="chips">'+chips+'</div>'+
+    '<div class="progress"><div class="pbar"><div class="pfill" id="pfill"></div></div><div class="ptext" id="ptext"></div></div>';
+  document.getElementById('rt').onclick=function(){
+    recite=!recite;
+    this.classList.toggle('on',recite);
+    document.getElementById('view').classList.toggle('recite-on',recite);
+    document.body.classList.toggle('recite-on',recite);
+    if(!recite){ document.querySelectorAll('.kcard.revealed').forEach(function(c){c.classList.remove('revealed')}); }
+  };
+  document.getElementById('q').addEventListener('input',function(){ applySearch(this.value); });
+  el.querySelectorAll('.chip').forEach(function(c){
+    c.onclick=function(){
+      var t=document.getElementById(this.getAttribute('data-t'));
+      if(t){ t.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}); }
+    };
+  });
+  updateProgress();
+}
+function cardHTML(f){
+  var it=f.it, mastered=store.get('sk1_'+f.key)==='1';
+  var body='';
+  if(it.kou) body+='<div class="kou">'+esc(it.kou)+'</div>';
+  body+='<div class="knote">'+esc(it.note)+'</div>';
+  return '<article class="kcard'+(mastered?' mastered':'')+'" data-key="'+f.key+'">'+
+    '<div class="khead"><h3 class="kname">'+esc(it.k)+'</h3>'+
+    '<button class="mark" data-key="'+f.key+'" title="标记已掌握" aria-label="标记已掌握">'+(mastered?'✓':'')+'</button></div>'+
+    '<div class="kbody">'+body+'</div>'+
+    '<div class="veil">点击显示口诀与要点</div>'+
+  '</article>';
+}
+function renderKnowledge(){
+  var html='';
+  MODULES.forEach(function(m){
+    html+='<section class="msec" id="'+m.id+'">'+
+      '<div class="mbanner"><span class="mnum">'+esc(m.num)+'</span>'+
+      '<span class="mname">'+esc(m.name)+'</span><span class="mdesc">'+esc(m.desc)+'</span></div>';
+    m.items.forEach(function(it,i){ html+=cardHTML({key:m.id+'_'+i,it:it}); });
+    html+='</section>';
+  });
+  html+='<div class="empty" id="empty">没有匹配的知识点，换个关键词试试。</div>';
+  var view=document.getElementById('view');
+  view.className = recite?'recite-on':'';
+  document.body.classList.toggle('recite-on',recite);
+  view.innerHTML=html;
+  view.querySelectorAll('.mark').forEach(function(b){
+    b.onclick=function(e){
+      e.stopPropagation();
+      var k='sk1_'+this.getAttribute('data-key');
+      var now=store.get(k)==='1'?'0':'1'; store.set(k,now);
+      var card=this.closest('.kcard');
+      card.classList.toggle('mastered',now==='1');
+      this.textContent = now==='1'?'✓':'';
+      updateProgress();
+    };
+  });
+  view.addEventListener('click',function(e){
+    if(!recite) return;
+    var card=e.target.closest('.kcard'); if(!card) return;
+    if(e.target.closest('.mark')) return;
+    card.classList.toggle('revealed');
+  });
+  var q=document.getElementById('q'); if(q&&q.value) applySearch(q.value);
+}
+function applySearch(q){
+  q=(q||'').trim().toLowerCase();
+  var any=false;
+  MODULES.forEach(function(m){
+    var sec=document.getElementById(m.id); if(!sec) return;
+    var hit=false;
+    var cards=sec.querySelectorAll('.kcard');
+    m.items.forEach(function(it,i){
+      var text=(it.k+it.kou+it.note).toLowerCase();
+      var show=!q||text.indexOf(q)>=0;
+      cards[i].style.display=show?'':'none';
+      if(show) hit=true;
+    });
+    sec.style.display=hit?'':'none';
+    if(hit) any=true;
+  });
+  var em=document.getElementById('empty'); if(em) em.style.display=any?'none':'block';
+}
+function renderTech(){
+  document.getElementById('view').className='';
+  document.body.classList.remove('recite-on');
+  var yes=SAFE_YES.map(function(w){return '<span class="c2 yes">'+esc(w)+'</span>'}).join('');
+  var no=SAFE_NO.map(function(w){return '<span class="c2 no">'+esc(w)+'</span>'}).join('');
+  var f1=FIND.map(function(t){
+    var i=t.indexOf('→');
+    if(i<0) return '<li>'+esc(t)+'</li>';
+    var head=esc(t.slice(0,i).trim()), rest=esc(t.slice(i+1).trim());
+    return '<li><b>'+head+'</b><span class="arr">→</span>'+rest+'</li>';
+  }).join('');
+  var f2=NUMS.map(function(t){
+    var i=t.indexOf('：');
+    if(i<0) return '<li>'+esc(t)+'</li>';
+    return '<li><b>'+esc(t.slice(0,i))+'</b>：'+esc(t.slice(i+1))+'</li>';
+  }).join('');
+  var tips=EXAM_TIPS.map(function(t){return '<li>'+esc(t)+'</li>'}).join('');
+  document.getElementById('view').innerHTML=
+    '<section class="gsec"><h2 class="gh">一、答题总原则</h2>'+
+      '<div class="plain">'+esc(STUDY)+'</div></section>'+
+    '<section class="gsec"><h2 class="gh">二、好感词 vs 警示词</h2>'+
+      '<p class="gd">关键词答题法可答对约 80% 的常识题。</p>'+
+      '<div class="setlab yes">✓ 看到大概率就是对（好感词）</div><div class="chipset">'+yes+'</div>'+
+      '<div class="setlab no">✕ 看到大概率就是错（警示词）</div><div class="chipset">'+no+'</div>'+
+      '<div class="plain" style="margin-top:10px">'+esc(SAFE_NOTE)+'</div></section>'+
+    '<section class="gsec"><h2 class="gh">三、看见什么找什么</h2>'+
+      '<p class="gd">考场秒答清单，进考场前最后过一遍。</p>'+
+      '<ol class="find">'+f1+'</ol></section>'+
+    '<section class="gsec"><h2 class="gh">四、数字口诀速查</h2>'+
+      '<p class="gd">全部数字类考点浓缩在这一页。</p>'+
+      '<ol class="find teal">'+f2+'</ol></section>'+
+    '<section class="gsec"><h2 class="gh">五、考场操作提示</h2>'+
+      '<ul class="jlist yes">'+tips+'</ul></section>'+
+    '<section class="gsec"><h2 class="gh">六、易错提醒</h2>'+
+      '<div class="warn"><b>注意：</b>凡"审验机动车""扣行驶证""扣身份证""追尾标志""高速有 3 分超速""记 2 分"——见到直接判错；判刑题先找"拘役"和"逃"字。</div></section>';
+}
+function render(){
+  renderTabs();
+  renderControls();
+  if(current==='核心知识点') renderKnowledge(); else renderTech();
+  window.scrollTo({top:0});
+}
+render();
+</script>
+</body>
+</html>
