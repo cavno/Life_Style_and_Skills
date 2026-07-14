@@ -1,0 +1,24 @@
+name = "yezhu"
+main = "worker.js"
+compatibility_date = "2025-09-01"
+
+# 静态前端目录（public/）。Worker 处理 /api/*，其余请求由静态资源返回。
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+# D1 数据库：先在控制台/命令行创建 yezhu-db，把得到的 database_id 填到下面。
+[[d1_databases]]
+binding = "DB"
+database_name = "yezhu-db"
+database_id = "69c395c8-625e-40ca-94a9-11865179f493"
+
+# R2 桶：先创建 yezhu-uploads。
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "yezhu-uploads"
+
+# 发起人口令：建议用控制台/命令行设为 Secret（更安全）。也可不设——首次登录输入的口令即被设为口令。
+# 若图省事也可放明文（注意会进 git）：
+# [vars]
+# ADMIN_PASSCODE = "改成你的口令"

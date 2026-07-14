@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>龙岗区义务教育积分入学计算器</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;font-family:'Noto Serif SC',Georgia,serif;background:linear-gradient(160deg,#fdf6ec 0%,#f5e6c8 50%,#ecdbb4 100%);color:#3a2e1e}
+input:focus,select:focus{border-color:#8b6914!important;box-shadow:0 0 0 3px rgba(139,105,20,0.12)!important}
+.wrap{max-width:860px;margin:0 auto;padding:28px 16px}
+.header{text-align:center;margin-bottom:24px}
+.header .sub{font-size:12px;letter-spacing:6px;color:#8b6914;font-weight:700;margin-bottom:6px}
+.header h1{font-size:26px;font-weight:900;letter-spacing:2px}
+.header p{font-size:12px;color:#8a7a5a;margin-top:6px}
+.tabs{display:flex;gap:4px}
+.tb{padding:10px 20px;border:none;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;border-radius:10px 10px 0 0;transition:all 0.2s;background:transparent;color:#8a7a5a}
+.tb.on{background:rgba(255,255,255,0.85);color:#8b6914;box-shadow:0 -2px 8px rgba(0,0,0,0.06)}
+.panel{background:rgba(255,255,255,0.85);border-radius:0 12px 12px 12px;padding:24px;border:1px solid rgba(212,192,158,0.5)}
+h2{font-size:15px;font-weight:700;color:#5a4a2a;margin-bottom:12px}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px;margin-bottom:20px}
+.cc{border:2px solid #d4c09e;border-radius:10px;padding:12px 14px;cursor:pointer;background:rgba(255,255,255,0.55);transition:all 0.2s}
+.cc:hover{border-color:#b8860b;transform:translateY(-1px)}
+.cc.on{border-color:#8b6914;background:linear-gradient(135deg,#fff9ec,#fff3d6);box-shadow:0 3px 12px rgba(139,105,20,0.15)}
+.cc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.cc-label{font-weight:700;font-size:14px}
+.cc-score{font-size:12px;font-weight:700;color:#a09070}
+.cc.on .cc-score{color:#8b6914}
+.cc-desc{font-size:11px;color:#7a6a4a;line-height:1.5}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:16px}
+.field label{display:block;font-weight:600;margin-bottom:4px;font-size:13px;color:#5a4a2a}
+.inp{width:100%;padding:10px 14px;border:2px solid #d4c09e;border-radius:8px;font-size:15px;font-family:inherit;background:#fffdf7;color:#3a2e1e;outline:none}
+.check-row{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;font-weight:600;color:#5a4a2a;margin-bottom:16px;user-select:none}
+.ckbox{width:20px;height:20px;border-radius:6px;border:2px solid #d4c09e;display:flex;align-items:center;justify-content:center;transition:all 0.15s;flex-shrink:0;font-size:14px;color:#fff}
+.ckbox.on{background:#8b6914;border-color:#8b6914}
+.result-box{background:linear-gradient(135deg,#8b6914,#a67c1a);color:#fff;border-radius:14px;padding:24px;margin-bottom:24px}
+.result-flex{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px}
+.result-total{font-size:52px;font-weight:900;line-height:1}
+.result-sub{text-align:right;font-size:13px;opacity:0.85}
+.result-details{margin-top:12px;border-top:1px solid rgba(255,255,255,0.2);padding-top:10px}
+.result-details div{font-size:12px;opacity:0.9;margin-bottom:2px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.ch{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;border:1.5px solid #d4c09e;background:transparent;color:#6a5a3a;font-family:inherit}
+.ch.on{background:#8b6914;color:#fff;border-color:#8b6914}
+.legend{display:flex;gap:12px;margin-bottom:12px;font-size:11px;color:#8a7a5a;flex-wrap:wrap}
+.legend-dot{display:inline-block;width:8px;height:8px;border-radius:4px;margin-right:4px;vertical-align:middle}
+.school-list{max-height:420px;overflow-y:auto;border-radius:10px;border:1px solid rgba(0,0,0,0.08)}
+.school-list.tall{max-height:540px}
+.sr{padding:14px 16px;border-bottom:1px solid rgba(0,0,0,0.06);transition:background 0.15s}
+.sr:hover{background:rgba(139,105,20,0.04)}
+.sr-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.sr-name{font-weight:700;font-size:13px}
+.sr-meta{font-size:10px;color:#a09070;margin-left:4px}
+.sr-score{font-size:13px;font-weight:700;color:#5a4a2a;white-space:nowrap}
+.bar-bg{width:100%;height:5px;background:rgba(0,0,0,0.06);border-radius:3px;margin-top:5px}
+.bar-fg{height:100%;border-radius:3px;background:linear-gradient(90deg,#b8860b,#d4a017);transition:width 0.4s ease}
+.badge{padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;white-space:nowrap}
+.badge-great{background:#d4edda;color:#155724}
+.badge-good{background:#fff3cd;color:#856404}
+.badge-risk{background:#ffe0b2;color:#e65100}
+.badge-hard{background:#f8d7da;color:#721c24}
+.sr-hist{font-size:10px;color:#b0a080;margin-top:3px}
+.trend-up{color:#c0392b;margin-left:6px}
+.trend-down{color:#27ae60;margin-left:6px}
+.tip-box{margin-top:16px;padding:14px;background:rgba(139,105,20,0.06);border-radius:10px;font-size:12px;color:#6a5a3a;line-height:1.7}
+.type-tag{font-size:11px;margin-left:6px;padding:2px 8px;border-radius:10px;display:inline-block}
+.type-pub{background:#e8f4e8;color:#2d6a2d}
+.type-pri{background:#fef3e2;color:#b8860b}
+.yr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.yr-cell{text-align:center}
+.yr-label{font-size:10px;color:#a09070}
+.yr-val{font-size:16px;font-weight:900}
+.yr-val.na{color:#ccc}
+select{-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M3 5l3 3 3-3' fill='none' stroke='%238a7a5a' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px!important}
+.footer{text-align:center;margin-top:24px;font-size:11px;color:#a09070}
+.note{font-size:11px;color:#8a7a5a;margin-bottom:16px}
+.hidden{display:none}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.filter-row .inp{max-width:200px}
+.filter-row select{max-width:120px}
+.count{font-size:12px;color:#a09070;margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="header">
+    <div class="sub">深圳市龙岗区</div>
+    <h1>义务教育积分入学计算器</h1>
+    <p>计算积分 · 对比历年录取线 · 评估录取机会</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tb on" onclick="switchTab('calc')">积分计算</button>
+    <button class="tb" onclick="switchTab('schools')">学校录取线</button>
+  </div>
+
+  <div class="panel">
+    <!-- ========== 积分计算 Tab ========== -->
+    <div id="tab-calc">
+      <h2>选择积分类型</h2>
+      <div class="cat-grid" id="cat-grid"></div>
+
+      <div id="form-section" class="hidden">
+        <h2>填写加分信息</h2>
+        <p class="note" id="bonus-note"></p>
+        <div class="form-grid">
+          <div class="field">
+            <label>截止日期</label>
+            <input type="date" class="inp" id="refDate" value="2026-04-01">
+          </div>
+          <div class="field hidden" id="f-property">
+            <label>产权证发证日期</label>
+            <input type="date" class="inp" id="propertyDate">
+          </div>
+          <div class="field hidden" id="f-hukou">
+            <label>户籍迁入学区日期</label>
+            <input type="date" class="inp" id="hukouDate">
+          </div>
+          <div class="field hidden" id="f-rent">
+            <label>租赁凭证备案日期</label>
+            <input type="date" class="inp" id="rentDate">
+          </div>
+          <div class="field hidden" id="f-social">
+            <label>社保累计月数</label>
+            <input type="number" class="inp" id="socialMonths" min="0" placeholder="养老+医疗同时缴交">
+          </div>
+        </div>
+        <div class="check-row" onclick="toggleYouxiang()">
+          <div class="ckbox" id="yx-box"></div>
+          优享学区加分（+2.5分，仅试点片区）
+        </div>
+      </div>
+
+      <div id="result-section" class="hidden">
+        <div class="result-box">
+          <div class="result-flex">
+            <div>
+              <div style="font-size:12px;opacity:0.8">预估总积分</div>
+              <div class="result-total" id="r-total">0</div>
+            </div>
+            <div class="result-sub">
+              <div id="r-base">基础分 0</div>
+              <div id="r-bonus">加分 0</div>
+            </div>
+          </div>
+          <div class="result-details" id="r-details"></div>
+        </div>
+
+        <h2>录取机会评估</h2>
+        <p class="note">基于2024年录取积分线，对比您的预估积分，评估各学校的录取可能性</p>
+
+        <div class="chips" id="area-chips-calc"></div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;align-items:center">
+          <select class="inp" id="type-filter-calc" style="max-width:100px;padding:4px 28px 4px 10px;font-size:12px" onchange="renderAssessment()">
+            <option value="全部">全部</option><option value="公办">公办</option><option value="民办">民办</option>
+          </select>
+        </div>
+
+        <div class="legend">
+          <span><span class="legend-dot" style="background:#d4edda"></span>很稳(≥+5)</span>
+          <span><span class="legend-dot" style="background:#fff3cd"></span>较稳(+0~5)</span>
+          <span><span class="legend-dot" style="background:#ffe0b2"></span>有风险(-5~0)</span>
+          <span><span class="legend-dot" style="background:#f8d7da"></span>较难(&lt;-5)</span>
+        </div>
+
+        <div class="school-list" id="assess-list"></div>
+
+        <div class="tip-box">
+          <strong>提示：</strong>录取积分线每年波动较大，以上评估仅基于2024年数据供参考。建议关注目标学校近3年趋势，合理填报志愿。同分情况下按优享学区→学区户籍→龙岗户籍→深圳其他区户籍→非深户排序录取。
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 学校录取线 Tab ========== -->
+    <div id="tab-schools" class="hidden">
+      <h2>龙岗区小一录取积分线（2022-2024）</h2>
+      <div class="filter-row">
+        <input class="inp" id="search-text" placeholder="搜索学校..." oninput="renderSchoolTab()">
+        <select class="inp" id="area-filter-tab" style="max-width:120px" onchange="renderSchoolTab()">
+          <option value="全部">全部片区</option>
+        </select>
+        <select class="inp" id="type-filter-tab" style="max-width:100px" onchange="renderSchoolTab()">
+          <option value="全部">全部</option><option value="公办">公办</option><option value="民办">民办</option>
+        </select>
+      </div>
+      <div class="count" id="school-count"></div>
+      <div class="school-list tall" id="school-tab-list"></div>
+    </div>
+  </div>
+
+  <div class="footer">数据来源于公开信息，仅供参考，实际积分以龙岗区教育局官方为准</div>
+</div>
+
+<script>
+// ===== DATA =====
+const CATEGORIES = [
+  {key:"1A",label:"第一类A",desc:"龙岗户籍 + 学区自购商品房",base:100,bonusType:"property",bonusNote:"按产权证发证时间每满1个月加0.05分"},
+  {key:"1B",label:"第一类B",desc:"学区户籍 + 学区租屋",base:100,bonusType:"hukou_move",bonusNote:"按户籍迁入学区时间每满1个月加0.05分"},
+  {key:"2",label:"第二类",desc:"深圳其他区户籍 + 学区自购商品房",base:95,bonusType:"property",bonusNote:"按产权证发证时间每满1个月加0.05分"},
+  {key:"3",label:"第三类",desc:"学区户籍 + 特殊住房等",base:90,bonusType:"hukou_and_rent",bonusNote:"户籍迁入+租赁备案时间各每满1月加0.05分，可累计"},
+  {key:"4",label:"第四类",desc:"非深圳户籍 + 学区自购商品房",base:80,bonusType:"social_insurance",bonusNote:"社保(养老+医疗)累计月数，超12个月后每月加0.05分"},
+  {key:"5",label:"第五类",desc:"龙岗户籍 + 学区租房/特殊住房",base:75,bonusType:"hukou_and_rent",bonusNote:"户籍迁入+租赁备案时间各每满1月加0.05分，可累计"},
+  {key:"6",label:"第六类",desc:"深圳其他区户籍 + 学区租房/特殊住房",base:70,bonusType:"hukou_and_rent",bonusNote:"户籍迁入+租赁备案时间各每满1月加0.05分，可累计"},
+  {key:"7",label:"第七类",desc:"非深圳户籍 + 学区租房/特殊住房",base:60,bonusType:"rent_and_social",bonusNote:"租赁备案每满1月加0.05分 + 社保超12月后每月加0.05分，可累计"},
+];
+
+const SCHOOLS=[
+  {area:"龙城",type:"公办",name:"实验学校(小学部)",s2024:92.05,s2023:92.8,s2022:92.15},
+  {area:"龙城",type:"公办",name:"港中文(深圳)附属知新学校",s2024:67.8,s2023:75,s2022:77.9},
+  {area:"龙城",type:"公办",name:"港中文(深圳)附属道远学校",s2024:91.7,s2023:94.7,s2022:92.2},
+  {area:"龙城",type:"公办",name:"外国语(集团)新亚洲学校",s2024:92.2,s2023:91.75,s2022:91},
+  {area:"龙城",type:"公办",name:"平安里学校(小学部)",s2024:95.85,s2023:93.2,s2022:93.5},
+  {area:"龙城",type:"公办",name:"深中龙岗(集团)兰著学校",s2024:75.6,s2023:78.3,s2022:68.7},
+  {area:"龙城",type:"公办",name:"外国语学校(小学部)",s2024:93.65,s2023:91.95,s2022:91.2},
+  {area:"龙城",type:"公办",name:"外国语(集团)星河学校",s2024:90.35,s2023:90.25,s2022:90.25},
+  {area:"龙城",type:"公办",name:"外国语(集团)致美学校",s2024:90.7,s2023:90.95,s2022:90.75},
+  {area:"龙城",type:"公办",name:"上外附属龙岗学校",s2024:91,s2023:91,s2022:90.6},
+  {area:"龙城",type:"公办",name:"深圳未来天成学校",s2024:69.6,s2023:84.85,s2022:86.5},
+  {area:"龙城",type:"公办",name:"龙城高级中学龙城创新学校",s2024:75.45,s2023:75,s2022:83.95},
+  {area:"龙城",type:"公办",name:"清林小学",s2024:92.45,s2023:93.3,s2022:90.25},
+  {area:"龙城",type:"公办",name:"龙城小学",s2024:93.5,s2023:96.35,s2022:91.2},
+  {area:"龙城",type:"公办",name:"深中龙岗(集团)依山郡小学",s2024:97.95,s2023:100.1,s2022:95},
+  {area:"龙城",type:"公办",name:"深圳中学龙岗学校",s2024:100.2,s2023:94,s2022:91.7},
+  {area:"龙城",type:"公办",name:"外国语(集团)爱联小学",s2024:75,s2023:84.1,s2022:75.15},
+  {area:"龙城",type:"公办",name:"盛平小学",s2024:76.7,s2023:75,s2022:75},
+  {area:"龙城",type:"公办",name:"悦澜山实验小学",s2024:71.55,s2023:75,s2022:69.55},
+  {area:"龙城",type:"公办",name:"天誉实验学校(政府资助)",s2024:91.2,s2023:90,s2022:75.6},
+  {area:"龙城",type:"公办",name:"华南师大附属大运学校",s2024:86.45,s2023:100,s2022:90.15},
+  {area:"龙城",type:"民办",name:"龙联学校",s2024:60,s2023:60,s2022:60.55},
+  {area:"龙城",type:"民办",name:"英才小学",s2024:60,s2023:60.05,s2022:60.25},
+  {area:"龙城",type:"民办",name:"华城学校",s2024:60,s2023:60,s2022:61.75},
+  {area:"龙城",type:"民办",name:"爱华学校",s2024:63.65,s2023:62.4,s2022:63.65},
+  {area:"龙城",type:"民办",name:"文龙学校",s2024:61.75,s2023:62.05,s2022:62.45},
+  {area:"龙城",type:"民办",name:"龙盛学校",s2024:60,s2023:60.7,s2022:61.05},
+  {area:"龙城",type:"民办",name:"兴泰实验学校",s2024:63.85,s2023:64.8,s2022:63.45},
+  {area:"布吉",type:"公办",name:"贤义外国语学校",s2024:105.15,s2023:105.1,s2022:104.55},
+  {area:"布吉",type:"公办",name:"华中师大附中可园学校",s2024:75.15,s2023:90,s2022:90.6},
+  {area:"布吉",type:"公办",name:"信义实验小学",s2024:102.8,s2023:102.85,s2022:100.7},
+  {area:"布吉",type:"公办",name:"华中师大附中木棉湾学校",s2024:86.1,s2023:75,s2022:102.6},
+  {area:"布吉",type:"公办",name:"文理学校(南门墩)",s2024:86.4,s2023:83.65,s2022:null},
+  {area:"布吉",type:"公办",name:"吉祥小学",s2024:85.5,s2023:90,s2022:91.3},
+  {area:"布吉",type:"公办",name:"文景小学",s2024:103.45,s2023:102.95,s2022:102.95},
+  {area:"布吉",type:"公办",name:"龙园意境小学",s2024:90,s2023:96,s2022:88},
+  {area:"布吉",type:"公办",name:"德兴小学",s2024:70,s2023:85,s2022:75.15},
+  {area:"布吉",type:"公办",name:"中心小学",s2024:70,s2023:75,s2022:70},
+  {area:"布吉",type:"公办",name:"莲花小学",s2024:75,s2023:75,s2022:70},
+  {area:"布吉",type:"公办",name:"百外世纪小学公办班",s2024:107.25,s2023:107.9,s2022:107.35},
+  {area:"布吉",type:"公办",name:"龙岭学校公办班",s2024:95.95,s2023:100.5,s2022:96.75},
+  {area:"布吉",type:"民办",name:"东升学校",s2024:65.85,s2023:66.3,s2022:65.6},
+  {area:"布吉",type:"民办",name:"智民实验学校",s2024:94.1,s2023:84.1,s2022:70.15},
+  {area:"布吉",type:"民办",name:"百外春蕾小学",s2024:105.6,s2023:104.95,s2022:104.55},
+  {area:"布吉",type:"民办",name:"百外世纪小学(民办)",s2024:104.4,s2023:104.5,s2022:103.8},
+  {area:"布吉",type:"民办",name:"龙岭学校(民办)",s2024:63.75,s2023:68.05,s2022:67.3},
+  {area:"吉华",type:"公办",name:"怡翠实验学校",s2024:104.25,s2023:104.4,s2022:103.4},
+  {area:"吉华",type:"公办",name:"南师大附属龙岗学校",s2024:92.9,s2023:95.9,s2022:93.05},
+  {area:"吉华",type:"公办",name:"甘李学校",s2024:68.75,s2023:67.15,s2022:65.95},
+  {area:"吉华",type:"公办",name:"吉华实验学校(三联)",s2024:85.5,s2023:70,s2022:null},
+  {area:"吉华",type:"公办",name:"阳光小学",s2024:91.2,s2023:93.75,s2022:90.2},
+  {area:"吉华",type:"公办",name:"水径小学",s2024:76.45,s2023:90,s2022:75},
+  {area:"吉华",type:"公办",name:"麓城外国语小学",s2024:94.8,s2023:104.05,s2022:103.2},
+  {area:"坂田",type:"公办",name:"外国语(集团)云和学校",s2024:90.25,s2023:90.2,s2022:null},
+  {area:"坂田",type:"公办",name:"深圳实验学校坂田校区",s2024:100,s2023:100,s2022:93.05},
+  {area:"坂田",type:"公办",name:"深大附属坂田学校",s2024:93.35,s2023:92.25,s2022:92.65},
+  {area:"坂田",type:"公办",name:"科技城外国语学校",s2024:94.35,s2023:101.05,s2022:91.95},
+  {area:"坂田",type:"公办",name:"坂田实验学校",s2024:90,s2023:96.1,s2022:91.35},
+  {area:"坂田",type:"公办",name:"扬美实验学校",s2024:68.65,s2023:70,s2022:65.7},
+  {area:"坂田",type:"公办",name:"五和实验学校",s2024:75,s2023:88.3,s2022:75},
+  {area:"坂田",type:"公办",name:"广东实验中学深圳学校",s2024:95.6,s2023:102.35,s2022:102.75},
+  {area:"坂田",type:"公办",name:"云端学校(书香实验)",s2024:92.6,s2023:null,s2022:null},
+  {area:"坂田",type:"公办",name:"花城小学",s2024:75.55,s2023:85,s2022:75},
+  {area:"坂田",type:"公办",name:"五园小学",s2024:60,s2023:75,s2022:68.35},
+  {area:"坂田",type:"公办",name:"华南师大附属雅宝小学",s2024:65.75,s2023:75,s2022:67.25},
+  {area:"坂田",type:"公办",name:"坂田小学",s2024:68.2,s2023:70,s2022:65.85},
+  {area:"坂田",type:"公办",name:"科技城外国语雪象小学",s2024:66.55,s2023:64.85,s2022:64.65},
+  {area:"坂田",type:"公办",name:"宝岗小学",s2024:65.3,s2023:66.75,s2022:65},
+  {area:"坂田",type:"公办",name:"外国语(集团)和美小学",s2024:90.35,s2023:91.05,s2022:90},
+  {area:"南湾",type:"公办",name:"南湾学校",s2024:102.75,s2023:102.85,s2022:102.4},
+  {area:"南湾",type:"公办",name:"石芽岭学校",s2024:75,s2023:87.9,s2022:60.8},
+  {area:"南湾",type:"公办",name:"沙塘布学校",s2024:90.55,s2023:90.5,s2022:85},
+  {area:"南湾",type:"公办",name:"南岭小学",s2024:92.9,s2023:92.4,s2022:91.75},
+  {area:"南湾",type:"公办",name:"沙西小学",s2024:90.4,s2023:90.3,s2022:75.9},
+  {area:"南湾",type:"公办",name:"下李朗小学",s2024:67.4,s2023:70,s2022:67.55},
+  {area:"南湾",type:"公办",name:"沙湾小学",s2024:87.65,s2023:85.35,s2022:75},
+  {area:"南湾",type:"公办",name:"丹竹头小学",s2024:90.25,s2023:90,s2022:90},
+  {area:"南湾",type:"公办",name:"南湾实验小学",s2024:101.4,s2023:101.5,s2022:86.1},
+  {area:"平湖",type:"公办",name:"平湖实验学校",s2024:94.8,s2023:91,s2022:95.45},
+  {area:"平湖",type:"公办",name:"平湖外国语学校",s2024:75,s2023:75,s2022:70},
+  {area:"平湖",type:"公办",name:"信德学校",s2024:81.9,s2023:97,s2022:90.65},
+  {area:"平湖",type:"公办",name:"平湖第二实验学校",s2024:64.25,s2023:70,s2022:66.9},
+  {area:"平湖",type:"公办",name:"华中师大附中平湖中心学校",s2024:90,s2023:90,s2022:85.05},
+  {area:"平湖",type:"公办",name:"华南师大附属平湖学校",s2024:64.75,s2023:69.9,s2022:67.95},
+  {area:"平湖",type:"公办",name:"深外龙岗学校(平湖)",s2024:103.15,s2023:null,s2022:null},
+  {area:"平湖",type:"公办",name:"平湖凤凰山小学",s2024:93.2,s2023:92.65,s2022:92.25},
+];
+
+const AREAS=[...new Set(SCHOOLS.map(s=>s.area))];
+
+// ===== STATE =====
+let selectedCat = null;
+let youxiang = false;
+let calcAreaFilter = "全部";
+
+// ===== HELPERS =====
+function monthsBetween(dateStr, refStr){
+  if(!dateStr) return 0;
+  const d=new Date(dateStr), r=new Date(refStr);
+  if(isNaN(d)||isNaN(r)||d>=r) return 0;
+  return (r.getFullYear()-d.getFullYear())*12+(r.getMonth()-d.getMonth());
+}
+
+function badgeHTML(myScore, cutoff){
+  const diff=myScore-cutoff;
+  let cls,text;
+  if(diff>=5){cls="badge-great";text="很稳";}
+  else if(diff>=0){cls="badge-good";text="较稳";}
+  else if(diff>=-5){cls="badge-risk";text="有风险";}
+  else{cls="badge-hard";text="较难";}
+  return `<span class="badge ${cls}">${text} ${diff>=0?"+":""}${diff.toFixed(2)}</span>`;
+}
+
+function barHTML(score, max=110){
+  const pct=Math.min(100,(score/max)*100);
+  return `<div class="bar-bg"><div class="bar-fg" style="width:${pct}%"></div></div>`;
+}
+
+// ===== TAB SWITCHING =====
+function switchTab(t){
+  document.querySelectorAll('.tb').forEach((b,i)=>b.classList.toggle('on',i===(t==='calc'?0:1)));
+  document.getElementById('tab-calc').classList.toggle('hidden',t!=='calc');
+  document.getElementById('tab-schools').classList.toggle('hidden',t!=='schools');
+  if(t==='schools') renderSchoolTab();
+}
+
+// ===== CATEGORY CARDS =====
+function renderCatGrid(){
+  const grid=document.getElementById('cat-grid');
+  grid.innerHTML=CATEGORIES.map(c=>`
+    <div class="cc ${selectedCat===c.key?'on':''}" onclick="selectCat('${c.key}')">
+      <div class="cc-head">
+        <span class="cc-label">${c.label}</span>
+        <span class="cc-score">${c.base}分</span>
+      </div>
+      <div class="cc-desc">${c.desc}</div>
+    </div>
+  `).join('');
+}
+
+function selectCat(key){
+  selectedCat=key;
+  renderCatGrid();
+  const cat=CATEGORIES.find(c=>c.key===key);
+  document.getElementById('form-section').classList.remove('hidden');
+  document.getElementById('bonus-note').textContent=cat.bonusNote;
+
+  const bt=cat.bonusType;
+  document.getElementById('f-property').classList.toggle('hidden',bt!=='property');
+  document.getElementById('f-hukou').classList.toggle('hidden',!['hukou_move','hukou_and_rent'].includes(bt));
+  document.getElementById('f-rent').classList.toggle('hidden',!['hukou_and_rent','rent_and_social'].includes(bt));
+  document.getElementById('f-social').classList.toggle('hidden',!['social_insurance','rent_and_social'].includes(bt));
+  calculate();
+}
+
+// ===== YOUXIANG TOGGLE =====
+function toggleYouxiang(){
+  youxiang=!youxiang;
+  document.getElementById('yx-box').className='ckbox'+(youxiang?' on':'');
+  document.getElementById('yx-box').innerHTML=youxiang?'✓':'';
+  calculate();
+}
+
+// ===== CALCULATION =====
+function calculate(){
+  const cat=CATEGORIES.find(c=>c.key===selectedCat);
+  if(!cat){document.getElementById('result-section').classList.add('hidden');return;}
+
+  const refDate=document.getElementById('refDate').value;
+  const rate=0.05;
+  let bonus=0;const details=[];
+
+  if(cat.bonusType==='property'){
+    const m=monthsBetween(document.getElementById('propertyDate').value,refDate);
+    bonus=+(m*rate).toFixed(2);
+    details.push(`产权证已满 ${m} 个月，加分 ${bonus}`);
+  } else if(cat.bonusType==='hukou_move'){
+    const m=monthsBetween(document.getElementById('hukouDate').value,refDate);
+    bonus=+(m*rate).toFixed(2);
+    details.push(`户籍迁入已满 ${m} 个月，加分 ${bonus}`);
+  } else if(cat.bonusType==='hukou_and_rent'){
+    const m1=monthsBetween(document.getElementById('hukouDate').value,refDate);
+    const b1=+(m1*rate).toFixed(2);
+    const m2=monthsBetween(document.getElementById('rentDate').value,refDate);
+    const b2=+(m2*rate).toFixed(2);
+    details.push(`户籍迁入 ${m1} 月，+${b1}`);
+    details.push(`租赁备案 ${m2} 月，+${b2}`);
+    bonus=+(b1+b2).toFixed(2);
+  } else if(cat.bonusType==='social_insurance'){
+    const raw=parseInt(document.getElementById('socialMonths').value)||0;
+    const extra=Math.max(0,raw-12);
+    bonus=+(extra*rate).toFixed(2);
+    details.push(`社保 ${raw} 月，超12月部分 ${extra} 月，+${bonus}`);
+  } else if(cat.bonusType==='rent_and_social'){
+    const m1=monthsBetween(document.getElementById('rentDate').value,refDate);
+    const b1=+(m1*rate).toFixed(2);
+    const raw=parseInt(document.getElementById('socialMonths').value)||0;
+    const extra=Math.max(0,raw-12);
+    const b2=+(extra*rate).toFixed(2);
+    details.push(`租赁备案 ${m1} 月，+${b1}`);
+    details.push(`社保超12月 ${extra} 月，+${b2}`);
+    bonus=+(b1+b2).toFixed(2);
+  }
+
+  const yb=youxiang?2.5:0;
+  if(youxiang) details.push('优享学区加分 +2.5');
+  const totalBonus=+(bonus+yb).toFixed(2);
+  const total=+(cat.base+totalBonus).toFixed(2);
+
+  document.getElementById('r-total').textContent=total;
+  document.getElementById('r-base').textContent=`基础分 ${cat.base}`;
+  document.getElementById('r-bonus').textContent=`加分 ${totalBonus}`;
+  document.getElementById('r-details').innerHTML=details.map(d=>`<div>• ${d}</div>`).join('');
+  document.getElementById('result-section').classList.remove('hidden');
+
+  window._myScore=total;
+  renderAreaChipsCalc();
+  renderAssessment();
+}
+
+// ===== AREA CHIPS FOR CALC =====
+function renderAreaChipsCalc(){
+  const el=document.getElementById('area-chips-calc');
+  el.innerHTML=["全部",...AREAS].map(a=>
+    `<button class="ch ${calcAreaFilter===a?'on':''}" onclick="setCalcArea('${a}')">${a}</button>`
+  ).join('');
+}
+function setCalcArea(a){calcAreaFilter=a;renderAreaChipsCalc();renderAssessment();}
+
+// ===== ASSESSMENT LIST =====
+function renderAssessment(){
+  const myScore=window._myScore||0;
+  const typeF=document.getElementById('type-filter-calc').value;
+  let list=SCHOOLS.filter(s=>{
+    if(calcAreaFilter!=='全部'&&s.area!==calcAreaFilter)return false;
+    if(typeF!=='全部'&&s.type!==typeF)return false;
+    return s.s2024!=null;
+  }).sort((a,b)=>a.s2024-b.s2024);
+
+  document.getElementById('assess-list').innerHTML=list.map(s=>{
+    let hist='';
+    if(s.s2023!=null) hist+=`2023: ${s.s2023}`;
+    if(s.s2022!=null) hist+=` | 2022: ${s.s2022}`;
+    let trend='';
+    if(s.s2023!=null&&s.s2024!=null){
+      const d=s.s2024-s.s2023;
+      trend=`<span class="${d>0?'trend-up':'trend-down'}">${d>0?'↑':'↓'}${Math.abs(d).toFixed(2)}</span>`;
+    }
+    return `<div class="sr">
+      <div class="sr-head">
+        <div style="flex:1;min-width:140px">
+          <span class="sr-name">${s.name}</span>
+          <span class="sr-meta">${s.area}·${s.type}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="sr-score">${s.s2024}分</span>
+          ${badgeHTML(myScore,s.s2024)}
+        </div>
+      </div>
+      ${barHTML(s.s2024)}
+      <div class="sr-hist">${hist}${trend}</div>
+    </div>`;
+  }).join('');
+}
+
+// ===== SCHOOL TAB =====
+function renderSchoolTab(){
+  const search=document.getElementById('search-text').value;
+  const area=document.getElementById('area-filter-tab').value;
+  const type=document.getElementById('type-filter-tab').value;
+
+  let list=SCHOOLS.filter(s=>{
+    if(area!=='全部'&&s.area!==area)return false;
+    if(type!=='全部'&&s.type!==type)return false;
+    if(search&&!s.name.includes(search))return false;
+    return true;
+  }).sort((a,b)=>(b.s2024||0)-(a.s2024||0));
+
+  document.getElementById('school-count').textContent=`共 ${list.length} 所学校`;
+  document.getElementById('school-tab-list').innerHTML=list.map(s=>{
+    const years=[{y:"2024",v:s.s2024},{y:"2023",v:s.s2023},{y:"2022",v:s.s2022}];
+    return `<div class="sr">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <div>
+          <span class="sr-name">${s.name}</span>
+          <span class="type-tag ${s.type==='公办'?'type-pub':'type-pri'}">${s.type}</span>
+        </div>
+        <span style="font-size:11px;color:#a09070">${s.area}</span>
+      </div>
+      <div class="yr-grid">${years.map(({y,v})=>`
+        <div class="yr-cell">
+          <div class="yr-label">${y}</div>
+          <div class="yr-val ${v==null?'na':''}">${v!=null?v:'—'}</div>
+          ${v!=null?barHTML(v):''}
+        </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ===== INIT =====
+function init(){
+  renderCatGrid();
+
+  // Area filter options for school tab
+  const sel=document.getElementById('area-filter-tab');
+  AREAS.forEach(a=>{const o=document.createElement('option');o.value=a;o.textContent=a;sel.appendChild(o);});
+
+  // Bind input events for live calculation
+  ['refDate','propertyDate','hukouDate','rentDate','socialMonths'].forEach(id=>{
+    document.getElementById(id).addEventListener('input',calculate);
+  });
+}
+
+init();
+</script>
+</body>
+</html>

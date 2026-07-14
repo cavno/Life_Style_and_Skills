@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>购房综合评分对比系统</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: #f7f7f5;
+  color: #1f1f1c;
+  padding: 24px 16px;
+  line-height: 1.5;
+}
+.container { max-width: 1280px; margin: 0 auto; }
+h1 { font-size: 22px; font-weight: 500; margin-bottom: 4px; }
+.subtitle { font-size: 13px; color: #5f5e5a; margin-bottom: 20px; }
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 0.5px solid rgba(0,0,0,0.15);
+  margin-bottom: 20px;
+}
+.tab {
+  padding: 10px 16px;
+  font-size: 13px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  color: #5f5e5a;
+}
+.tab.active { color: #1f1f1c; border-bottom-color: #1f1f1c; font-weight: 500; }
+.tab:hover { color: #1f1f1c; }
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+.notice {
+  background: #fff7e0;
+  color: #6b4f00;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 13px;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+.notice.info { background: #e6f1fb; color: #0c447c; }
+.notice.danger { background: #fce8e8; color: #8a1a1a; }
+
+.actions-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+button {
+  height: 36px;
+  padding: 0 14px;
+  border: 0.5px solid rgba(0,0,0,0.3);
+  border-radius: 8px;
+  background: #fff;
+  color: #1f1f1c;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+button:hover { background: #f1efe8; }
+button:active { transform: scale(0.98); }
+button.primary { background: #1f1f1c; color: #fff; border-color: #1f1f1c; }
+button.primary:hover { background: #444441; }
+button.danger { color: #8a1a1a; border-color: #d8a5a5; }
+button.danger:hover { background: #fce8e8; }
+
+.property-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+.property-card {
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  border-radius: 12px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+.property-card:hover {
+  border-color: #1f1f1c;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.property-card.killed {
+  background: #fce8e8;
+  border-color: #d8a5a5;
+}
+.property-card .name { font-weight: 500; font-size: 15px; margin-bottom: 4px; }
+.property-card .meta { font-size: 11px; color: #5f5e5a; margin-bottom: 8px; }
+.property-card .score-big {
+  font-size: 28px;
+  font-weight: 500;
+  color: #1f1f1c;
+}
+.property-card .score-label {
+  font-size: 11px;
+  color: #5f5e5a;
+}
+.property-card .delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  font-size: 14px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #888;
+  opacity: 0;
+}
+.property-card:hover .delete-btn { opacity: 1; }
+.property-card .delete-btn:hover { background: #fce8e8; color: #8a1a1a; }
+
+.kill-badge {
+  display: inline-block;
+  background: #fce8e8;
+  color: #8a1a1a;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 6px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #888;
+}
+.empty-state h3 { font-size: 16px; margin-bottom: 8px; color: #5f5e5a; }
+.empty-state p { font-size: 13px; }
+
+/* Modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 100;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px;
+  overflow-y: auto;
+}
+.modal-overlay.active { display: flex; }
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  max-width: 720px;
+  width: 100%;
+  padding: 24px;
+  margin: 16px auto;
+}
+.modal h2 { font-size: 18px; font-weight: 500; margin-bottom: 16px; }
+
+.form-section {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 0.5px solid rgba(0,0,0,0.1);
+}
+.form-section:last-of-type { border-bottom: none; }
+.form-section h3 {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.form-section .layer-tag {
+  font-size: 10px;
+  background: #e6f1fb;
+  color: #0c447c;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 400;
+}
+.form-section .layer-tag.layer-0 { background: #fce8e8; color: #8a1a1a; }
+.form-section .desc {
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.form-grid.full { grid-template-columns: 1fr; }
+.form-field label {
+  font-size: 12px;
+  color: #5f5e5a;
+  display: block;
+  margin-bottom: 4px;
+}
+.form-field .help {
+  font-size: 10px;
+  color: #aaa;
+  margin-top: 2px;
+}
+input[type="text"], input[type="number"], select, textarea {
+  width: 100%;
+  height: 34px;
+  padding: 0 10px;
+  border: 0.5px solid rgba(0,0,0,0.3);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s;
+}
+textarea {
+  height: auto;
+  min-height: 60px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: #185fa5;
+  box-shadow: 0 0 0 2px rgba(24,95,165,0.1);
+}
+.range-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.range-field input[type="range"] {
+  flex: 1;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #d3d1c7;
+  border-radius: 2px;
+  outline: none;
+}
+.range-field input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: #185fa5;
+  cursor: pointer;
+}
+.range-field input[type="range"]::-moz-range-thumb {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: #185fa5;
+  cursor: pointer;
+  border: none;
+}
+.range-field .value {
+  min-width: 30px;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: right;
+}
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  padding: 4px 0;
+}
+.checkbox-field input { width: auto; height: auto; cursor: pointer; }
+
+.modal-footer {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+/* Comparison view */
+.compare-table-wrap {
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+.compare-table {
+  width: 100%;
+  font-size: 12px;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+.compare-table th, .compare-table td {
+  padding: 8px 10px;
+  text-align: left;
+  border-bottom: 0.5px solid rgba(0,0,0,0.08);
+}
+.compare-table thead th {
+  background: #f1efe8;
+  font-weight: 500;
+  color: #5f5e5a;
+  position: sticky;
+  top: 0;
+}
+.compare-table .row-section td {
+  background: #fafaf7;
+  font-weight: 500;
+  font-size: 11px;
+  color: #5f5e5a;
+  padding: 6px 10px;
+}
+.compare-table .row-total td {
+  font-weight: 500;
+  background: #fff7e0;
+}
+.score-cell {
+  text-align: center;
+  font-weight: 500;
+}
+.score-cell.high { color: #2d6e2d; }
+.score-cell.mid { color: #6b4f00; }
+.score-cell.low { color: #a32d2d; }
+.col-rank-1 { background: linear-gradient(180deg, #fff8e0 0%, #fff 100%); }
+.col-rank-2 { background: linear-gradient(180deg, #f0f4f8 0%, #fff 100%); }
+.col-rank-3 { background: linear-gradient(180deg, #faf0e6 0%, #fff 100%); }
+
+.weight-panel {
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.weight-panel h3 { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+.weight-panel .desc { font-size: 11px; color: #888; margin-bottom: 12px; }
+.weight-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.weight-item .label-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.weight-item .label-row label { font-size: 12px; color: #5f5e5a; }
+.weight-item .label-row .val { font-size: 12px; font-weight: 500; }
+.weight-presets {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.weight-presets button { font-size: 11px; padding: 4px 10px; height: 28px; }
+
+.bar-chart {
+  margin-top: 16px;
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  border-radius: 12px;
+  padding: 16px;
+}
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.bar-row .name {
+  width: 140px;
+  font-size: 12px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.bar-row .bar-track {
+  flex: 1;
+  height: 24px;
+  background: #f1efe8;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.bar-row .bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #185fa5 0%, #4a8fc7 100%);
+  border-radius: 4px;
+  transition: width 0.4s ease-out;
+}
+.bar-row .score-text {
+  width: 60px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .property-list { grid-template-columns: 1fr; }
+  .modal { padding: 16px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>购房综合评分对比系统</h1>
+  <p class="subtitle">基于五层决策框架 · 数据存于浏览器本地 · 关闭页面不丢失</p>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="list">候选楼盘</div>
+    <div class="tab" data-tab="compare">综合对比</div>
+    <div class="tab" data-tab="weight">权重设置</div>
+    <div class="tab" data-tab="help">使用说明</div>
+  </div>
+
+  <div class="panel active" id="panel-list">
+    <div class="actions-bar">
+      <button class="primary" onclick="openAddModal()">+ 添加楼盘</button>
+      <button onclick="exportData()">导出全部数据</button>
+      <button onclick="document.getElementById('importFile').click()">导入数据</button>
+      <input type="file" id="importFile" style="display:none" accept=".json" onchange="importData(event)">
+      <button class="danger" onclick="clearAll()">清空所有</button>
+    </div>
+    <div id="propertyList" class="property-list"></div>
+    <div id="emptyState" class="empty-state" style="display:none;">
+      <h3>还没有添加任何楼盘</h3>
+      <p>点击"+ 添加楼盘"开始建立您的候选清单</p>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-compare">
+    <div id="compareEmpty" class="empty-state" style="display:none;">
+      <h3>需要至少 1 个楼盘才能查看对比</h3>
+      <p>请先到"候选楼盘"页面添加楼盘信息</p>
+    </div>
+    <div id="compareContent">
+      <div class="bar-chart" id="barChart"></div>
+      <h3 style="font-size:14px;font-weight:500;margin:20px 0 8px;">详细评分表</h3>
+      <div class="compare-table-wrap">
+        <table class="compare-table" id="compareTable"></table>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-weight">
+    <div class="weight-panel">
+      <h3>调整各因素权重</h3>
+      <p class="desc">权重决定每个因素对最终评分的影响。比如自住族应给"户型/物业"高权重，投资族应给"流动性/升值"高权重。所有权重之和会自动归一化。</p>
+      <div class="weight-presets">
+        <span style="font-size:11px;color:#888;align-self:center;margin-right:4px;">快速预设：</span>
+        <button onclick="applyPreset('self')">自住型</button>
+        <button onclick="applyPreset('replace')">置换型</button>
+        <button onclick="applyPreset('investment')">投资型</button>
+        <button onclick="applyPreset('school')">学区型</button>
+        <button onclick="applyPreset('default')">均衡</button>
+      </div>
+      <div class="weight-grid" id="weightGrid"></div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-help">
+    <div style="background:#fff;border:0.5px solid rgba(0,0,0,0.15);border-radius:12px;padding:20px;font-size:13px;line-height:1.7;color:#444;">
+      <h3 style="font-size:15px;margin-bottom:12px;">五层决策框架说明</h3>
+      <p style="margin-bottom:12px;"><strong style="color:#8a1a1a;">第零层 · 硬约束（一票否决）</strong><br>产权属性、资金合规性、贷款可得性、法律纠纷。任何一项不通过则该楼盘自动出局，无论其他维度多好。</p>
+      <p style="margin-bottom:12px;"><strong>第一层 · 地理位置（决定生活方式）</strong><br>通勤时间、地铁距离、片区生命周期、医疗商业配套。</p>
+      <p style="margin-bottom:12px;"><strong>第二层 · 房子本身（决定居住舒适度）</strong><br>户型方正、得房率、房龄、朝向楼层、装修状态。</p>
+      <p style="margin-bottom:12px;"><strong>第三层 · 小区与物业（决定长期体验）</strong><br>容积率、绿化、物业品牌、人车分流、邻里素质。</p>
+      <p style="margin-bottom:12px;"><strong>第四层 · 财务与流动性（决定可承受度）</strong><br>月供占比、首付构成、保值升值、流动性。</p>
+      <p style="margin-bottom:12px;"><strong>第五层 · 未来变量（决定 5-10 年体验）</strong><br>家庭结构变化预期、学区动态、片区规划、政策风险。</p>
+      <hr style="margin:16px 0;border:none;border-top:0.5px solid rgba(0,0,0,0.1);">
+      <h3 style="font-size:15px;margin-bottom:12px;">使用建议</h3>
+      <p style="margin-bottom:8px;"><strong>第一步</strong>：先到"权重设置"选好您的购房类型预设（自住/置换/投资/学区/均衡）。</p>
+      <p style="margin-bottom:8px;"><strong>第二步</strong>：到"候选楼盘"添加 3-8 个候选楼盘，每个填一遍五层评分。每项打 1-10 分（1=很差，5=一般，10=很好）。不确定的项填 5。</p>
+      <p style="margin-bottom:8px;"><strong>第三步</strong>：到"综合对比"看排名和详细分项对比。前 3 名实地踩盘 2 次（工作日傍晚 + 周末上午）做最终决策。</p>
+      <p style="margin-bottom:8px;"><strong>注意</strong>：硬约束只要勾选了"不满足"，该楼盘总分自动归零，会显示在最末位并标红。</p>
+      <hr style="margin:16px 0;border:none;border-top:0.5px solid rgba(0,0,0,0.1);">
+      <h3 style="font-size:15px;margin-bottom:12px;">数据存储说明</h3>
+      <p style="margin-bottom:8px;">所有楼盘数据和权重设置都存在浏览器的 localStorage 里，不会上传任何服务器。换浏览器或清理浏览器数据会丢失。</p>
+      <p>建议定期点"导出全部数据"做备份，得到一个 JSON 文件，下次可以"导入数据"恢复。</p>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <h2 id="modalTitle">添加楼盘</h2>
+
+    <div class="form-section">
+      <div class="form-grid">
+        <div class="form-field">
+          <label>楼盘名称 *</label>
+          <input type="text" id="f-name" placeholder="如：万科麓城三期">
+        </div>
+        <div class="form-field">
+          <label>所在片区</label>
+          <input type="text" id="f-area" placeholder="如：龙岗水径片区">
+        </div>
+        <div class="form-field">
+          <label>建成年份</label>
+          <input type="number" id="f-year" placeholder="如：2017">
+        </div>
+        <div class="form-field">
+          <label>面积(㎡) / 户型</label>
+          <input type="text" id="f-spec" placeholder="如：89㎡ 三房">
+        </div>
+        <div class="form-field">
+          <label>挂牌总价(万)</label>
+          <input type="number" id="f-price" placeholder="如：450">
+        </div>
+        <div class="form-field">
+          <label>单价(万/㎡)</label>
+          <input type="number" id="f-unit" step="0.01" placeholder="如：5.06">
+        </div>
+      </div>
+      <div class="form-field" style="margin-top:8px;">
+        <label>备注（看房印象、关键信息）</label>
+        <textarea id="f-notes" placeholder="如：北侧临采石场需进一步核实；学位被前业主占用至2027..."></textarea>
+      </div>
+    </div>
+
+    <!-- Layer 0 - Hard constraints -->
+    <div class="form-section">
+      <h3>第零层 · 硬约束 <span class="layer-tag layer-0">一票否决</span></h3>
+      <p class="desc">勾选则代表"不满足"，任何一项勾上该楼盘总分自动归零</p>
+      <label class="checkbox-field"><input type="checkbox" data-kill="kill_property"> 产权类型不符（商住公寓/40年/产权不清）</label>
+      <label class="checkbox-field"><input type="checkbox" data-kill="kill_legal"> 法律纠纷（抵押/查封/凶宅/共有人不全）</label>
+      <label class="checkbox-field"><input type="checkbox" data-kill="kill_loan"> 贷款不可得（房龄超限/评估价过低）</label>
+      <label class="checkbox-field"><input type="checkbox" data-kill="kill_qualify"> 限购政策不符（社保/户籍/套数）</label>
+    </div>
+
+    <!-- Layer 1 - Location -->
+    <div class="form-section">
+      <h3>第一层 · 地理位置 <span class="layer-tag">权重: <span id="lt-w1">25%</span></span></h3>
+      <p class="desc">通勤、地铁、片区生命周期、医疗商业配套（每项1-10分）</p>
+      <div class="form-grid">
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>通勤便利度</label><span class="help">单程时长越短分越高</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="commute"><span class="value">5</span></div>
+        </div>
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>地铁距离</label><span class="help">800m内10分</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="metro"><span class="value">5</span></div>
+        </div>
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>片区生命周期</label><span class="help">成熟期为佳</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="lifecycle"><span class="value">5</span></div>
+        </div>
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>医疗+商业配套</label><span class="help">三甲医院/购物中心</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="amenity"><span class="value">5</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layer 2 - Property -->
+    <div class="form-section">
+      <h3>第二层 · 房子本身 <span class="layer-tag">权重: <span id="lt-w2">22%</span></span></h3>
+      <p class="desc">户型方正度、得房率、房龄、朝向楼层、装修</p>
+      <div class="form-grid">
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>户型方正度</label><span class="help">南北通透为佳</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="layout"><span class="value">5</span></div>
+        </div>
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>得房率</label><span class="help">板楼>塔楼</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="usage"><span class="value">5</span></div>
+        </div>
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>房龄状态</label><span class="help">5-10年最佳</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="age"><span class="value">5</span></div>
+        </div>
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>朝向+楼层</label><span class="help">南向中高层</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="orient"><span class="value">5</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layer 3 - Community -->
+    <div class="form-section">
+      <h3>第三层 · 小区与物业 <span class="layer-tag">权重: <span id="lt-w3">18%</span></span></h3>
+      <p class="desc">容积率、绿化、物业品牌、人车分流、邻里素质</p>
+      <div class="form-grid">
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>容积率+密度</label><span class="help">2.0-3.0为佳</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="density"><span class="value">5</span></div>
+        </div>
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>绿化+实景</label><span class="help">实地走过为准</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="green"><span class="value">5</span></div>
+        </div>
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>物业品牌</label><span class="help">万科/中海等一线</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="property"><span class="value">5</span></div>
+        </div>
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>人车分流+邻里</label><span class="help">实地体感</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="community"><span class="value">5</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layer 4 - Finance -->
+    <div class="form-section">
+      <h3>第四层 · 财务与流动性 <span class="layer-tag">权重: <span id="lt-w4">20%</span></span></h3>
+      <p class="desc">月供占比、保值升值、流动性</p>
+      <div class="form-grid">
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>月供压力</label><span class="help">越低分越高</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="payment"><span class="value">5</span></div>
+        </div>
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>保值性</label><span class="help">抗跌能力</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="value"><span class="value">5</span></div>
+        </div>
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>流动性</label><span class="help">挂牌成交比</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="liquid"><span class="value">5</span></div>
+        </div>
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>价格洼地</label><span class="help">谈价空间大</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="discount"><span class="value">5</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layer 5 - Future -->
+    <div class="form-section">
+      <h3>第五层 · 未来变量 <span class="layer-tag">权重: <span id="lt-w5">15%</span></span></h3>
+      <p class="desc">家庭弹性、学区、规划、政策风险</p>
+      <div class="form-grid">
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>家庭弹性</label><span class="help">5年扩展空间</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="family"><span class="value">5</span></div>
+        </div>
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>学区质量</label><span class="help">公立学位优</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="school"><span class="value">5</span></div>
+        </div>
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>片区规划</label><span class="help">地铁/旧改利好</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="planning"><span class="value">5</span></div>
+        </div>
+        <div class="form-field">
+          <div class="label-row" style="display:flex;justify-content:space-between;"><label>政策风险</label><span class="help">越低风险分越高</span></div>
+          <div class="range-field"><input type="range" min="1" max="10" value="5" data-score="policy"><span class="value">5</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button onclick="closeModal()">取消</button>
+      <button class="primary" onclick="savProperty()">保存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// 评分维度配置
+const SCORE_DIMS = {
+  l1: { name: "地理位置", items: [
+    { key: "commute", name: "通勤便利度" },
+    { key: "metro", name: "地铁距离" },
+    { key: "lifecycle", name: "片区生命周期" },
+    { key: "amenity", name: "医疗商业配套" }
+  ]},
+  l2: { name: "房子本身", items: [
+    { key: "layout", name: "户型方正度" },
+    { key: "usage", name: "得房率" },
+    { key: "age", name: "房龄状态" },
+    { key: "orient", name: "朝向楼层" }
+  ]},
+  l3: { name: "小区物业", items: [
+    { key: "density", name: "容积率密度" },
+    { key: "green", name: "绿化实景" },
+    { key: "property", name: "物业品牌" },
+    { key: "community", name: "人车分流邻里" }
+  ]},
+  l4: { name: "财务流动", items: [
+    { key: "payment", name: "月供压力" },
+    { key: "value", name: "保值性" },
+    { key: "liquid", name: "流动性" },
+    { key: "discount", name: "价格洼地" }
+  ]},
+  l5: { name: "未来变量", items: [
+    { key: "family", name: "家庭弹性" },
+    { key: "school", name: "学区质量" },
+    { key: "planning", name: "片区规划" },
+    { key: "policy", name: "政策风险" }
+  ]}
+};
+
+const KILL_KEYS = ["kill_property", "kill_legal", "kill_loan", "kill_qualify"];
+const KILL_LABELS = {
+  kill_property: "产权类型不符",
+  kill_legal: "法律纠纷",
+  kill_loan: "贷款不可得",
+  kill_qualify: "限购不符"
+};
+
+// 默认权重
+const PRESETS = {
+  default: { l1: 25, l2: 22, l3: 18, l4: 20, l5: 15 },
+  self:    { l1: 20, l2: 28, l3: 22, l4: 18, l5: 12 },  // 自住:房子+小区高
+  replace: { l1: 22, l2: 22, l3: 18, l4: 28, l5: 10 },  // 置换:财务流动性高
+  investment: { l1: 25, l2: 15, l3: 12, l4: 35, l5: 13 },  // 投资:财务+地段
+  school:  { l1: 22, l2: 18, l3: 15, l4: 13, l5: 32 },  // 学区:未来变量(学区在第五层)
+};
+
+// 数据存储
+let properties = JSON.parse(localStorage.getItem("hp_properties") || "[]");
+let weights = JSON.parse(localStorage.getItem("hp_weights") || JSON.stringify(PRESETS.default));
+let editingId = null;
+
+function save() {
+  localStorage.setItem("hp_properties", JSON.stringify(properties));
+  localStorage.setItem("hp_weights", JSON.stringify(weights));
+}
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+// ========== Tab switching ==========
+document.querySelectorAll(".tab").forEach(t => {
+  t.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(x => x.classList.remove("active"));
+    t.classList.add("active");
+    document.getElementById("panel-" + t.dataset.tab).classList.add("active");
+    if (t.dataset.tab === "compare") renderCompare();
+  });
+});
+
+// ========== Modal ==========
+function openAddModal() {
+  editingId = null;
+  document.getElementById("modalTitle").textContent = "添加楼盘";
+  resetForm();
+  document.getElementById("modal").classList.add("active");
+}
+
+function openEditModal(id) {
+  const p = properties.find(x => x.id === id);
+  if (!p) return;
+  editingId = id;
+  document.getElementById("modalTitle").textContent = "编辑楼盘";
+  fillForm(p);
+  document.getElementById("modal").classList.add("active");
+}
+
+function closeModal() {
+  document.getElementById("modal").classList.remove("active");
+}
+
+document.getElementById("modal").addEventListener("click", e => {
+  if (e.target.id === "modal") closeModal();
+});
+
+function resetForm() {
+  document.getElementById("f-name").value = "";
+  document.getElementById("f-area").value = "";
+  document.getElementById("f-year").value = "";
+  document.getElementById("f-spec").value = "";
+  document.getElementById("f-price").value = "";
+  document.getElementById("f-unit").value = "";
+  document.getElementById("f-notes").value = "";
+  document.querySelectorAll('input[type="checkbox"][data-kill]').forEach(c => c.checked = false);
+  document.querySelectorAll('input[type="range"][data-score]').forEach(s => {
+    s.value = 5;
+    s.nextElementSibling.textContent = "5";
+  });
+}
+
+function fillForm(p) {
+  document.getElementById("f-name").value = p.name || "";
+  document.getElementById("f-area").value = p.area || "";
+  document.getElementById("f-year").value = p.year || "";
+  document.getElementById("f-spec").value = p.spec || "";
+  document.getElementById("f-price").value = p.price || "";
+  document.getElementById("f-unit").value = p.unit || "";
+  document.getElementById("f-notes").value = p.notes || "";
+  KILL_KEYS.forEach(k => {
+    document.querySelector(`input[data-kill="${k}"]`).checked = !!p[k];
+  });
+  Object.values(SCORE_DIMS).forEach(layer => {
+    layer.items.forEach(item => {
+      const slider = document.querySelector(`input[data-score="${item.key}"]`);
+      if (slider) {
+        slider.value = p.scores?.[item.key] ?? 5;
+        slider.nextElementSibling.textContent = slider.value;
+      }
+    });
+  });
+}
+
+// Slider value display
+document.querySelectorAll('input[type="range"][data-score]').forEach(s => {
+  s.addEventListener("input", e => {
+    e.target.nextElementSibling.textContent = e.target.value;
+  });
+});
+
+function savProperty() {
+  const name = document.getElementById("f-name").value.trim();
+  if (!name) { alert("请填写楼盘名称"); return; }
+
+  const obj = {
+    id: editingId || uid(),
+    name,
+    area: document.getElementById("f-area").value.trim(),
+    year: parseInt(document.getElementById("f-year").value) || null,
+    spec: document.getElementById("f-spec").value.trim(),
+    price: parseFloat(document.getElementById("f-price").value) || null,
+    unit: parseFloat(document.getElementById("f-unit").value) || null,
+    notes: document.getElementById("f-notes").value.trim(),
+    scores: {}
+  };
+  KILL_KEYS.forEach(k => {
+    obj[k] = document.querySelector(`input[data-kill="${k}"]`).checked;
+  });
+  Object.values(SCORE_DIMS).forEach(layer => {
+    layer.items.forEach(item => {
+      const slider = document.querySelector(`input[data-score="${item.key}"]`);
+      obj.scores[item.key] = slider ? parseInt(slider.value) : 5;
+    });
+  });
+
+  if (editingId) {
+    const idx = properties.findIndex(x => x.id === editingId);
+    if (idx >= 0) properties[idx] = obj;
+  } else {
+    properties.push(obj);
+  }
+  save();
+  renderList();
+  closeModal();
+}
+
+function deleteProperty(id, e) {
+  e.stopPropagation();
+  if (!confirm("确认删除该楼盘？此操作无法撤销。")) return;
+  properties = properties.filter(x => x.id !== id);
+  save();
+  renderList();
+}
+
+function clearAll() {
+  if (properties.length === 0) return;
+  if (!confirm(`确认清空所有 ${properties.length} 个楼盘记录？此操作无法撤销，建议先导出备份。`)) return;
+  properties = [];
+  save();
+  renderList();
+}
+
+// ========== Compute scores ==========
+function isKilled(p) {
+  return KILL_KEYS.some(k => p[k]);
+}
+
+function killReasons(p) {
+  return KILL_KEYS.filter(k => p[k]).map(k => KILL_LABELS[k]);
+}
+
+function layerScore(p, layerKey) {
+  const items = SCORE_DIMS[layerKey].items;
+  const total = items.reduce((s, it) => s + (p.scores?.[it.key] ?? 5), 0);
+  return total / items.length;  // 1-10 scale
+}
+
+function totalScore(p) {
+  if (isKilled(p)) return 0;
+  const w = weights;
+  const totalW = w.l1 + w.l2 + w.l3 + w.l4 + w.l5;
+  let s = 0;
+  s += layerScore(p, "l1") * w.l1;
+  s += layerScore(p, "l2") * w.l2;
+  s += layerScore(p, "l3") * w.l3;
+  s += layerScore(p, "l4") * w.l4;
+  s += layerScore(p, "l5") * w.l5;
+  return (s / totalW) * 10;  // 0-100 scale
+}
+
+function scoreClass(s) {
+  if (s >= 7.5) return "high";
+  if (s >= 5.5) return "mid";
+  return "low";
+}
+
+// ========== Render List ==========
+function renderList() {
+  const list = document.getElementById("propertyList");
+  const empty = document.getElementById("emptyState");
+  if (properties.length === 0) {
+    list.innerHTML = "";
+    empty.style.display = "block";
+    return;
+  }
+  empty.style.display = "none";
+  const sorted = [...properties].sort((a, b) => totalScore(b) - totalScore(a));
+  list.innerHTML = sorted.map(p => {
+    const killed = isKilled(p);
+    const reasons = killReasons(p);
+    const score = totalScore(p);
+    return `
+      <div class="property-card ${killed ? 'killed' : ''}" onclick="openEditModal('${p.id}')">
+        <button class="delete-btn" onclick="deleteProperty('${p.id}', event)">×</button>
+        <div class="name">${escapeHtml(p.name)}</div>
+        <div class="meta">${escapeHtml(p.area || '')} ${p.year ? '· '+p.year+'年' : ''} ${p.spec ? '· '+escapeHtml(p.spec) : ''}</div>
+        <div class="meta">${p.price ? p.price+'万' : ''} ${p.unit ? '· '+p.unit+'万/㎡' : ''}</div>
+        <div class="score-big">${killed ? '0' : score.toFixed(1)}</div>
+        <div class="score-label">${killed ? '已被一票否决' : '综合评分 / 100'}</div>
+        ${killed ? `<div class="kill-badge">${reasons.join('; ')}</div>` : ''}
+      </div>
+    `;
+  }).join("");
+}
+
+function escapeHtml(s) {
+  return String(s || "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+// ========== Render Compare ==========
+function renderCompare() {
+  const empty = document.getElementById("compareEmpty");
+  const content = document.getElementById("compareContent");
+  if (properties.length === 0) {
+    empty.style.display = "block";
+    content.style.display = "none";
+    return;
+  }
+  empty.style.display = "none";
+  content.style.display = "block";
+
+  const sorted = [...properties].sort((a, b) => totalScore(b) - totalScore(a));
+
+  // Bar chart
+  const maxScore = Math.max(...sorted.map(p => totalScore(p)), 1);
+  document.getElementById("barChart").innerHTML = `
+    <h3 style="font-size:14px;font-weight:500;margin-bottom:12px;">综合评分排名</h3>
+    ${sorted.map(p => {
+      const s = totalScore(p);
+      const pct = (s / 100) * 100;
+      const killed = isKilled(p);
+      return `
+        <div class="bar-row">
+          <div class="name">${escapeHtml(p.name)}</div>
+          <div class="bar-track">
+            <div class="bar-fill" style="width:${pct}%; ${killed ? 'background:#d8a5a5;' : ''}"></div>
+          </div>
+          <div class="score-text">${killed ? '✗ 0' : s.toFixed(1)}</div>
+        </div>
+      `;
+    }).join("")}
+  `;
+
+  // Detailed table
+  const layerKeys = ["l1", "l2", "l3", "l4", "l5"];
+  let html = `<thead><tr><th style="min-width:140px;">维度</th>`;
+  sorted.forEach((p, i) => {
+    const cls = i < 3 ? `col-rank-${i+1}` : "";
+    html += `<th class="${cls}" style="text-align:center;min-width:120px;">
+      <div>${i < 3 ? ['🥇','🥈','🥉'][i]+' ' : ''}${escapeHtml(p.name)}</div>
+      <div style="font-size:10px;color:#888;font-weight:400;">${p.year || ''}年 ${p.spec ? '·'+escapeHtml(p.spec) : ''}</div>
+    </th>`;
+  });
+  html += `</tr></thead><tbody>`;
+
+  // Basic info
+  html += `<tr class="row-section"><td colspan="${sorted.length+1}">基础信息</td></tr>`;
+  html += `<tr><td>挂牌总价(万)</td>${sorted.map((p,i)=>`<td class="${i<3?'col-rank-'+(i+1):''}" style="text-align:center;">${p.price||'—'}</td>`).join('')}</tr>`;
+  html += `<tr><td>单价(万/㎡)</td>${sorted.map((p,i)=>`<td class="${i<3?'col-rank-'+(i+1):''}" style="text-align:center;">${p.unit||'—'}</td>`).join('')}</tr>`;
+  html += `<tr><td>所在片区</td>${sorted.map((p,i)=>`<td class="${i<3?'col-rank-'+(i+1):''}" style="text-align:center;">${escapeHtml(p.area||'—')}</td>`).join('')}</tr>`;
+
+  // Kill flags
+  html += `<tr class="row-section"><td colspan="${sorted.length+1}">硬约束（一票否决）</td></tr>`;
+  KILL_KEYS.forEach(k => {
+    html += `<tr><td>${KILL_LABELS[k]}</td>`;
+    sorted.forEach((p, i) => {
+      const cls = i < 3 ? `col-rank-${i+1}` : "";
+      html += `<td class="${cls}" style="text-align:center;">${p[k] ? '<span style="color:#a32d2d;font-weight:500;">✗ 不通过</span>' : '<span style="color:#5f5e5a;">✓</span>'}</td>`;
+    });
+    html += `</tr>`;
+  });
+
+  // Layer scores
+  layerKeys.forEach(lk => {
+    const layer = SCORE_DIMS[lk];
+    const w = weights[lk];
+    html += `<tr class="row-section"><td colspan="${sorted.length+1}">${layer.name}（权重 ${w}%）</td></tr>`;
+    layer.items.forEach(item => {
+      html += `<tr><td>${item.name}</td>`;
+      sorted.forEach((p, i) => {
+        const cls = i < 3 ? `col-rank-${i+1}` : "";
+        const v = p.scores?.[item.key] ?? 5;
+        html += `<td class="${cls} score-cell ${scoreClass(v)}">${v}</td>`;
+      });
+      html += `</tr>`;
+    });
+    html += `<tr><td style="font-weight:500;color:#5f5e5a;">${layer.name}小计</td>`;
+    sorted.forEach((p, i) => {
+      const cls = i < 3 ? `col-rank-${i+1}` : "";
+      const v = layerScore(p, lk);
+      html += `<td class="${cls} score-cell ${scoreClass(v)}" style="font-weight:500;">${v.toFixed(1)}</td>`;
+    });
+    html += `</tr>`;
+  });
+
+  // Total
+  html += `<tr class="row-total"><td>综合总分(0-100)</td>`;
+  sorted.forEach((p, i) => {
+    const cls = i < 3 ? `col-rank-${i+1}` : "";
+    const s = totalScore(p);
+    const killed = isKilled(p);
+    html += `<td class="${cls}" style="text-align:center;font-size:14px;font-weight:500;color:${killed ? '#a32d2d' : '#1f1f1c'};">${killed ? '0' : s.toFixed(1)}</td>`;
+  });
+  html += `</tr>`;
+
+  // Notes
+  if (sorted.some(p => p.notes)) {
+    html += `<tr class="row-section"><td colspan="${sorted.length+1}">备注</td></tr>`;
+    html += `<tr><td>看房印象</td>`;
+    sorted.forEach((p, i) => {
+      const cls = i < 3 ? `col-rank-${i+1}` : "";
+      html += `<td class="${cls}" style="font-size:11px;color:#666;line-height:1.5;">${escapeHtml(p.notes||'—')}</td>`;
+    });
+    html += `</tr>`;
+  }
+
+  html += `</tbody>`;
+  document.getElementById("compareTable").innerHTML = html;
+}
+
+// ========== Weights ==========
+function renderWeights() {
+  const grid = document.getElementById("weightGrid");
+  const layers = [
+    { k: "l1", n: "第一层 · 地理位置" },
+    { k: "l2", n: "第二层 · 房子本身" },
+    { k: "l3", n: "第三层 · 小区物业" },
+    { k: "l4", n: "第四层 · 财务流动" },
+    { k: "l5", n: "第五层 · 未来变量" }
+  ];
+  grid.innerHTML = layers.map(l => `
+    <div class="weight-item">
+      <div class="label-row">
+        <label>${l.n}</label>
+        <span class="val" id="wv-${l.k}">${weights[l.k]}%</span>
+      </div>
+      <input type="range" min="0" max="50" value="${weights[l.k]}" data-w="${l.k}" style="width:100%">
+    </div>
+  `).join("");
+  document.querySelectorAll('input[data-w]').forEach(s => {
+    s.addEventListener("input", e => {
+      const k = e.target.dataset.w;
+      const v = parseInt(e.target.value);
+      weights[k] = v;
+      document.getElementById("wv-" + k).textContent = v + "%";
+      updateLayerWeightLabels();
+      save();
+    });
+  });
+  updateLayerWeightLabels();
+}
+
+function updateLayerWeightLabels() {
+  ["1","2","3","4","5"].forEach(i => {
+    const el = document.getElementById("lt-w" + i);
+    if (el) el.textContent = weights["l"+i] + "%";
+  });
+}
+
+function applyPreset(name) {
+  const p = PRESETS[name];
+  if (!p) return;
+  Object.assign(weights, p);
+  save();
+  renderWeights();
+}
+
+// ========== Import / Export ==========
+function exportData() {
+  const blob = new Blob([JSON.stringify({ properties, weights, exportTime: new Date().toISOString() }, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "购房评分备份_" + new Date().toISOString().slice(0,10) + ".json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!data.properties || !Array.isArray(data.properties)) throw new Error("文件格式不对");
+      if (!confirm(`将导入 ${data.properties.length} 个楼盘记录${data.weights ? '及权重设置' : ''}。当前数据将被替换，确认继续？`)) return;
+      properties = data.properties;
+      if (data.weights) weights = data.weights;
+      save();
+      renderList();
+      renderWeights();
+      alert("导入成功");
+    } catch (err) {
+      alert("导入失败：" + err.message);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+}
+
+// Init
+renderList();
+renderWeights();
+</script>
+</body>
+</html>
