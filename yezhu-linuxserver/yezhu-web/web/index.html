@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>业主之家 · 成立业委会</title>
+  <link rel="stylesheet" href="css/app.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- 顶部标题栏 -->
+    <header id="topbar">
+      <span id="topTitle">业主之家</span>
+      <span id="topRight"></span>
+    </header>
+
+    <!-- 视图容器 -->
+    <main id="view"><div class="empty">加载中…</div></main>
+
+    <!-- 底部标签栏 -->
+    <nav id="tabbar">
+      <a class="tab" data-route="home"><span class="t-ic">●</span><span>进度</span></a>
+      <a class="tab" data-route="register"><span class="t-ic">✎</span><span>联名</span></a>
+      <a class="tab" data-route="guide"><span class="t-ic">≣</span><span>指南</span></a>
+      <a class="tab" data-route="property"><span class="t-ic">◎</span><span>物业</span></a>
+      <a class="tab" data-route="faq"><span class="t-ic">?</span><span>答疑</span></a>
+      <a class="tab" data-route="mine"><span class="t-ic">◔</span><span>我的</span></a>
+    </nav>
+  </div>
+
+  <!-- 轻量弹层 -->
+  <div id="toast" class="toast"></div>
+  <div id="modal" class="modal-mask hidden">
+    <div class="modal">
+      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-body" id="modalBody"></div>
+      <input id="modalInput" class="input modal-input hidden" />
+      <div class="modal-actions">
+        <button class="btn line" id="modalCancel">取消</button>
+        <button class="btn" id="modalOk">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/content.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/faq-seed.js"></script>
+  <script src="js/prop-seed.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
