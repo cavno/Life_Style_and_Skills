@@ -1,0 +1,3 @@
+.term .t-h { font-size: 31rpx; font-weight: 700; color: var(--brand); margin-bottom: 10rpx; }
+.term .t-b { font-size: 28rpx; color: var(--ink-2); line-height: 1.75; }
+.foot { margin-top: 20rpx; padding: 0 8rpx; line-height: 1.6; }

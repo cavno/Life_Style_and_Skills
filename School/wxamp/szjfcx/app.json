@@ -1,0 +1,16 @@
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "深圳市教育录取积分查询",
+    "navigationBarBackgroundColor": "#8b6914",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5e6c8",
+    "backgroundColorTop": "#f5e6c8",
+    "backgroundColorBottom": "#ecdbb4",
+    "enablePullDownRefresh": false
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

@@ -1,0 +1,4 @@
+{
+  "desc": "本地计算工具,无需索引",
+  "rules": [{ "action": "disallow", "page": "*" }]
+}

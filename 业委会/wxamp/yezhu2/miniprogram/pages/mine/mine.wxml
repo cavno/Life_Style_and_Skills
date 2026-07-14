@@ -1,0 +1,48 @@
+<view class="wrap">
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+
+  <block wx:else>
+    <!-- 我的联名状态 -->
+    <view class="card">
+      <view class="h2">我的联名</view>
+      <block wx:if="{{mine}}">
+        <view class="kv"><text class="k">状态</text>
+          <text class="badge {{mine.status==='approved'?'ok':(mine.status==='rejected'?'no':'wait')}}">
+            {{mine.status==='approved'?'已通过':(mine.status==='rejected'?'已驳回':'待审核')}}
+          </text>
+        </view>
+        <view class="kv"><text class="k">房号</text><text class="v">{{mine.roomFull}}</text></view>
+        <view class="kv"><text class="k">建筑面积</text><text class="v">{{mine.area}} ㎡</text></view>
+        <button class="btn line mt16" bindtap="goRegister">查看 / 修改</button>
+      </block>
+      <block wx:else>
+        <view class="dim">你还没有提交联名。</view>
+        <button class="btn mt16" bindtap="goRegister">立即联名签字</button>
+      </block>
+    </view>
+
+    <!-- 管理员功能区 -->
+    <view wx:if="{{isAdmin}}" class="card">
+      <view class="h2">发起人 / 审核员</view>
+      <button class="btn line" bindtap="goAdmin">审核联名</button>
+      <button class="btn line mt16" bindtap="goExport">导出申请书与清单</button>
+      <button class="btn line mt16" bindtap="goConfig">小区参数设置</button>
+    </view>
+
+    <!-- 领取管理员（仅在自己不是管理员时显示） -->
+    <view wx:if="{{!isAdmin}}" class="card">
+      <view class="h2">我是筹备发起人</view>
+      <view class="dim">若你是本次筹备的发起人，可领取管理员权限以审核联名、导出材料。每个小区仅首位领取者生效。</view>
+      <button class="btn ghost mt16" loading="{{claiming}}" bindtap="claimAdmin">领取发起人权限</button>
+    </view>
+
+    <!-- openid（便于排障/后台核对） -->
+    <view class="card">
+      <view class="row between">
+        <text class="muted">我的标识 openid</text>
+        <text class="btn sm line" bindtap="copyOpenid">复制</text>
+      </view>
+      <view class="dim mt8" style="word-break:break-all;">{{openid}}</view>
+    </view>
+  </block>
+</view>

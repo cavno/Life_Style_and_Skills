@@ -1,0 +1,362 @@
+<view class="wrap">
+  <view class="header">
+    <view class="sub">幼儿园 · 小一 · 初一</view>
+    <view class="h1">深圳市教育录取积分查询</view>
+    <view class="hp">历年录取积分 · 园所查询 · 竞争度 · 对比</view>
+  </view>
+
+  <view class="tabs">
+    <view class="tb {{tab==='kg'?'on':''}}" bindtap="switchTab" data-t="kg">幼儿园</view>
+    <view class="tb {{tab==='primary'?'on':''}}" bindtap="switchTab" data-t="primary">小一</view>
+    <view class="tb {{tab==='middle'?'on':''}}" bindtap="switchTab" data-t="middle">初一</view>
+    <view class="tb {{tab==='calc'?'on':''}}" bindtap="switchTab" data-t="calc">算分</view>
+    <view class="tb {{tab==='doc'?'on':''}}" bindtap="switchTab" data-t="doc">说明</view>
+  </view>
+
+  <!-- 查询 -->
+  <view class="panel" wx:if="{{tab==='primary' || tab==='middle'}}">
+    <view class="frow">
+      <text class="flabel">区</text>
+      <view class="chips">
+        <view wx:for="{{distChips}}" wx:key="*this" class="chip dist {{district===item?'on':''}}" bindtap="setDist" data-v="{{item}}">{{item}}</view>
+      </view>
+    </view>
+
+    <view class="frow">
+      <text class="flabel">片区</text>
+      <view class="chips" wx:if="{{areaChips.length>1}}">
+        <view wx:for="{{areaChips}}" wx:key="*this" class="chip {{area===item?'on':''}}" bindtap="setArea" data-v="{{item}}">{{item}}</view>
+      </view>
+      <text class="hint" wx:else>（该区暂未细分片区）</text>
+    </view>
+
+    <view class="frow">
+      <text class="flabel">竞争度</text>
+      <view class="chips">
+        <view wx:for="{{compChips}}" wx:key="*this" class="chip {{comp===item?'on':''}}" bindtap="setComp" data-v="{{item}}">{{item}}</view>
+      </view>
+    </view>
+
+    <view class="frow">
+      <text class="flabel">类型</text>
+      <picker class="picker" mode="selector" range="{{types}}" value="{{typeIdx}}" bindchange="onTypeChange">
+        <view class="picker-box">{{types[typeIdx]}} ▾</view>
+      </picker>
+      <view class="ck {{only9?'on':''}}" bindtap="toggle9"><text wx:if="{{only9}}">✓</text></view>
+      <text class="ck-label" bindtap="toggle9">仅九年一贯</text>
+    </view>
+
+    <view class="frow">
+      <text class="flabel">排序</text>
+      <picker class="picker" mode="selector" range="{{sortLabels}}" value="{{sortIdx}}" bindchange="onSortChange">
+        <view class="picker-box">{{sortLabels[sortIdx]}} ▾</view>
+      </picker>
+    </view>
+
+    <view class="frow">
+      <input class="search" value="{{search}}" placeholder="搜索学校名称…" placeholder-class="ph" bindinput="onSearch" confirm-type="search" />
+    </view>
+
+    <view class="note">{{stageNote}}</view>
+
+    <view class="legend">
+      <view class="lg"><view class="ld" style="background:#f8d7da"></view>极热门</view>
+      <view class="lg"><view class="ld" style="background:#ffe0b2"></view>热门</view>
+      <view class="lg"><view class="ld" style="background:#fff3cd"></view>较热</view>
+      <view class="lg"><view class="ld" style="background:#d4edda"></view>一般</view>
+      <view class="lg"><view class="ld" style="background:#d1ecf1"></view>门槛较低</view>
+      <view class="lg"><view class="ld" style="background:#e4e0d6"></view>类别制</view>
+    </view>
+    <view class="legend-note">竞争度按各区评分尺度分别划定，不跨区可比</view>
+
+    <view class="count">共 {{count}} 所学校</view>
+
+    <view class="list">
+      <view class="sr" wx:for="{{displayRows}}" wx:key="key">
+        <view class="sr-top">
+          <view class="selck {{item.selected?'on':''}}" catchtap="toggleSelect" data-k="{{item.key}}"><text wx:if="{{item.selected}}">✓</text></view>
+          <view class="sr-name-wrap">
+            <text class="sr-name">{{item.name}}</text>
+            <text class="tag {{item.type==='公办'?'t-pub':'t-pri'}}">{{item.type}}</text>
+            <text class="tag t-9" wx:if="{{item.is9}}">九年一贯</text>
+          </view>
+          <text class="badge {{item.lvClass}}" wx:if="{{item.lv}}">{{item.lv}}</text>
+        </view>
+
+        <view class="years" style="grid-template-columns: repeat({{yearsLen}}, 1fr);">
+          <view class="yc" wx:for="{{item.cells}}" wx:for-item="c" wx:key="year">
+            <view class="yl">{{c.year}}</view>
+            <view class="yv {{c.na?'na':''}} {{c.isCat?'cat':''}}">{{c.txt}}</view>
+            <view class="bar" wx:if="{{c.isNum}}"><view class="bf" style="width:{{c.barPct}}%"></view></view>
+          </view>
+        </view>
+
+        <view class="sr-foot">
+          <text class="tag t-region">{{item.region}}</text>
+          <text class="tag {{item.lockCls}}">{{item.lock}}</text>
+          <text class="trend {{item.trendCls}}" wx:if="{{item.trendTxt}}">{{item.trendTxt}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 数据说明 -->
+  <view class="panel doc" wx:if="{{tab==='doc'}}">
+    <view class="warn">
+      <text class="warn-b">关于"升学率 / 四大率 / 梯队"——不收录。</text>广东省、深圳市明文严禁公布、宣传中考升学率（粤教基指导意见2026-03-10施行；深圳中考改革实施意见），无官方数据；网传"四大率"多为机构估算且常注明"数据未公示"，无法溯源，故不收录以免误导。
+    </view>
+    <view class="warn">
+      <text class="warn-b">各区评分制度不同、不可直接横比。</text>龙岗、宝安等为"纯积分"（一个分数）；龙华、罗湖、坪山、光明等为"类别+积分"（如1类62.7 vs 6类95.9），类别优先于分数，两套口径不可比大小。本系统对类别制学校原样显示"X类XX分"并单列灰色"类别制"标记。
+    </view>
+
+    <view class="doc-h">一、数据覆盖范围（按需可扩展）</view>
+    <view class="cov-row"><text class="cov-d">龙岗</text><text class="cov-v">纯积分 · 小一较完整 2022–2025（约86校）；初一较完整 2021–2025（约76校）</text></view>
+    <view class="cov-row"><text class="cov-d">宝安</text><text class="cov-v">纯积分 · 小一代表性样本；初一较完整 2020–2024（约44校）</text></view>
+    <view class="cov-row"><text class="cov-d">南山</text><text class="cov-v">纯积分(尺度不同) · 小一/初一代表性样本 2024（含部分2025）</text></view>
+    <view class="cov-row"><text class="cov-d">福田</text><text class="cov-v">积分(学位类型+积分) · 小一/初一代表性样本 2023–2025</text></view>
+    <view class="cov-row"><text class="cov-d">罗湖</text><text class="cov-v">类别+积分 · 小一代表性样本 2024（含部分2025）；初一少量样本</text></view>
+    <view class="cov-row"><text class="cov-d">龙华</text><text class="cov-v">类别+积分 · 初一较完整 2023–2025（约42校）</text></view>
+    <view class="cov-row"><text class="cov-d">其他区</text><text class="cov-v">盐田/大鹏(纯积分)、坪山/光明(类别+积分) 暂未收录，结构已就绪可补充</text></view>
+    <view class="doc-p">"整个深圳市"完整十年逐校数据并不存在于任一可统一对比的公开来源；强行拼凑会牺牲准确性，而录取分数是家长做购房/择校重大决策的依据，错误数据危害大。故只纳入可核对的区与年份，并标明覆盖度。</view>
+
+    <view class="doc-h">二、数据来源与口径（官方来源）</view>
+    <view class="doc-p">录取积分线原始来自各校录取后的公示（官方动作），由好师来教育、乐有家研究中心等第三方逐年汇总；各区教育局官网/各校公示为权威原始来源。片区/招生范围以各区当年《学位申请指南》《招生工作通知》为准。第三方汇总个别单元格可能存在录入差异。</view>
+
+    <view class="doc-h">三、锁片区 vs 跨片区</view>
+    <view class="doc-p">公办＝锁片区：按官方划定学区地段招生（宝安等区暂未细分到街道，精确范围以官方指南为准）。民办＝面向全区：全区报名、按积分录取；带小学部的民办初中可直升，超计划按积分录取。</view>
+
+    <view class="doc-h">四、竞争度（按区分别划定，不跨区比）</view>
+    <view class="doc-p">由录取线推导：录取线越高、所需购房/社保/户籍时长越长，竞争越激烈。各区评分尺度不同，分档按区设定：</view>
+    <view class="doc-p">· 龙岗/宝安（满分约105）：极热门≥100 / 热门90–100 / 较热75–90 / 一般66–75 / 门槛较低&lt;66。</view>
+    <view class="doc-p">· 南山（满分约99）：极热门≥85 / 热门75–85 / 较热70–75 / 一般66–70 / 门槛较低&lt;66。海滨实验小学(94.5)属极热门，育才一小(72)在南山仅"较热"。</view>
+    <view class="doc-p">· 福田（约73–100，先学位类型后积分）：极热门≥92 / 热门85–92 / 较热78–85 / 一般73–78 / 门槛较低&lt;73。</view>
+    <view class="doc-p">· 类别制区（龙华/罗湖）：不套用上述等级，直接看"类别+分"，类别永远优先于分数。</view>
+    <view class="doc-p">同样是"72分"，在龙岗偏低、在南山却是名校门槛——绝对分数务必不要跨区比较。</view>
+
+    <view class="doc-h">五、学费</view>
+    <view class="doc-p">公办（含政府资助学校公办班）：义务教育免学费。民办：政府指导价、经发改部门备案，逐校逐年不同；本系统不臆造金额，请查当年各校招生简章或发改备案价。</view>
+
+    <view class="doc-h">六、官方查询入口</view>
+    <view class="doc-p">各区政府在线 / 各区教育局官网（学位申请指南、招生通知、历年录取分数附件）；各区"XX教育"微信公众号；深圳市招生考试办公室 szeb.sz.gov.cn（中考政策）。</view>
+  </view>
+
+  <!-- 积分计算（龙岗模型）-->
+  <view class="panel calc" wx:if="{{tab==='calc'}}">
+    <view class="calc-tip">本计算器基于<text class="em">龙岗区</text>积分入学模型；其他区评分规则不同，暂不适用。算出结果后，下方会自动对照<text class="em">龙岗各校录取线</text>评估录取机会。</view>
+
+    <view class="calc-h">① 选择积分类型</view>
+    <view class="cat-grid">
+      <view wx:for="{{catList}}" wx:key="key" class="cat-card {{calcCatIdx===index?'on':''}}" bindtap="selectCat" data-i="{{index}}">
+        <view class="cat-top"><text class="cat-label">{{item.label}}</text><text class="cat-base">{{item.base}}分</text></view>
+        <view class="cat-desc">{{item.desc}}</view>
+      </view>
+    </view>
+
+    <block wx:if="{{calcCatIdx>=0}}">
+      <view class="calc-h">② 填写加分信息</view>
+      <view class="calc-field">
+        <text class="cf-label">积分计算截止日期</text>
+        <picker mode="date" value="{{refDate}}" bindchange="onDateChange" data-f="ref"><view class="cf-pick">{{refDate || '请选择'}}</view></picker>
+      </view>
+      <view class="calc-field" wx:if="{{needProperty}}">
+        <text class="cf-label">产权证发证日期</text>
+        <picker mode="date" value="{{propertyDate}}" bindchange="onDateChange" data-f="property"><view class="cf-pick">{{propertyDate || '请选择'}}</view></picker>
+      </view>
+      <view class="calc-field" wx:if="{{needHukou}}">
+        <text class="cf-label">户籍迁入学区日期</text>
+        <picker mode="date" value="{{hukouDate}}" bindchange="onDateChange" data-f="hukou"><view class="cf-pick">{{hukouDate || '请选择'}}</view></picker>
+      </view>
+      <view class="calc-field" wx:if="{{needRent}}">
+        <text class="cf-label">租赁凭证备案日期</text>
+        <picker mode="date" value="{{rentDate}}" bindchange="onDateChange" data-f="rent"><view class="cf-pick">{{rentDate || '请选择'}}</view></picker>
+      </view>
+      <view class="calc-field" wx:if="{{needSocial}}">
+        <text class="cf-label">社保累计月数（养老+医疗同缴）</text>
+        <input class="cf-input" type="number" value="{{socialMonths}}" placeholder="请输入月数" placeholder-class="ph" bindinput="onSocialInput" />
+      </view>
+      <view class="calc-field row" bindtap="toggleYouxiang">
+        <view class="ck {{youxiang?'on':''}}"><text wx:if="{{youxiang}}">✓</text></view>
+        <text class="ck-label">优享学区加分（+2.5，仅试点片区）</text>
+      </view>
+    </block>
+
+    <view class="result" wx:if="{{calcResult}}">
+      <view class="result-top">
+        <view>
+          <view class="result-cap">预估总积分</view>
+          <view class="result-total">{{calcResult.total}}</view>
+        </view>
+        <view class="result-sub">
+          <view>基础分 {{calcResult.base}}</view>
+          <view>加分 {{calcResult.bonus}}</view>
+        </view>
+      </view>
+      <view class="result-detail" wx:for="{{calcResult.details}}" wx:key="*this">• {{item}}</view>
+    </view>
+
+    <block wx:if="{{calcResult}}">
+      <view class="calc-h">③ 录取机会评估（龙岗 · 对照最新录取线）</view>
+      <view class="seg">
+        <view class="seg-i {{assessStage==='primary'?'on':''}}" bindtap="setAssessStage" data-s="primary">小一</view>
+        <view class="seg-i {{assessStage==='middle'?'on':''}}" bindtap="setAssessStage" data-s="middle">初一</view>
+      </view>
+      <view class="legend">
+        <view class="lg"><view class="ld" style="background:#d4edda"></view>很稳(≥+5)</view>
+        <view class="lg"><view class="ld" style="background:#fff3cd"></view>较稳(0~5)</view>
+        <view class="lg"><view class="ld" style="background:#ffe0b2"></view>有风险(-5~0)</view>
+        <view class="lg"><view class="ld" style="background:#f8d7da"></view>较难(&lt;-5)</view>
+      </view>
+      <view class="assess-list">
+        <view class="ar" wx:for="{{assessRows}}" wx:key="name">
+          <view class="ar-top">
+            <view class="ar-name-wrap"><text class="ar-name">{{item.name}}</text><text class="tag t-region" wx:if="{{item.region}}">{{item.region}}</text></view>
+            <view class="ar-right">
+              <text class="ar-cut">{{item.yr}}:{{item.cut}}</text>
+              <text class="abadge {{item.cls}}">{{item.txt}} {{item.diffTxt}}</text>
+            </view>
+          </view>
+          <view class="bar"><view class="bf" style="width:{{item.barPct}}%"></view></view>
+        </view>
+      </view>
+      <view class="calc-note">按各校最新一年录取线对比你的预估积分。录取线每年波动，评估仅供参考；同分按优享→学区户籍→龙岗户籍→深圳其他区→非深户排序。</view>
+    </block>
+
+    <view class="calc-empty" wx:if="{{calcCatIdx<0}}">请选择上方积分类型开始计算。</view>
+  </view>
+
+  <!-- 幼儿园（龙岗）：官方信息表查询 -->
+  <view class="panel kg" wx:if="{{tab==='kg'}}">
+    <view class="kg-tip">龙岗区幼儿园全量查询——数据为龙岗区教育局《2025-2026学年幼儿园办学基本信息表》（2026-06-09公告），共474所，含办园性质、所属街道社区、<text class="em">保教费备案标准</text>等。幼儿园非义务教育、无逐园录取积分线。</view>
+
+    <view class="frow">
+      <text class="flabel">街道</text>
+      <view class="chips">
+        <view wx:for="{{kgAreaChips}}" wx:key="*this" class="chip {{kgArea===item?'on':''}}" bindtap="setKgArea" data-v="{{item}}">{{item}}</view>
+      </view>
+    </view>
+    <view class="frow">
+      <text class="flabel">社区</text>
+      <picker class="picker" mode="selector" range="{{kgCommList}}" value="{{kgCommIdx}}" bindchange="onKgComm">
+        <view class="picker-box">{{kgCommList[kgCommIdx]}} ▾</view>
+      </picker>
+      <text class="hint" wx:if="{{kgArea==='全部'}}">（先选街道可缩小社区范围）</text>
+    </view>
+    <view class="frow">
+      <text class="flabel">性质</text>
+      <view class="chips">
+        <view wx:for="{{kgNatureChips}}" wx:key="*this" class="chip {{kgNature===item?'on':''}}" bindtap="setKgNature" data-v="{{item}}">{{item}}</view>
+      </view>
+    </view>
+    <view class="frow">
+      <text class="flabel">排序</text>
+      <picker class="picker" mode="selector" range="{{kgSortLabels}}" value="{{kgSortIdx}}" bindchange="onKgSort">
+        <view class="picker-box">{{kgSortLabels[kgSortIdx]}} ▾</view>
+      </picker>
+    </view>
+    <view class="frow">
+      <input class="search" value="{{kgSearch}}" placeholder="搜索园所名称…" placeholder-class="ph" bindinput="onKgSearch" confirm-type="search" />
+    </view>
+
+    <view class="count">共 {{kgCount}} 所园所</view>
+
+    <view class="list">
+      <view class="sr" wx:for="{{kgRows}}" wx:key="key">
+        <view class="sr-top">
+          <view class="selck {{item.selected?'on':''}}" catchtap="toggleKgSelect" data-k="{{item.key}}"><text wx:if="{{item.selected}}">✓</text></view>
+          <view class="sr-name-wrap">
+            <text class="sr-name">{{item.name}}</text>
+            <text class="tag {{item.naCls}}">{{item.naTxt}}</text>
+          </view>
+          <text class="kg-fee2">{{item.feeTxt}}</text>
+        </view>
+        <view class="sr-foot">
+          <text class="tag t-region">{{item.region}}</text>
+          <text class="kg-fee">{{item.scaleTxt}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="kg-note">保教费为官方备案标准（元/月）。公办按等级政府定价；普惠性民办政府限价并享补助；非普惠性民办市场调节价。自2025年秋季起公办大班免保教费、民办参照同级公办减免。招生按学位类型排类，超额积分或摇号；咨询：0755-84861824。
+「热度参考」说明：搜索热度/口碑无官方或可核实数据来源，本系统不采用网传评分；该排序由官方表内客观字段透明推导——性质基数（公办60/普惠性民办40/非普惠性民办30）+ 核定规模×2 + 街道中心园/机关园加成15。依据：深圳公办园报名普遍超额需摇号、规模大代表核定学位多且办学成熟、中心园/机关园为历史旗舰。仅作参考，不代表保教质量评价。</view>
+  </view>
+
+  <view class="foot">录取积分线来自各校公示、经第三方汇总，仅供参考；各区评分制度不同不可直接横比；升学率/梯队无官方来源故不收录。实际录取以当年各区官方核定为准。</view>
+</view>
+
+<!-- 对比浮动条（学校） -->
+<view class="cbar" wx:if="{{selectedCount>0 && tab!=='kg'}}">
+  <text class="cbar-n">已选 {{selectedCount}} 所</text>
+  <view class="cbtn go {{selectedCount<2?'disabled':''}}" bindtap="openCompare">对比</view>
+  <text class="cbtn clear" bindtap="clearAll">清空</text>
+</view>
+
+<!-- 对比浮动条（幼儿园） -->
+<view class="cbar" wx:if="{{kgSelCount>0 && tab==='kg'}}">
+  <text class="cbar-n">已选 {{kgSelCount}} 园</text>
+  <view class="cbtn go {{kgSelCount<2?'disabled':''}}" bindtap="openKgCompare">对比</view>
+  <text class="cbtn clear" bindtap="kgClearAll">清空</text>
+</view>
+
+<!-- 幼儿园对比弹窗 -->
+<view class="overlay" wx:if="{{showKgCompare}}">
+  <scroll-view scroll-y class="modal">
+    <view class="modal-head">
+      <text class="modal-title">园所对比</text>
+      <view class="xclose" bindtap="closeKgCompare">×</view>
+    </view>
+    <text class="cmp-cav">数据来自官方信息表；对比维度：办园性质、片区、所属社区、保教费备案、核定规模。最低保教费高亮。</text>
+    <scroll-view scroll-x class="cmp-scroll">
+      <view class="cmp-table">
+        <view class="cmp-row head">
+          <view class="cmp-cell label">指标</view>
+          <view class="cmp-cell" wx:for="{{kgCmpCols}}" wx:key="key">
+            <view class="cdot inline" style="background:{{item.color}}"></view>
+            <text class="colname">{{item.name}}</text>
+            <text class="rmv" catchtap="removeKgCmp" data-k="{{item.key}}">×</text>
+          </view>
+        </view>
+        <view class="cmp-row" wx:for="{{kgCmpRows}}" wx:key="label">
+          <view class="cmp-cell label">{{item.label}}</view>
+          <view class="cmp-cell {{c.na?'na':''}} {{c.best?'best':''}}" wx:for="{{item.cells}}" wx:for-item="c" wx:for-index="ci" wx:key="ci">{{c.txt}}</view>
+        </view>
+      </view>
+    </scroll-view>
+  </scroll-view>
+</view>
+
+<!-- 对比弹窗 -->
+<view class="overlay" wx:if="{{showCompare}}">
+  <scroll-view scroll-y class="modal">
+    <view class="modal-head">
+      <text class="modal-title">学校对比</text>
+      <view class="xclose" bindtap="closeCompare">×</view>
+    </view>
+    <text class="cmp-cav">不同区评分制度不同，分数不可直接横比；类别制学校不参与积分曲线。</text>
+
+    <view class="chartwrap" wx:if="{{chartHasData}}">
+      <canvas type="2d" id="cmpChart" class="chart-canvas"></canvas>
+      <view class="chart-legend">
+        <view class="cl" wx:for="{{compareCols}}" wx:key="key"><view class="cdot" style="background:{{item.color}}"></view>{{item.name}}</view>
+      </view>
+    </view>
+    <text class="cmp-cav" wx:else>所选学校均为类别制，无积分曲线。</text>
+
+    <scroll-view scroll-x class="cmp-scroll">
+      <view class="cmp-table">
+        <view class="cmp-row head">
+          <view class="cmp-cell label">指标</view>
+          <view class="cmp-cell" wx:for="{{compareCols}}" wx:key="key">
+            <view class="cdot inline" style="background:{{item.color}}"></view>
+            <text class="colname">{{item.name}}</text>
+            <text class="cmp-tag">{{item.tag}}</text>
+            <text class="rmv" catchtap="removeCmp" data-k="{{item.key}}">×</text>
+          </view>
+        </view>
+        <view class="cmp-row" wx:for="{{compareTable}}" wx:key="label">
+          <view class="cmp-cell label">{{item.label}}</view>
+          <view class="cmp-cell {{c.best?'best':''}} {{c.na?'na':''}} {{c.cat?'catcell':''}} {{c.trendCls}}" wx:for="{{item.cells}}" wx:for-item="c" wx:for-index="ci" wx:key="ci">{{c.txt}}</view>
+        </view>
+      </view>
+    </scroll-view>
+  </scroll-view>
+</view>

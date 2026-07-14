@@ -1,0 +1,36 @@
+<view class="wrap">
+
+  <!-- 筛选标签 -->
+  <view class="tabs">
+    <view class="tab {{tab==='pending'?'on':''}}" data-tab="pending" bindtap="switchTab">待审核</view>
+    <view class="tab {{tab==='approved'?'on':''}}" data-tab="approved" bindtap="switchTab">已通过</view>
+    <view class="tab {{tab==='rejected'?'on':''}}" data-tab="rejected" bindtap="switchTab">已驳回</view>
+    <view class="tab {{tab==='all'?'on':''}}" data-tab="all" bindtap="switchTab">全部</view>
+  </view>
+
+  <view class="dim" style="margin:8rpx 4rpx 16rpx;">共 {{total}} 条</view>
+
+  <view wx:if="{{list.length===0 && !loading}}" class="empty">暂无记录</view>
+
+  <view wx:for="{{list}}" wx:key="_id" class="card item" bindtap="openDetail" data-id="{{item._id}}">
+    <view class="row between">
+      <view>
+        <text class="name">{{item.name}}</text>
+        <text class="room">{{item.roomFull}}</text>
+        <text wx:if="{{item.dupRoom}}" class="badge no" style="margin-left:10rpx;">房号重复</text>
+      </view>
+      <text class="badge {{item.status==='approved'?'ok':(item.status==='rejected'?'no':'wait')}}">
+        {{item.status==='approved'?'已通过':(item.status==='rejected'?'已驳回':'待审核')}}
+      </text>
+    </view>
+    <view class="dim mt8">面积 {{item.area}} ㎡　手机 {{item.phone}}{{item.certNo ? '　证号 '+item.certNo : ''}}</view>
+
+    <view wx:if="{{item.status==='pending'}}" class="ops mt16" catchtap="">
+      <button class="btn sm line" catchtap="quick" data-id="{{item._id}}" data-act="reject">驳回</button>
+      <button class="btn sm" catchtap="quick" data-id="{{item._id}}" data-act="approve">通过</button>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+  <view wx:elif="{{!noMore && list.length>0}}" class="loadmore" bindtap="loadMore">加载更多</view>
+</view>

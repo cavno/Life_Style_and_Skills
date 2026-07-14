@@ -1,0 +1,47 @@
+/* 设计系统:parchment / ink / crimson / gold + aegean(路径B)
+   与既有项目族(逻辑地图集、悖论地图集、房贷计算器 Web 版)同源 */
+page {
+  --bg: #F7F3EA;
+  --paper: #FFFDF8;
+  --ink: #1A1814;
+  --ink-2: #5A5244;
+  --crimson: #8B2C2C;
+  --gold: #B89060;
+  --aegean: #2E5E6E;
+  --line: #E4DAC4;
+  --ok: #3E6B4F;
+  --warn: #A8722A;
+  --bad: #8B2C2C;
+
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
+  font-size: 28rpx;
+  line-height: 1.55;
+}
+
+/* 数字一律等宽,呼应"精确到小数点"的口径 */
+.num {
+  font-family: "SF Mono", Menlo, Consolas, "Courier New", monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5rpx;
+}
+
+.serif {
+  font-family: Georgia, "Songti SC", "STSong", "SimSun", serif;
+}
+
+.card {
+  background: var(--paper);
+  border: 1rpx solid var(--line);
+  border-radius: 6rpx;
+  margin: 0 24rpx 24rpx;
+  padding: 28rpx;
+  box-sizing: border-box;
+}
+
+.lab {
+  font-size: 22rpx;
+  color: var(--ink-2);
+  letter-spacing: 2rpx;
+}

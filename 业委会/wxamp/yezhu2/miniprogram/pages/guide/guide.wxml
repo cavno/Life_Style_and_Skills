@@ -1,0 +1,50 @@
+<view class="wrap">
+
+  <view class="card hero">
+    <view class="h1">在{{communityName}}成立业主委员会</view>
+    <view class="muted mt8">下面是从联名到选出业委会、再到换物业的完整路线。每一步可展开看要点和对应的官方文书。</view>
+    <view class="stagebar mt16">当前进展：第 {{currentNo}} / 6 步</view>
+  </view>
+
+  <!-- 子功能入口 -->
+  <view class="entries">
+    <view class="entry" data-url="/pages/eligibility/eligibility" bindtap="go">
+      <view class="e-t">资格自测</view><view class="e-d">能否当代表/委员</view>
+    </view>
+    <view class="entry" data-url="/pages/property/property" bindtap="go">
+      <view class="e-t">换物业指南</view><view class="e-d">成立后怎么换</view>
+    </view>
+    <view class="entry" data-url="/pages/glossary/glossary" bindtap="go">
+      <view class="e-t">名词解释</view><view class="e-d">联名/公示/表决</view>
+    </view>
+    <view class="entry" data-url="/pages/templates/templates" bindtap="go">
+      <view class="e-t">官方文书库</view><view class="e-d">30 份示范文本</view>
+    </view>
+  </view>
+
+  <!-- 全流程步骤 -->
+  <view class="steps">
+    <view wx:for="{{stages}}" wx:key="key" class="step {{currentKey===item.key ? 'cur' : ''}} {{item.no < currentNo ? 'past' : ''}}">
+      <view class="step-head" data-i="{{index}}" bindtap="toggle">
+        <view class="step-no">{{item.no}}</view>
+        <view class="step-main">
+          <view class="step-title">{{item.title}}
+            <text wx:if="{{currentKey===item.key}}" class="curtag">进行中</text>
+          </view>
+          <view class="step-sum">{{item.summary}}</view>
+        </view>
+        <view class="step-arrow">{{expanded===index ? '收起' : '展开'}}</view>
+      </view>
+
+      <view wx:if="{{expanded===index}}" class="step-body">
+        <view wx:for="{{item.points}}" wx:for-item="pt" wx:key="*this" class="pt">· {{pt}}</view>
+        <view wx:if="{{item.docs.length}}" class="docs">
+          <text class="docs-label">相关官方文书：</text>
+          <text wx:for="{{item.docs}}" wx:for-item="d" wx:key="*this" class="doc-chip">{{d}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="dim foot">流程依据《龙岗区业主大会及业主委员会工作指导手册》。各步具体材料、时限与公示要求，以手册及所属街道办要求为准。</view>
+</view>

@@ -1,0 +1,11 @@
+page {
+  background: linear-gradient(160deg, #fdf6ec 0%, #f5e6c8 50%, #ecdbb4 100%);
+  background-attachment: fixed;
+  color: #3a2e1e;
+  font-family: -apple-system, "PingFang SC", "Helvetica Neue", "Songti SC", sans-serif;
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+view, text, input, picker, scroll-view, canvas, button {
+  box-sizing: border-box;
+}

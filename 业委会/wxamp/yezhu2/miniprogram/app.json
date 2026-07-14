@@ -1,0 +1,49 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/register/register",
+    "pages/guide/guide",
+    "pages/mine/mine",
+    "pages/eligibility/eligibility",
+    "pages/property/property",
+    "pages/glossary/glossary",
+    "pages/templates/templates",
+    "pages/admin/admin",
+    "pages/detail/detail",
+    "pages/export/export",
+    "pages/config/config"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#e9ebef",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "业主之家·成立业委会",
+    "backgroundColor": "#e5e7eb",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#9aa0a6",
+    "selectedColor": "#2a6cd6",
+    "backgroundColor": "#e9ebef",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "进度"
+      },
+      {
+        "pagePath": "pages/register/register",
+        "text": "联名"
+      },
+      {
+        "pagePath": "pages/guide/guide",
+        "text": "指南"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

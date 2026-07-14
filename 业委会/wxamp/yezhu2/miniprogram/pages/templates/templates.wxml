@@ -1,0 +1,24 @@
+<view class="wrap">
+  <view class="card">
+    <view class="h2">官方文书库</view>
+    <view class="dim">手册附带 30 份示范文本，覆盖从联名到换届的每一步。这里按阶段做了索引，完整模板见手册正文第 59 页起（可根据街道实际调整）。</view>
+  </view>
+
+  <view wx:for="{{groups}}" wx:key="g" class="card grp">
+    <view class="grp-h" data-i="{{index}}" bindtap="toggle">
+      <view class="grp-t">{{item.g}}</view>
+      <view class="grp-a">{{open===index ? '−' : '+'}}</view>
+    </view>
+    <view wx:if="{{open===index}}" class="grp-b">
+      <view wx:for="{{item.items}}" wx:for-item="d" wx:key="no" class="doc">
+        <view class="doc-no">{{d.no}}</view>
+        <view class="doc-main">
+          <view class="doc-name">{{d.name}}</view>
+          <view class="doc-use">{{d.use}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="dim foot">示范文本出处：《龙岗区业主大会及业主委员会工作指导手册》附件。</view>
+</view>

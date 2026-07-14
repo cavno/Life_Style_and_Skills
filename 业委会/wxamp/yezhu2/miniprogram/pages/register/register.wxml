@@ -1,0 +1,123 @@
+<view class="wrap">
+
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+
+  <!-- 已有记录且非编辑态：展示状态 -->
+  <block wx:elif="{{mine && !editing}}">
+    <view class="card">
+      <view class="row between">
+        <view class="h2">我的联名</view>
+        <view class="badge {{mine.status==='approved'?'ok':(mine.status==='rejected'?'no':'wait')}}">{{statusText}}</view>
+      </view>
+      <view class="kv"><text class="k">业主姓名</text><text class="v">{{mine.name}}</text></view>
+      <view class="kv"><text class="k">楼栋房号</text><text class="v">{{mine.roomFull}}</text></view>
+      <view class="kv"><text class="k">房屋建筑面积</text><text class="v">{{mine.area}} ㎡</text></view>
+      <view class="kv"><text class="k">联系方式</text><text class="v">{{mine.phone}}</text></view>
+      <view wx:if="{{mine.reviewNote}}" class="kv"><text class="k">审核备注</text><text class="v">{{mine.reviewNote}}</text></view>
+
+      <view wx:if="{{mine.status==='approved'}}" class="tip ok mt16">你的联名已计入统计，感谢支持。</view>
+      <view wx:if="{{mine.status==='rejected'}}" class="tip no mt16">审核未通过，请按备注修改后重新提交。</view>
+
+      <button wx:if="{{mine.status!=='approved'}}" class="btn line mt24" bindtap="startEdit">修改并重新提交</button>
+      <button wx:if="{{mine.status!=='approved'}}" class="btn danger mt16" bindtap="withdraw">撤回联名</button>
+      <view wx:if="{{mine.status==='approved'}}" class="dim mt16">如需修改已通过的记录，请联系发起人撤回。</view>
+    </view>
+  </block>
+
+  <!-- 填写态 -->
+  <block wx:elif="{{editing}}">
+    <view class="card">
+      <view class="h2">业主联名登记</view>
+      <view class="matter mt8">联名事项：{{lianmingMatter}}</view>
+      <view class="dim mt8">本人作为 {{communityName}} 下列房屋的业主，自愿联名{{lianmingMatter}}。请如实填写，提交后由发起人核验证件。</view>
+    </view>
+
+    <view class="card">
+      <view class="field">
+        <view class="label">业主姓名<text class="req">*</text></view>
+        <input class="input" data-k="name" value="{{form.name}}" bindinput="onInput" placeholder="与产权证一致" />
+      </view>
+
+      <view class="field">
+        <view class="label">楼栋房号<text class="req">*</text></view>
+        <view class="addr">
+          <view class="addr-cell">
+            <picker mode="selector" range="{{buildingOptions}}" value="{{buildingIndex}}" bindchange="onBuildingPick">
+              <view class="picker {{buildingIndex < 0 ? 'ph' : ''}}">{{buildingIndex >= 0 ? buildingOptions[buildingIndex] : '选择'}}</view>
+            </picker>
+            <text class="suf">栋</text>
+          </view>
+          <view class="addr-cell">
+            <picker mode="selector" range="{{unitOptions}}" value="{{unitIndex}}" bindchange="onUnitPick">
+              <view class="picker {{unitIndex < 0 ? 'ph' : ''}}">{{unitIndex >= 0 ? unitOptions[unitIndex] : '选择'}}</view>
+            </picker>
+            <text class="suf">座</text>
+          </view>
+          <view class="addr-cell">
+            <input class="input" data-k="room" value="{{form.room}}" bindinput="onInput" placeholder="如1502" />
+            <text class="suf">房</text>
+          </view>
+        </view>
+        <view wx:if="{{showBuildingCustom}}" class="custom-row">
+          <text class="custom-label">自定义栋</text>
+          <input class="input" value="{{buildingCustom}}" bindinput="onBuildingCustom" placeholder="如 C1 / 8 / 东" />
+        </view>
+        <view wx:if="{{showUnitCustom}}" class="custom-row">
+          <text class="custom-label">自定义座</text>
+          <input class="input" value="{{unitCustom}}" bindinput="onUnitCustom" placeholder="如 甲 / AA（无座可不填）" />
+        </view>
+      </view>
+
+      <view class="field">
+        <view class="label">房屋建筑面积（㎡）<text class="req">*</text></view>
+        <input class="input" type="digit" data-k="area" value="{{form.area}}" bindinput="onInput" placeholder="见产权证，如 89.50" />
+        <view class="dim mt8">即你的投票权数。请填写产权证载明的建筑面积。</view>
+      </view>
+
+      <view class="field">
+        <view class="label">联系方式<text class="req">*</text></view>
+        <input class="input" type="number" data-k="phone" value="{{form.phone}}" bindinput="onInput" placeholder="11 位手机号，便于发起人核实" />
+      </view>
+
+      <view class="field">
+        <view class="label">不动产权证号 / 房产证号<text class="req">*</text></view>
+        <input class="input" data-k="certNo" value="{{form.certNo}}" bindinput="onInput" placeholder="请填写产权证 / 不动产权证上的证号" />
+      </view>
+    </view>
+
+    <!-- 证件照片 -->
+    <view class="card">
+      <view class="label">证件照片（产权证明 + 身份证复印件）<text class="req">*</text></view>
+      <view class="dim mt8">用于发起人核验业主身份，照片仅发起人可见。</view>
+      <view class="certs mt16">
+        <view class="cert-cell">
+          <image wx:if="{{certPhoto || certPhotoFileId}}" class="cert-img" src="{{certPhoto || certPhotoFileId}}" mode="aspectFill" bindtap="chooseCert" />
+          <view wx:else class="cert-add" bindtap="chooseCert">＋ 产权证明</view>
+          <view class="cert-cap">产权证 / 不动产权证</view>
+        </view>
+        <view class="cert-cell">
+          <image wx:if="{{idPhoto || idPhotoFileId}}" class="cert-img" src="{{idPhoto || idPhotoFileId}}" mode="aspectFill" bindtap="chooseId" />
+          <view wx:else class="cert-add" bindtap="chooseId">＋ 身份证</view>
+          <view class="cert-cap">身份证</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 手写签名 -->
+    <view class="card">
+      <view class="label">业主本人签名<text class="req">*</text></view>
+      <view class="dim mt8">请用手指在下方手写签名，作为联名意愿的确认。</view>
+      <view class="mt16">
+        <signature-pad id="sigpad"></signature-pad>
+      </view>
+    </view>
+
+    <button class="btn" loading="{{submitting}}" disabled="{{submitting}}" bindtap="submit">提交联名</button>
+    <button wx:if="{{mine}}" class="btn line mt16" bindtap="load">取消</button>
+
+    <view class="dim mt24" style="padding:0 8rpx;">
+      提交即表示你确认上述信息真实，并同意以本次电子签名作为联名{{lianmingMatter}}的意思表示。
+    </view>
+  </block>
+
+</view>

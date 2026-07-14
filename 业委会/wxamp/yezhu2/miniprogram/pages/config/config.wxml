@@ -1,0 +1,73 @@
+<view class="wrap">
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+
+  <block wx:else>
+    <view class="card">
+      <view class="h2">小区基本信息</view>
+      <view class="field">
+        <view class="label">小区名称<text class="req">*</text></view>
+        <input class="input" data-k="communityName" value="{{form.communityName}}" bindinput="onInput" placeholder="如 阳光花园" />
+      </view>
+      <view class="field">
+        <view class="label">所属街道办事处<text class="req">*</text></view>
+        <input class="input" data-k="streetOffice" value="{{form.streetOffice}}" bindinput="onInput" placeholder="如 布吉街道办事处" />
+      </view>
+      <view class="field">
+        <view class="label">所属社区（居委会）</view>
+        <input class="input" data-k="community" value="{{form.community}}" bindinput="onInput" placeholder="如 XX社区，用于联名表表头" />
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="h2">本次联名</view>
+      <view class="field">
+        <view class="label">联名事项</view>
+        <input class="input" data-k="lianmingMatter" value="{{form.lianmingMatter}}" bindinput="onInput" placeholder="默认：要求成立首次业主大会会议筹备组" />
+        <view class="dim mt8">显示在联名登记页，并写入申请书。</view>
+      </view>
+      <view class="field">
+        <view class="label">当前进展阶段</view>
+        <picker mode="selector" range="{{stageOptions}}" range-key="label" value="{{stageIndex}}" bindchange="onStageChange">
+          <view class="picker">{{stageOptions[stageIndex].label}}</view>
+        </picker>
+        <view class="dim mt8">决定「指南」路线图上高亮哪一步。</view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="h2">门槛分母（决定进度计算）</view>
+      <view class="field">
+        <view class="label">人数口径分母<text class="req">*</text></view>
+        <view class="seg">
+          <text class="seg-i {{form.headcountLabel==='业主总人数'?'on':''}}" data-v="业主总人数" bindtap="pickLabel">按总人数</text>
+          <text class="seg-i {{form.headcountLabel==='业主总户数'?'on':''}}" data-v="业主总户数" bindtap="pickLabel">按总户数</text>
+        </view>
+        <input class="input mt16" type="number" data-k="totalHouseholds" value="{{form.totalHouseholds}}" bindinput="onInput" placeholder="填写{{form.headcountLabel}}，如 1200" />
+        <view class="dim mt8">条例表述为"业主总人数"，部分街道按"户"认定；以你所属街道口径为准。</view>
+      </view>
+      <view class="field">
+        <view class="label">全体业主专有部分建筑面积合计（㎡）<text class="req">*</text></view>
+        <input class="input" type="digit" data-k="totalArea" value="{{form.totalArea}}" bindinput="onInput" placeholder="投票权口径分母，如 96000" />
+        <view class="dim mt8">投票权数即专有部分建筑面积。可取小区住宅专有面积总和。</view>
+      </view>
+    </view>
+
+    <view class="card">
+      <view class="h2">联系人与公告</view>
+      <view class="field">
+        <view class="label">联系人姓名</view>
+        <input class="input" data-k="initiatorName" value="{{form.initiatorName}}" bindinput="onInput" placeholder="申请书落款联系人" />
+      </view>
+      <view class="field">
+        <view class="label">联系电话</view>
+        <input class="input" type="number" data-k="initiatorPhone" value="{{form.initiatorPhone}}" bindinput="onInput" />
+      </view>
+      <view class="field">
+        <view class="label">首页公告（选填）</view>
+        <textarea class="textarea" data-k="noticeText" value="{{form.noticeText}}" bindinput="onInput" placeholder="如：签字截止时间、线下核验地点等" />
+      </view>
+    </view>
+
+    <button class="btn" loading="{{saving}}" bindtap="save">保存设置</button>
+  </block>
+</view>

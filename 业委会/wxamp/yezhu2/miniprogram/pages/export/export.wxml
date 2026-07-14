@@ -1,0 +1,72 @@
+<view class="wrap">
+  <view wx:if="{{loading}}" class="empty">生成中…</view>
+
+  <block wx:elif="{{data}}">
+
+    <view class="card">
+      <view class="row between">
+        <view class="h2">汇总结果</view>
+        <view class="badge {{data.qualified?'ok':'wait'}}">{{data.qualified?'已达标':'未达标'}}</view>
+      </view>
+      <view class="kv"><text class="k">已通过联名</text><text class="v">{{data.count}} 人</text></view>
+      <view class="kv"><text class="k">人数口径占比</text><text class="v">{{data.headcountPct}}%</text></view>
+      <view class="kv"><text class="k">建筑面积合计</text><text class="v">{{data.totalSignArea}} ㎡</text></view>
+      <view class="kv"><text class="k">投票权口径占比</text><text class="v">{{data.areaPct}}%</text></view>
+    </view>
+
+    <!-- 申请书：官方附件2 -->
+    <view class="card">
+      <view class="row between">
+        <view class="h2">申请书（附件2）</view>
+        <text class="btn sm" bindtap="copyLetter">复制全文</text>
+      </view>
+      <view class="letter mt16">{{letter}}</view>
+    </view>
+
+    <!-- 联名表：官方附件2-1 -->
+    <view class="card">
+      <view class="row between">
+        <view class="h2">业主联名表（附件2-1）</view>
+        <text class="btn sm line" bindtap="copyList">复制为表格</text>
+      </view>
+      <view class="dim mt8">{{data.config.community}} 社区 · {{data.config.communityName}} · 联名时间 {{today}}</view>
+
+      <view class="thead mt16">
+        <text class="c-no">序号</text>
+        <text class="c-name">业主姓名</text>
+        <text class="c-room">楼栋房号</text>
+        <text class="c-area">建筑面积</text>
+      </view>
+      <view wx:for="{{data.list}}" wx:key="roomFull" class="trow">
+        <text class="c-no">{{index + 1}}</text>
+        <text class="c-name">{{item.name}}</text>
+        <text class="c-room">{{item.roomFull}}</text>
+        <text class="c-area">{{item.area}}</text>
+      </view>
+      <view wx:if="{{data.list.length===0}}" class="empty">尚无已通过的联名</view>
+      <view class="note mt16">备注：联名业主需提供身份证复印件、产权证明复印件。</view>
+    </view>
+
+    <!-- 签名预览（可截图作为联名表签名页） -->
+    <view class="card">
+      <view class="row between">
+        <view class="h2">业主本人签名</view>
+        <text class="btn sm line" bindtap="toggleSign">{{showSign ? '收起' : '展开签名'}}</text>
+      </view>
+      <view wx:if="{{showSign}}" class="signs mt16">
+        <view wx:for="{{data.list}}" wx:key="roomFull" class="sign-cell">
+          <image wx:if="{{item.signatureFileId}}" class="sign-img" src="{{item.signatureFileId}}" mode="aspectFit" data-url="{{item.signatureFileId}}" bindtap="previewSign" />
+          <view class="sign-cap">{{item.name}} · {{item.roomFull}}</view>
+        </view>
+      </view>
+      <view wx:else class="dim mt8">展开后可逐条查看 / 长截图，作为纸质联名表的签名页。</view>
+    </view>
+
+    <view class="card tipcard">
+      提交建议：先与 {{data.config.streetOffice}} 确认是否接受电子签名汇总件。<br/>
+      · 接受电子件：复制申请书 + 联名表，连同签名预览长截图、各业主身份证与产权证照片打包提交；<br/>
+      · 需纸质件：将申请书与联名表打印，附签名页与证件复印件报送。
+    </view>
+
+  </block>
+</view>

@@ -1,0 +1,14 @@
+.sig-box { position: relative; }
+.sig-canvas {
+  width: 100%; height: 300rpx;
+  background: #eef0f3;
+  border: 1rpx dashed #b9c0c9;
+  border-radius: 12rpx;
+}
+.sig-hint {
+  position: absolute; left: 0; right: 0; top: 120rpx;
+  text-align: center; color: #aab0ba; font-size: 28rpx;
+  pointer-events: none;
+}
+.sig-tools { display: flex; justify-content: flex-end; margin-top: 12rpx; }
+.sig-clear { color: #2a6cd6; font-size: 26rpx; }

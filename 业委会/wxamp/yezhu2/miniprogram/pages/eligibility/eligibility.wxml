@@ -1,0 +1,44 @@
+<view class="wrap">
+
+  <view class="card">
+    <view class="h2">业主代表 / 委员 资格自测</view>
+    <view class="dim">想报名当业主代表或业委会委员？先对照下面两份清单自测。结果仅供参考，最终资格由筹备组、街道办、社区党委认定。</view>
+  </view>
+
+  <!-- 负面清单 -->
+  <view class="card">
+    <view class="h2 redt">负面清单（如有请如实勾选）</view>
+    <view class="dim mb">触及以下任一情形，可能不符合候选资格。</view>
+    <view wx:for="{{negative}}" wx:key="*this" class="opt {{negChecked[index]?'on red':''}}" data-i="{{index}}" bindtap="toggleNeg">
+      <view class="box">{{negChecked[index] ? '✓' : ''}}</view>
+      <view class="opt-t">{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 正面清单 -->
+  <view class="card">
+    <view class="h2 greent">正面清单（符合的请勾选）</view>
+    <view class="dim mb">符合以下情形，属于优先推荐。</view>
+    <view wx:for="{{positive}}" wx:key="*this" class="opt {{posChecked[index]?'on green':''}}" data-i="{{index}}" bindtap="togglePos">
+      <view class="box">{{posChecked[index] ? '✓' : ''}}</view>
+      <view class="opt-t">{{item}}</view>
+    </view>
+  </view>
+
+  <button class="btn" bindtap="check">查看自测结果</button>
+
+  <!-- 结果 -->
+  <view wx:if="{{done}}" class="card result mt24">
+    <block wx:if="{{negCount > 0}}">
+      <view class="r-title red">触及 {{negCount}} 项负面情形</view>
+      <view class="muted mt8">负面清单中被勾选的情形可能影响候选资格。建议先向筹备组或所属街道办了解具体认定口径，再决定是否报名。</view>
+    </block>
+    <block wx:else>
+      <view class="r-title green">未触及负面清单</view>
+      <view class="muted mt8">从负面清单看没有明显障碍{{posCount > 0 ? '，且符合 ' + posCount + ' 项正面情形，属于较受欢迎的人选' : ''}}。可关注筹备组发布的报名通知按时报名。</view>
+    </block>
+    <button class="btn line mt16" bindtap="reset">重新自测</button>
+  </view>
+
+  <view class="dim foot">依据《龙岗区业主大会及业主委员会工作指导手册》3.3、3.4。</view>
+</view>

@@ -1,0 +1,241 @@
+<!-- ============ 顶部分段:决策 / 测算 ============ -->
+<view class="seg">
+  <view class="seg-item {{tab === 'decision' ? 'on' : ''}}" data-tab="decision" bindtap="onTab">置换决策</view>
+  <view class="seg-item {{tab === 'calc' ? 'on' : ''}}" data-tab="calc" bindtap="onTab">贷款测算</view>
+</view>
+
+<!-- ============================ 决策 ============================ -->
+<block wx:if="{{tab === 'decision'}}">
+
+  <!-- 判定带:随拖动实时变色 -->
+  <view class="verdict v-{{v.verdictKey}}">
+    <view class="verdict-word serif">{{v.verdictWord}}</view>
+    <view class="verdict-line">{{v.verdictLine}}</view>
+    <view class="verdict-sub num">{{v.verdictSub}}</view>
+  </view>
+
+  <!-- 两个主滑杆 -->
+  <view class="card">
+    <view class="srow">
+      <text class="lab">房产总价</text>
+      <view class="sval"><text class="big num">{{v.priceStr}}</text><text class="unit">万</text></view>
+    </view>
+    <slider min="300" max="600" step="5" value="{{v.priceSlider}}"
+            data-key="price" bindchanging="onMainSlider" bindchange="onMainSlider"
+            activeColor="#8B2C2C" backgroundColor="#E4DAC4" block-size="22" block-color="#1A1814"/>
+    <!-- 价格区带:绿 ≤450 推荐 / 琥珀 450–500 上限 / 红 >500 -->
+    <view class="zonewrap">
+      <view class="zonemark" style="left: {{v.pricePct}}%"></view>
+      <view class="zonebar"></view>
+      <view class="zoneticks num">
+        <text class="t t400">400</text><text class="t t450">450</text><text class="t t500">500</text>
+      </view>
+    </view>
+
+    <view class="srow mt">
+      <text class="lab">妻子税后月收入</text>
+      <view class="sval"><text class="big num">{{v.wifeStr}}</text><text class="unit">万/月</text></view>
+    </view>
+    <slider min="15" max="50" step="1" value="{{v.wifeSlider}}"
+            data-key="wife" bindchanging="onMainSlider" bindchange="onMainSlider"
+            activeColor="#8B2C2C" backgroundColor="#E4DAC4" block-size="22" block-color="#1A1814"/>
+  </view>
+
+  <!-- 核心指标 -->
+  <view class="card">
+    <view class="loanline num">{{v.loanLine}}</view>
+    <view class="grid">
+      <view class="cell hero">
+        <text class="lab">月供合计(等额本息)</text>
+        <text class="cnum num">¥{{v.pmtTotal}}</text>
+        <text class="csub num">公积金 {{v.pmtFund}} · 商贷 {{v.pmtComm}}</text>
+      </view>
+      <view class="cell">
+        <text class="lab">月供 ÷ 收入</text>
+        <text class="cnum num c-{{v.ratioCls}}">{{v.ratio}}%</text>
+        <text class="csub num c-{{v.surplusCls}}">覆盖生活后月结余 {{v.surplusStr}} 元</text>
+      </view>
+      <view class="cell">
+        <text class="lab">一次性支出</text>
+        <text class="cnum num">{{v.oneTime}} 万</text>
+        <text class="csub num">{{v.oneTimeSub}}</text>
+      </view>
+      <view class="cell">
+        <text class="lab">留存人民币</text>
+        <text class="cnum num">{{v.remain}} 万</text>
+        <text class="csub">购房后境内仍可支配</text>
+      </view>
+      <view class="cell">
+        <text class="lab">安全垫可撑</text>
+        <text class="cnum num">{{v.cushionMonths}} 个月</text>
+        <text class="csub num">垫 {{v.cushionStr}} 万 ÷(月供+生活)</text>
+      </view>
+      <view class="cell">
+        <text class="lab">可投资金</text>
+        <text class="cnum num">{{v.invest}} 万</text>
+        <text class="csub">已扣除安全垫</text>
+      </view>
+    </view>
+    <view wx:if="{{v.cushionWarn}}" class="warnline">留存现金已低于安全垫目标,建议下调总价。</view>
+  </view>
+
+  <!-- 两条路径 -->
+  <view class="card">
+    <view class="ptitle serif">两条路径 · 商贷去留</view>
+    <view class="paths">
+      <view class="path pa">
+        <view class="pname">A · 保留商贷</view>
+        <view class="pdesc">最低首付 {{p.downPct}}%,现金留手</view>
+        <view class="prow"><text>首付</text><text class="num">{{v.a.down}} 万</text></view>
+        <view class="prow"><text>一次性</text><text class="num">{{v.a.oneTime}} 万</text></view>
+        <view class="prow"><text>月供</text><text class="num">{{v.a.pmt}}</text></view>
+        <view class="prow"><text>留存</text><text class="num">{{v.a.remain}} 万</text></view>
+        <view class="prow"><text>垫撑</text><text class="num">{{v.a.months}} 月</text></view>
+      </view>
+      <view class="path pb">
+        <view class="pname">B · 只贷公积金</view>
+        <view class="pdesc">商贷部分改为现金首付</view>
+        <view class="prow"><text>首付</text><text class="num">{{v.b.down}} 万</text></view>
+        <view class="prow"><text>一次性</text><text class="num">{{v.b.oneTime}} 万</text></view>
+        <view class="prow"><text>月供</text><text class="num">{{v.b.pmt}}</text></view>
+        <view class="prow"><text>留存</text><text class="num">{{v.b.remain}} 万</text></view>
+        <view class="prow"><text>垫撑</text><text class="num">{{v.b.months}} 月</text></view>
+        <view wx:if="{{v.b.warn}}" class="pwarn">{{v.b.warn}}</view>
+      </view>
+    </view>
+
+    <view class="srow mt">
+      <text class="lab">境内再投资收益率 r*</text>
+      <view class="sval"><text class="big num">{{v.rStarStr}}</text><text class="unit">%</text></view>
+    </view>
+    <slider min="10" max="150" step="5" value="{{v.rStarSlider}}"
+            data-key="rstar" bindchanging="onMainSlider" bindchange="onMainSlider"
+            activeColor="#B89060" backgroundColor="#E4DAC4" block-size="22" block-color="#1A1814"/>
+    <view class="npv n-{{v.npvCls}} num">{{v.npvLine}}</view>
+    <view class="note">{{v.breakeven}}</view>
+  </view>
+
+  <!-- 参数 -->
+  <view class="card">
+    <view class="phead" bindtap="toggleParams">
+      <text class="ptitle serif">参数</text>
+      <text class="arrow {{showParams ? 'open' : ''}}">›</text>
+    </view>
+    <block wx:if="{{showParams}}">
+      <view class="form">
+        <view class="frow">
+          <text class="flab">公积金可贷额度(万)</text>
+          <view class="presets">
+            <view class="chip {{p.fundQuota === 114 ? 'on' : ''}}" data-q="114" bindtap="onPreset">114 仅妻子</view>
+            <view class="chip {{p.fundQuota === 209 ? 'on' : ''}}" data-q="209" bindtap="onPreset">209 家庭</view>
+            <view class="chip {{p.fundQuota === 260 ? 'on' : ''}}" data-q="260" bindtap="onPreset">260 待核实</view>
+          </view>
+          <input class="fin num" type="digit" value="{{ps.fundQuota}}" data-key="fundQuota" bindinput="onParamInput"/>
+        </view>
+        <view class="frow2">
+          <view class="fcol"><text class="flab">可用人民币(万)</text>
+            <input class="fin num" type="digit" value="{{ps.available}}" data-key="available" bindinput="onParamInput"/></view>
+          <view class="fcol"><text class="flab">安全垫目标(万)</text>
+            <input class="fin num" type="digit" value="{{ps.cushionT}}" data-key="cushionT" bindinput="onParamInput"/></view>
+        </view>
+        <view class="frow2">
+          <view class="fcol"><text class="flab">公积金利率(%)</text>
+            <input class="fin num" type="digit" value="{{ps.fundRate}}" data-key="fundRate" bindinput="onParamInput"/></view>
+          <view class="fcol"><text class="flab">商贷利率(%)</text>
+            <input class="fin num" type="digit" value="{{ps.commRate}}" data-key="commRate" bindinput="onParamInput"/></view>
+        </view>
+        <view class="frow2">
+          <view class="fcol"><text class="flab">首付比例(%)</text>
+            <input class="fin num" type="digit" value="{{ps.downPct}}" data-key="downPct" bindinput="onParamInput"/></view>
+          <view class="fcol"><text class="flab">年限(年)</text>
+            <input class="fin num" type="digit" value="{{ps.years}}" data-key="years" bindinput="onParamInput"/></view>
+        </view>
+        <view class="frow2">
+          <view class="fcol"><text class="flab">非房月支出(万/月)</text>
+            <input class="fin num" type="digit" value="{{ps.living}}" data-key="living" bindinput="onParamInput"/></view>
+          <view class="fcol"><text class="flab">中介评估杂费(万)</text>
+            <input class="fin num" type="digit" value="{{ps.misc}}" data-key="misc" bindinput="onParamInput"/></view>
+        </view>
+        <view class="frow sw">
+          <text class="flab">建面 >140㎡(契税 1% → 1.5%)</text>
+          <switch checked="{{p.over140}}" color="#8B2C2C" bindchange="onOver140"/>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <view class="foot">
+    <view class="footline">口径:先卖后买按首套(认房不认贷);月供为等额本息,公式与 Excel PMT 一致;色带为静态建议区(按收入区间下沿),判定卡按实际输入实时计算。境外结汇便利化额度每人每年 5 万美元,月均约 3 万元,可作第二层防线。</view>
+    <view class="footline">本工具离线运行,不上传任何数据;测算仅供参考,不构成投资或法律建议,公积金额度以 12329 核定、商贷利率以放款行为准。</view>
+  </view>
+</block>
+
+<!-- ============================ 测算 ============================ -->
+<block wx:if="{{tab === 'calc'}}">
+  <view class="card">
+    <view class="form">
+      <view class="frow2">
+        <view class="fcol"><text class="flab">房产总价(万)</text>
+          <input class="fin num" type="digit" value="{{cs.price}}" data-key="price" bindinput="onCalcInput"/></view>
+        <view class="fcol"><text class="flab">首付比例(%)</text>
+          <input class="fin num" type="digit" value="{{cs.downPct}}" data-key="downPct" bindinput="onCalcInput"/></view>
+      </view>
+      <view class="frow2">
+        <view class="fcol"><text class="flab">公积金额度(万)</text>
+          <input class="fin num" type="digit" value="{{cs.fundQuota}}" data-key="fundQuota" bindinput="onCalcInput"/></view>
+        <view class="fcol"><text class="flab">年限(年)</text>
+          <input class="fin num" type="digit" value="{{cs.years}}" data-key="years" bindinput="onCalcInput"/></view>
+      </view>
+      <view class="frow2">
+        <view class="fcol"><text class="flab">公积金利率(%)</text>
+          <input class="fin num" type="digit" value="{{cs.fundRate}}" data-key="fundRate" bindinput="onCalcInput"/></view>
+        <view class="fcol"><text class="flab">商贷利率(%)</text>
+          <input class="fin num" type="digit" value="{{cs.commRate}}" data-key="commRate" bindinput="onCalcInput"/></view>
+      </view>
+      <view class="methods">
+        <view class="chip {{c.method === 'annuity' ? 'on' : ''}}" data-m="annuity" bindtap="onMethod">等额本息</view>
+        <view class="chip {{c.method === 'principal' ? 'on' : ''}}" data-m="principal" bindtap="onMethod">等额本金</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="grid">
+      <view class="cell hero">
+        <text class="lab">{{cv.isAnnuity ? '月供(恒定)' : '首月月供'}}</text>
+        <text class="cnum num">¥{{cv.pmtTotal}}</text>
+        <text class="csub num">公积金 {{cv.pmtFund}} · 商贷 {{cv.pmtComm}}</text>
+      </view>
+      <view class="cell" wx:if="{{!cv.isAnnuity}}">
+        <text class="lab">逐月递减 / 末月</text>
+        <text class="cnum num">−{{cv.monthlyDec}}</text>
+        <text class="csub num">末月 ¥{{cv.lastPay}}</text>
+      </view>
+      <view class="cell">
+        <text class="lab">贷款合计</text>
+        <text class="cnum num">{{cv.loanTotal}} 万</text>
+        <text class="csub num">公积金 {{cv.fundLoan}} + 商贷 {{cv.commLoan}}</text>
+      </view>
+      <view class="cell">
+        <text class="lab">首付</text>
+        <text class="cnum num">{{cv.down}} 万</text>
+        <text class="csub num">期数 {{cv.n}}</text>
+      </view>
+      <view class="cell">
+        <text class="lab">总利息</text>
+        <text class="cnum num">{{cv.totalInterest}} 万</text>
+        <text class="csub num">总还款 {{cv.totalPayment}} 万</text>
+      </view>
+      <view class="cell">
+        <text class="lab">资金加权年利率</text>
+        <text class="cnum num">{{cv.weightedRate}}%</text>
+        <text class="csub">公积金/商贷按本金加权</text>
+      </view>
+    </view>
+    <view class="note">{{cv.otherLine}}</view>
+  </view>
+
+  <view class="foot">
+    <text>月供公式与 Excel PMT / 等额本金解析式一致,未做任何中途取整。</text>
+  </view>
+</block>

@@ -1,0 +1,15 @@
+.letter {
+  white-space: pre-wrap; background: #fbfbfc; border: 1rpx solid var(--line);
+  border-radius: 12rpx; padding: 28rpx; font-size: 28rpx; line-height: 1.9; color: var(--ink);
+}
+.thead, .trow { display: flex; padding: 16rpx 0; border-bottom: 1rpx solid var(--line); font-size: 27rpx; }
+.thead { color: var(--ink-2); font-weight: 600; }
+.c-no { width: 90rpx; } .c-name { width: 150rpx; } .c-room { flex: 1; } .c-area { width: 130rpx; text-align: right; }
+.tipcard { background: var(--brand-soft); color: #1a4f9c; font-size: 27rpx; line-height: 1.8; }
+
+/* v2 追加：联名表备注与签名预览 */
+.note { font-size: 25rpx; color: var(--ink-2); }
+.signs { display: flex; flex-wrap: wrap; gap: 16rpx; }
+.sign-cell { width: calc(50% - 8rpx); box-sizing: border-box; border: 1rpx solid var(--line); border-radius: 12rpx; padding: 12rpx; }
+.sign-img { width: 100%; height: 120rpx; background: #fff; }
+.sign-cap { font-size: 23rpx; color: var(--ink-3); text-align: center; margin-top: 8rpx; }

@@ -1,0 +1,96 @@
+<view class="wrap">
+
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+
+  <block wx:elif="{{stats}}">
+
+    <!-- 总览卡 -->
+    <view class="card">
+      <view class="row between">
+        <view class="h1">{{stats.community.communityName}}</view>
+        <view wx:if="{{stats.qualified}}" class="badge ok">已达标</view>
+        <view wx:else class="badge wait">征集中</view>
+      </view>
+      <view class="dim mt8">拟向 {{stats.community.streetOffice}} 书面要求成立首次业主大会会议筹备组</view>
+
+      <view wx:if="{{stats.community.noticeText}}" class="notice mt16">{{stats.community.noticeText}}</view>
+
+      <view wx:if="{{!stats.community.configured}}" class="warnbox mt16">
+        尚未设置小区总人数与建筑面积总数，进度暂无法计算。请发起人在「小区参数」中填写。
+      </view>
+    </view>
+
+    <!-- 全流程路线图（迷你） -->
+    <view class="card" bindtap="goGuide">
+      <view class="row between">
+        <view class="h2" style="margin-bottom:0;">成立业委会进展</view>
+        <text class="dim">第 {{currentNo}}/6 步 ›</text>
+      </view>
+      <view class="roadmap mt16">
+        <block wx:for="{{stageLabels}}" wx:key="key">
+          <view class="rm-node {{currentNo > index+1 ? 'done' : ''}} {{currentNo === index+1 ? 'cur' : ''}}">
+            <view class="rm-dot">{{index + 1}}</view>
+            <view class="rm-label">{{item.short}}</view>
+          </view>
+          <view wx:if="{{index < 5}}" class="rm-line {{currentNo > index+1 ? 'done' : ''}}"></view>
+        </block>
+      </view>
+      <view class="dim mt8">点开查看每一步要做什么、用哪些官方文书 →</view>
+    </view>
+
+    <!-- 双口径进度 -->
+    <view class="card">
+      <view class="h2">联名进度（达标取两条口径之一）</view>
+
+      <view class="metric">
+        <view class="row between">
+          <text class="muted">人数口径（{{stats.community.headcountLabel}}）</text>
+          <text class="pct {{stats.headcountReached ? 'ok' : ''}}">{{stats.headcountPct}}%</text>
+        </view>
+        <view class="bar {{stats.headcountReached ? 'ok' : ''}} mt8">
+          <i style="width: {{stats.headcountPct > 100 ? 100 : stats.headcountPct}}%"></i>
+        </view>
+        <view class="dim mt8">已确认 {{stats.approvedCount}} / {{stats.community.totalHouseholds || '—'}}　门槛 {{stats.community.thresholdPct * 100}}%</view>
+      </view>
+
+      <view class="metric mt24">
+        <view class="row between">
+          <text class="muted">投票权口径（专有部分建筑面积）</text>
+          <text class="pct {{stats.areaReached ? 'ok' : ''}}">{{stats.areaPct}}%</text>
+        </view>
+        <view class="bar {{stats.areaReached ? 'ok' : ''}} mt8">
+          <i style="width: {{stats.areaPct > 100 ? 100 : stats.areaPct}}%"></i>
+        </view>
+        <view class="dim mt8">已确认 {{stats.approvedArea}} ㎡ / {{stats.community.totalArea || '—'}} ㎡</view>
+      </view>
+
+      <view wx:if="{{!stats.qualified && stats.community.configured}}" class="hint mt24">
+        还差：人数再 {{stats.needHeadcount}} 户，或建筑面积再 {{stats.needArea}} ㎡，即可达标。
+      </view>
+      <view wx:if="{{stats.qualified}}" class="hint ok mt24">
+        已满足法定联名比例，可进入下一步：导出申请书与联名清单，向街道办提交。
+      </view>
+    </view>
+
+    <!-- 状态计数 -->
+    <view class="card">
+      <view class="counts">
+        <view class="cell"><view class="num">{{stats.approvedCount}}</view><view class="dim">已通过</view></view>
+        <view class="cell"><view class="num warn">{{stats.pendingCount}}</view><view class="dim">待审核</view></view>
+        <view class="cell"><view class="num">{{stats.rejectedCount}}</view><view class="dim">已驳回</view></view>
+      </view>
+    </view>
+
+    <button class="btn" bindtap="goRegister">我要联名签字</button>
+    <button class="btn ghost mt16" bindtap="goGuide">了解流程与法律依据</button>
+
+    <!-- 管理员入口 -->
+    <view wx:if="{{stats.isAdmin}}" class="card mt24">
+      <view class="h2">发起人 / 审核员</view>
+      <button class="btn line" bindtap="goAdmin">审核联名（待审 {{stats.pendingCount}}）</button>
+      <button class="btn line mt16" bindtap="goExport">导出申请书与联名清单</button>
+      <button class="btn line mt16" bindtap="goConfig">小区参数设置</button>
+    </view>
+
+  </block>
+</view>

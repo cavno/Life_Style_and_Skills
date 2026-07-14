@@ -1,0 +1,11 @@
+.grp { padding: 0; overflow: hidden; }
+.grp-h { display: flex; justify-content: space-between; align-items: center; padding: 28rpx 32rpx; }
+.grp-t { font-size: 30rpx; font-weight: 600; }
+.grp-a { font-size: 40rpx; color: var(--ink-3); line-height: 1; }
+.grp-b { padding: 0 32rpx 20rpx; }
+.doc { display: flex; gap: 18rpx; padding: 16rpx 0; border-top: 1rpx solid var(--line); }
+.doc-no { flex: none; width: 180rpx; font-size: 25rpx; color: var(--brand); font-weight: 600; }
+.doc-main { flex: 1; }
+.doc-name { font-size: 28rpx; font-weight: 500; }
+.doc-use { font-size: 25rpx; color: var(--ink-2); line-height: 1.6; margin-top: 6rpx; }
+.foot { margin-top: 20rpx; padding: 0 8rpx; }

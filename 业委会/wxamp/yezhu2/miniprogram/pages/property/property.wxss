@@ -1,0 +1,19 @@
+.lane { display: flex; flex-direction: column; gap: 12rpx; }
+.lane-i { background: var(--card-soft); border-radius: 12rpx; padding: 18rpx 22rpx; display: flex; justify-content: space-between; align-items: center; }
+.lane-i.main { background: var(--brand-soft); }
+.lane-t { font-weight: 600; font-size: 29rpx; }
+.lane-i.main .lane-t { color: var(--brand); }
+.lane-d { font-size: 25rpx; color: var(--ink-3); }
+
+.pstep { display: flex; gap: 20rpx; padding: 16rpx 0; }
+.pn { flex: none; width: 48rpx; height: 48rpx; border-radius: 50%; background: var(--brand-soft); color: var(--brand); text-align: center; line-height: 48rpx; font-weight: 700; }
+.pc { flex: 1; }
+.pt { font-weight: 600; font-size: 29rpx; }
+.pd { font-size: 26rpx; color: var(--ink-2); line-height: 1.7; margin-top: 8rpx; }
+
+.vote .vrow { display: flex; gap: 20rpx; padding: 16rpx 0; border-bottom: 1rpx solid var(--line); }
+.vote .vrow:last-of-type { border-bottom: none; }
+.vk { flex: none; width: 130rpx; color: var(--ink-3); font-size: 26rpx; }
+.vv { flex: 1; font-size: 28rpx; color: var(--ink); line-height: 1.6; }
+.tipcard { background: var(--warn-soft); color: #8a5a1a; font-size: 27rpx; line-height: 1.7; }
+.foot { margin-top: 20rpx; padding: 0 8rpx; line-height: 1.6; }

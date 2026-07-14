@@ -1,0 +1,8 @@
+.tabs { display: flex; background: #fff; border-radius: 14rpx; padding: 8rpx; }
+.tabs .tab { flex: 1; text-align: center; padding: 16rpx 0; font-size: 28rpx; color: var(--ink-2); border-radius: 10rpx; }
+.tabs .tab.on { background: var(--brand-soft); color: var(--brand); font-weight: 600; }
+.item { padding: 28rpx 32rpx; }
+.item .name { font-size: 32rpx; font-weight: 600; }
+.item .room { color: var(--ink-2); margin-left: 16rpx; }
+.ops { display: flex; gap: 16rpx; justify-content: flex-end; }
+.loadmore { text-align: center; color: var(--brand); padding: 24rpx; font-size: 28rpx; }

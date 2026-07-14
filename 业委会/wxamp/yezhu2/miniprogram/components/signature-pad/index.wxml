@@ -1,0 +1,14 @@
+<view class="sig-box">
+  <canvas
+    type="2d"
+    id="sig"
+    class="sig-canvas"
+    disable-scroll="{{true}}"
+    bindtouchstart="start"
+    bindtouchmove="move"
+    bindtouchend="end"></canvas>
+  <view wx:if="{{!hasInk}}" class="sig-hint">在此处手写签名</view>
+  <view class="sig-tools">
+    <text class="sig-clear" bindtap="clear">清除重写</text>
+  </view>
+</view>

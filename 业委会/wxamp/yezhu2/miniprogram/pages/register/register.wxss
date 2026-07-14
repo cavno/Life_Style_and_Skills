@@ -1,0 +1,14 @@
+.matter { display: inline-block; background: var(--brand-soft); color: var(--brand); padding: 8rpx 20rpx; border-radius: 10rpx; font-size: 27rpx; font-weight: 600; }
+.tip { padding: 16rpx 20rpx; border-radius: 12rpx; font-size: 27rpx; }
+.tip.ok { background: var(--ok-soft); color: var(--ok); }
+.tip.no { background: #fbeaec; color: var(--danger); }
+.certs { display: flex; gap: 24rpx; }
+.cert-cell { flex: 1; }
+.cert-img { width: 100%; height: 200rpx; border-radius: 12rpx; }
+.cert-add {
+  width: 100%; height: 200rpx; box-sizing: border-box;
+  border: 1rpx dashed #b9c0c9; border-radius: 12rpx;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink-3); background: var(--card-soft); font-size: 28rpx;
+}
+.cert-cap { text-align: center; font-size: 24rpx; color: var(--ink-3); margin-top: 10rpx; }

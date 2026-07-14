@@ -1,0 +1,38 @@
+.hero .stagebar {
+  display: inline-block; background: var(--brand-soft); color: var(--brand);
+  padding: 8rpx 22rpx; border-radius: 999rpx; font-size: 26rpx; font-weight: 600;
+}
+.entries { display: flex; flex-wrap: wrap; gap: 16rpx; margin-bottom: 24rpx; }
+.entry {
+  width: calc(50% - 8rpx); box-sizing: border-box; background: var(--card);
+  border-radius: 16rpx; padding: 24rpx; box-shadow: 0 1rpx 0 var(--line);
+}
+.entry .e-t { font-size: 30rpx; font-weight: 600; }
+.entry .e-d { font-size: 24rpx; color: var(--ink-3); margin-top: 6rpx; }
+
+.steps { position: relative; }
+.step { background: var(--card); border: 1rpx solid var(--line); border-radius: 16rpx; margin-bottom: 16rpx; box-shadow: 0 2rpx 10rpx rgba(31,41,55,.04); overflow: hidden; }
+.step.cur { border: 2rpx solid var(--brand); }
+.step-head { display: flex; align-items: flex-start; padding: 28rpx 28rpx; gap: 20rpx; }
+.step-no {
+  flex: none; width: 56rpx; height: 56rpx; border-radius: 50%;
+  background: var(--line); color: var(--ink-2); text-align: center; line-height: 56rpx;
+  font-weight: 700; font-size: 30rpx;
+}
+.step.cur .step-no { background: var(--brand); color: #fff; }
+.step.past .step-no { background: var(--ok-soft); color: var(--ok); }
+.step-main { flex: 1; }
+.step-title { font-size: 31rpx; font-weight: 600; }
+.curtag { font-size: 22rpx; color: var(--brand); background: var(--brand-soft); padding: 2rpx 14rpx; border-radius: 999rpx; margin-left: 12rpx; font-weight: 500; }
+.step-sum { font-size: 26rpx; color: var(--ink-2); margin-top: 8rpx; }
+.step-arrow { flex: none; font-size: 24rpx; color: var(--ink-3); align-self: center; }
+.step-body { background: var(--card-soft); margin: 0 24rpx 24rpx; border-radius: 14rpx; padding: 24rpx 26rpx; }
+.pt { font-size: 27rpx; color: var(--ink-2); line-height: 1.7; margin-bottom: 12rpx; }
+.pt:last-child { margin-bottom: 0; }
+.docs { margin-top: 8rpx; }
+.docs-label { font-size: 25rpx; color: var(--ink-3); }
+.doc-chip {
+  display: inline-block; font-size: 24rpx; color: var(--brand);
+  background: var(--brand-soft); padding: 4rpx 16rpx; border-radius: 8rpx; margin: 8rpx 8rpx 0 0;
+}
+.foot { margin-top: 20rpx; padding: 0 8rpx; line-height: 1.6; }

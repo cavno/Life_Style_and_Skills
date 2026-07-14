@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "联名登记",
+  "usingComponents": {
+    "signature-pad": "/components/signature-pad/index"
+  }
+}

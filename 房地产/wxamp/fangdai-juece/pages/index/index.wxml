@@ -1,0 +1,326 @@
+<!-- ============ 顶部分段 ============ -->
+<view class="seg">
+  <view class="seg-item {{tab === 'sheet' ? 'on' : ''}}" data-tab="sheet" bindtap="onTab">资产负债表</view>
+  <view class="seg-item {{tab === 'calc' ? 'on' : ''}}" data-tab="calc" bindtap="onTab">贷款测算</view>
+</view>
+
+<!-- ============================ 资产负债表视角 ============================ -->
+<block wx:if="{{tab === 'sheet'}}">
+
+  <!-- 判定带:把家庭当公司,先给一句"结构是否成立" -->
+  <view class="verdict v-{{v.verdictKey}}">
+    <view class="verdict-word serif">{{v.verdictWord}}</view>
+    <view class="verdict-line">{{v.verdictLine}}</view>
+    <view class="verdict-sub num">{{v.verdictSub}}</view>
+  </view>
+
+  <!-- 签名元素:双栏资产负债表,资产 = 负债 + 权益 -->
+  <view class="card">
+    <view class="bs-head">
+      <text class="ptitle serif">家庭资产负债表</text>
+      <text class="lab">重组后 · 单位 万元</text>
+    </view>
+    <view class="identity num">资产 {{v.bs.vAssets}} = 负债 {{v.bs.vDebt}} + 净资产 {{v.bs.vEquity}}</view>
+
+    <view class="bs">
+      <!-- 资产侧 -->
+      <view class="bs-col">
+        <view class="bs-bar">
+          <view class="seg s-house" style="height:{{v.bs.hHouse}}%"><text>核心资产 · 房</text><text class="num">{{v.bs.vHouse}}</text></view>
+          <view class="seg s-dom" style="height:{{v.bs.hDom}}%"><text>境内可投</text><text class="num">{{v.bs.vDom}}</text></view>
+          <view class="seg s-off hatch" style="height:{{v.bs.hOff}}%"><text>境外权益*</text><text class="num">{{v.bs.vOff}}</text></view>
+          <view class="seg s-cash" style="height:{{v.bs.hCushion}}%"><text>安全垫</text><text class="num">{{v.bs.vCushion}}</text></view>
+        </view>
+        <view class="bs-cap">资产</view>
+      </view>
+      <!-- 负债 + 权益侧 -->
+      <view class="bs-col">
+        <view class="bs-bar">
+          <view class="seg s-eq" style="height:{{v.bs.hEquity}}%"><text>净资产</text><text class="num">{{v.bs.vEquity}}</text></view>
+          <view class="seg s-comm" style="height:{{v.bs.hComm}}%"><text>商贷</text><text class="num">{{v.bs.vComm}}</text></view>
+          <view class="seg s-fund" style="height:{{v.bs.hFund}}%"><text>公积金</text><text class="num">{{v.bs.vFund}}</text></view>
+        </view>
+        <view class="bs-cap">负债 + 权益</view>
+      </view>
+    </view>
+    <view wx:if="{{v.offshoreNote}}" class="bs-foot">* 境外权益受结汇额度限制(约 3 万/月回流),不能即时偿付人民币负债,故单独标注。</view>
+  </view>
+
+  <!-- 两个主滑杆 -->
+  <view class="card">
+    <view class="srow">
+      <text class="lab">房产总价(锁定的核心资产)</text>
+      <view class="sval"><text class="big num">{{v.priceStr}}</text><text class="unit">万</text></view>
+    </view>
+    <slider min="300" max="600" step="5" value="{{v.priceSlider}}"
+            data-key="price" bindchanging="onMainSlider" bindchange="onMainSlider"
+            activeColor="#8B2C2C" backgroundColor="#E4DAC4" block-size="22" block-color="#1A1814"/>
+    <view class="zonechip z-{{v.zoneCls}}">{{v.zoneLabel}}</view>
+
+    <view class="srow mt">
+      <text class="lab">妻子税后月收入(固收腿票息)</text>
+      <view class="sval"><text class="big num">{{v.wifeStr}}</text><text class="unit">万/月</text></view>
+    </view>
+    <slider min="15" max="50" step="1" value="{{v.wifeSlider}}"
+            data-key="wife" bindchanging="onMainSlider" bindchange="onMainSlider"
+            activeColor="#8B2C2C" backgroundColor="#E4DAC4" block-size="22" block-color="#1A1814"/>
+  </view>
+
+  <!-- 核心比率 -->
+  <view class="card">
+    <view class="ptitle serif">核心比率</view>
+    <view class="grid mt">
+      <view class="cell">
+        <text class="lab">加权债务成本</text>
+        <text class="cnum num">{{v.wacc}}%</text>
+        <text class="csub">= WACC(仅债务侧)· 月供 ¥{{v.pmtTotal}}</text>
+      </view>
+      <view class="cell">
+        <text class="lab">DSCR 偿债保障</text>
+        <text class="cnum num c-{{v.dscrCls}}">{{v.dscr}}×</text>
+        <text class="csub">收入 ÷ 月供 · ≥1 才不动用 α</text>
+      </view>
+      <view class="cell">
+        <text class="lab">全口径覆盖</text>
+        <text class="cnum num c-{{v.coverageCls}}">{{v.coverage}}×</text>
+        <text class="csub num c-{{v.surplusCls}}">含生活后月结余 {{v.surplusStr}} 元</text>
+      </view>
+      <view class="cell">
+        <text class="lab">杠杆(房产层 / 家庭层)</text>
+        <text class="cnum num">{{v.assetLev}}× <text class="slash">/</text> {{v.hhLev}}×</text>
+        <text class="csub">房产是 5 倍 LBO,家庭整体仅 ~1.5 倍</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 息差:锁定套利 vs 风险溢价(诚实拆分) -->
+  <view class="card">
+    <view class="ptitle serif">息差 · 套利的两副面孔</view>
+    <view class="srow mt">
+      <text class="lab">境内再投资收益率 r*</text>
+      <view class="sval"><text class="big num">{{v.rStarStr}}</text><text class="unit">%</text></view>
+    </view>
+    <slider min="10" max="150" step="5" value="{{v.rStarSlider}}"
+            data-key="rstar" bindchanging="onMainSlider" bindchange="onMainSlider"
+            activeColor="#B89060" backgroundColor="#E4DAC4" block-size="22" block-color="#1A1814"/>
+
+    <view class="carry">
+      <view class="carry-row pos-{{v.lcCls}}">
+        <view class="cl">
+          <text class="ct">锁定息差(可套利)</text>
+          <text class="cd">境内固收 r* − 债务成本 {{v.waccForCarry}}%</text>
+        </view>
+        <text class="cv num">{{v.lockedCarry}} pp</text>
+      </view>
+      <view class="carry-tag t-{{v.lcCls}}">{{v.lcWord}}</view>
+
+      <view class="carry-row warn-row">
+        <view class="cl">
+          <text class="ct">权益风险溢价(<text class="em">不是</text>套利)</text>
+          <text class="cd">美股 E[R] {{v.equityERStr}}% − 债务成本 {{v.waccForCarry}}%</text>
+        </view>
+        <text class="cv num">{{v.equityPremium}} pp</text>
+      </view>
+      <view class="carry-caveat">这一项波动巨大、可能为负,且锁在结汇额度后面——不能用来按月偿债。把它当成"必赚的息差"正是杠杆交易里最贵的认知错误,它只能是 α,不能进现金流下限。</view>
+    </view>
+
+    <view class="npv n-{{v.npvCls}} num">{{v.npvLine}}</view>
+    <view class="note">盈亏临界点恰为商贷利率 {{p.commRate}}%:r* 高于它→保留商贷;低于它→先还商贷。</view>
+  </view>
+
+  <!-- 久期匹配 -->
+  <view class="card">
+    <view class="ptitle serif">久期匹配 · 别用短债扛长资产</view>
+    <view class="dur mt">
+      <view class="dur-row">
+        <text class="dur-lab">资产久期</text>
+        <view class="dur-track"><view class="dur-fill asset" style="width:100%"></view></view>
+        <text class="dur-val num">~30 年</text>
+      </view>
+      <view class="dur-row">
+        <text class="dur-lab">负债久期</text>
+        <view class="dur-track"><view class="dur-fill {{v.durMatched ? 'ok' : 'bad'}}" style="width:{{v.durLiabPct}}%"></view></view>
+        <text class="dur-val num">{{v.durLiab}} 年</text>
+      </view>
+    </view>
+    <view class="dur-toggle">
+      <view class="chip {{v.durMode === 'mortgage' ? 'on' : ''}}" data-m="mortgage" bindtap="onDurMode">30 年按揭</view>
+      <view class="chip {{v.durMode === 'biz' ? 'on' : ''}}" data-m="biz" bindtap="onDurMode">改用经营贷</view>
+    </view>
+    <view wx:if="{{v.durMatched}}" class="dur-msg ok">长债配长资产:久期匹配,抽贷风险被隔离。</view>
+    <view wx:else class="dur-msg bad">3 年期短债扛 30 年资产:期限错配。一旦抽贷/利率跳升,被迫贱卖核心资产 → 流动性危机。这正是此前否决经营贷置换的原因。</view>
+  </view>
+
+  <!-- 尾部对冲:安全垫 = 看跌期权 -->
+  <view class="card">
+    <view class="ptitle serif">尾部对冲 · 安全垫即一份看跌期权</view>
+    <view class="grid mt">
+      <view class="cell">
+        <text class="lab">保护深度</text>
+        <text class="cnum num">{{v.putMonths}} 个月</text>
+        <text class="csub">零收入下可覆盖月供+生活</text>
+      </view>
+      <view class="cell">
+        <text class="lab">年化"保费"</text>
+        <text class="cnum num">{{v.putPremium}} 万</text>
+        <text class="csub">= 垫 {{v.cushionStr}} 万 ×(r* − 无风险)</text>
+      </view>
+    </view>
+    <view class="putnote">这笔钱存入国债/大额存单,为家庭下限强制上险,切断金融市场波动向基本生存的传导路径。保费就是放弃的息差——买的是确定性。</view>
+    <view wx:if="{{v.cushionWarn}}" class="dur-msg bad">留存现金已低于安全垫目标,这份看跌期权尚未买足,建议下调总价。</view>
+  </view>
+
+  <!-- 人力资本组合 -->
+  <view class="card">
+    <view class="ptitle serif">人力资本 · 一债一股的组合</view>
+    <view class="hc mt">
+      <view class="hc-side fi">
+        <view class="hc-name">妻子 · 类固收</view>
+        <view class="hc-desc">像债券按月派息,负责"下限"</view>
+        <view class="hc-num num">票息 ¥{{v.hcCouponYuan}}/月</view>
+      </view>
+      <view class="hc-side eq">
+        <view class="hc-name">本人 · 权益类</view>
+        <view class="hc-desc">高波动 α,负责"超额",不托底</view>
+        <view class="hc-num num">受结汇限制</view>
+      </view>
+    </view>
+    <view class="hc-check c-{{v.hcCovers ? 'ok' : 'bad'}}">
+      <text wx:if="{{v.hcCovers}}">固收票息 {{v.hcCouponYuan}} 元 ≥ 固定支出 {{v.hcFixedYuan}} 元 → 下限由债券腿独立托起,权益腿是纯加分(月结余 {{v.hcSurplus}} 元)。</text>
+      <text wx:else>固收票息 {{v.hcCouponYuan}} 元 &lt; 固定支出 {{v.hcFixedYuan}} 元 → 下限要靠权益腿补,等于把波动焊进了生存现金流(缺口 {{v.hcSurplus}} 元)。</text>
+    </view>
+  </view>
+
+  <!-- 参数 -->
+  <view class="card">
+    <view class="phead" bindtap="toggleParams">
+      <text class="ptitle serif">参数 · 开账口径</text>
+      <text class="arrow {{showParams ? 'open' : ''}}">›</text>
+    </view>
+    <block wx:if="{{showParams}}">
+      <view class="form">
+        <view class="frow">
+          <text class="flab">公积金可贷额度(万)</text>
+          <view class="presets">
+            <view class="chip {{p.fundQuota === 114 ? 'on' : ''}}" data-q="114" bindtap="onPreset">114 仅妻子</view>
+            <view class="chip {{p.fundQuota === 209 ? 'on' : ''}}" data-q="209" bindtap="onPreset">209 家庭</view>
+            <view class="chip {{p.fundQuota === 260 ? 'on' : ''}}" data-q="260" bindtap="onPreset">260 待核实</view>
+          </view>
+          <input class="fin num" type="digit" value="{{ps.fundQuota}}" data-key="fundQuota" bindinput="onParamInput"/>
+        </view>
+        <view class="frow2">
+          <view class="fcol"><text class="flab">可用人民币(万)</text>
+            <input class="fin num" type="digit" value="{{ps.available}}" data-key="available" bindinput="onParamInput"/></view>
+          <view class="fcol"><text class="flab">境外美股(万)</text>
+            <input class="fin num" type="digit" value="{{ps.offshore}}" data-key="offshore" bindinput="onParamInput"/></view>
+        </view>
+        <view class="frow2">
+          <view class="fcol"><text class="flab">安全垫目标(万)</text>
+            <input class="fin num" type="digit" value="{{ps.cushionT}}" data-key="cushionT" bindinput="onParamInput"/></view>
+          <view class="fcol"><text class="flab">中介评估杂费(万)</text>
+            <input class="fin num" type="digit" value="{{ps.misc}}" data-key="misc" bindinput="onParamInput"/></view>
+        </view>
+        <view class="frow2">
+          <view class="fcol"><text class="flab">公积金利率(%)</text>
+            <input class="fin num" type="digit" value="{{ps.fundRate}}" data-key="fundRate" bindinput="onParamInput"/></view>
+          <view class="fcol"><text class="flab">商贷利率(%)</text>
+            <input class="fin num" type="digit" value="{{ps.commRate}}" data-key="commRate" bindinput="onParamInput"/></view>
+        </view>
+        <view class="frow2">
+          <view class="fcol"><text class="flab">美股预期年化(%)</text>
+            <input class="fin num" type="digit" value="{{ps.equityER}}" data-key="equityER" bindinput="onParamInput"/></view>
+          <view class="fcol"><text class="flab">无风险利率(%)</text>
+            <input class="fin num" type="digit" value="{{ps.riskFree}}" data-key="riskFree" bindinput="onParamInput"/></view>
+        </view>
+        <view class="frow2">
+          <view class="fcol"><text class="flab">首付比例(%)</text>
+            <input class="fin num" type="digit" value="{{ps.downPct}}" data-key="downPct" bindinput="onParamInput"/></view>
+          <view class="fcol"><text class="flab">年限(年)</text>
+            <input class="fin num" type="digit" value="{{ps.years}}" data-key="years" bindinput="onParamInput"/></view>
+        </view>
+        <view class="frow2">
+          <view class="fcol"><text class="flab">非房月支出(万/月)</text>
+            <input class="fin num" type="digit" value="{{ps.living}}" data-key="living" bindinput="onParamInput"/></view>
+          <view class="fcol sw2"><text class="flab">建面 >140㎡</text>
+            <switch checked="{{p.over140}}" color="#8B2C2C" bindchange="onOver140"/></view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <view class="foot">
+    <view class="footline">框架借自"家庭即公司"的资产负债表视角:旧房去杠杆+资质重置→用 30 年长债锁定核心资产→以妻子固收腿覆盖底层负债→留 80 万看跌期权隔离尾部→其余流动性博取 α。月供等额本息,公式与 Excel PMT 一致。</view>
+    <view class="footline">两处与原文档的口径差异已在工具中校正:① 公积金默认按已核实的 209 万(260 万仍标"待核实");② 美股收益是风险溢价而非锁定息差,且受结汇限制,不计入可偿债现金流。</view>
+    <view class="footline">本工具离线运行,不上传数据;仅供参考,不构成投资或法律建议。公积金额度以 12329 核定、商贷利率以放款行为准。</view>
+  </view>
+</block>
+
+<!-- ============================ 测算 ============================ -->
+<block wx:if="{{tab === 'calc'}}">
+  <view class="card">
+    <view class="form">
+      <view class="frow2">
+        <view class="fcol"><text class="flab">房产总价(万)</text>
+          <input class="fin num" type="digit" value="{{cs.price}}" data-key="price" bindinput="onCalcInput"/></view>
+        <view class="fcol"><text class="flab">首付比例(%)</text>
+          <input class="fin num" type="digit" value="{{cs.downPct}}" data-key="downPct" bindinput="onCalcInput"/></view>
+      </view>
+      <view class="frow2">
+        <view class="fcol"><text class="flab">公积金额度(万)</text>
+          <input class="fin num" type="digit" value="{{cs.fundQuota}}" data-key="fundQuota" bindinput="onCalcInput"/></view>
+        <view class="fcol"><text class="flab">年限(年)</text>
+          <input class="fin num" type="digit" value="{{cs.years}}" data-key="years" bindinput="onCalcInput"/></view>
+      </view>
+      <view class="frow2">
+        <view class="fcol"><text class="flab">公积金利率(%)</text>
+          <input class="fin num" type="digit" value="{{cs.fundRate}}" data-key="fundRate" bindinput="onCalcInput"/></view>
+        <view class="fcol"><text class="flab">商贷利率(%)</text>
+          <input class="fin num" type="digit" value="{{cs.commRate}}" data-key="commRate" bindinput="onCalcInput"/></view>
+      </view>
+      <view class="methods">
+        <view class="chip {{c.method === 'annuity' ? 'on' : ''}}" data-m="annuity" bindtap="onMethod">等额本息</view>
+        <view class="chip {{c.method === 'principal' ? 'on' : ''}}" data-m="principal" bindtap="onMethod">等额本金</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="grid">
+      <view class="cell hero">
+        <text class="lab">{{cv.isAnnuity ? '月供(恒定)' : '首月月供'}}</text>
+        <text class="cnum num">¥{{cv.pmtTotal}}</text>
+        <text class="csub num">公积金 {{cv.pmtFund}} · 商贷 {{cv.pmtComm}}</text>
+      </view>
+      <view class="cell" wx:if="{{!cv.isAnnuity}}">
+        <text class="lab">逐月递减 / 末月</text>
+        <text class="cnum num">−{{cv.monthlyDec}}</text>
+        <text class="csub num">末月 ¥{{cv.lastPay}}</text>
+      </view>
+      <view class="cell">
+        <text class="lab">贷款合计</text>
+        <text class="cnum num">{{cv.loanTotal}} 万</text>
+        <text class="csub num">公积金 {{cv.fundLoan}} + 商贷 {{cv.commLoan}}</text>
+      </view>
+      <view class="cell">
+        <text class="lab">首付</text>
+        <text class="cnum num">{{cv.down}} 万</text>
+        <text class="csub num">期数 {{cv.n}}</text>
+      </view>
+      <view class="cell">
+        <text class="lab">总利息</text>
+        <text class="cnum num">{{cv.totalInterest}} 万</text>
+        <text class="csub num">总还款 {{cv.totalPayment}} 万</text>
+      </view>
+      <view class="cell">
+        <text class="lab">资金加权年利率</text>
+        <text class="cnum num">{{cv.weightedRate}}%</text>
+        <text class="csub">公积金/商贷按本金加权</text>
+      </view>
+    </view>
+    <view class="note">{{cv.otherLine}}</view>
+  </view>
+
+  <view class="foot">
+    <view class="footline">月供公式与 Excel PMT / 等额本金解析式一致,未做任何中途取整。</view>
+  </view>
+</block>

@@ -1,0 +1,199 @@
+/* ---------- 分段切换 ---------- */
+.seg {
+  display: flex; margin: 24rpx 24rpx;
+  border: 1rpx solid var(--line); border-radius: 6rpx;
+  overflow: hidden; background: var(--paper);
+}
+.seg-item {
+  flex: 1; text-align: center; padding: 20rpx 0;
+  font-size: 28rpx; color: var(--ink-2); letter-spacing: 4rpx;
+}
+.seg-item.on { background: var(--ink); color: #F7F3EA; }
+
+/* ---------- 判定带 ---------- */
+.verdict {
+  margin: 0 24rpx 24rpx; padding: 28rpx 28rpx 28rpx 32rpx;
+  background: var(--paper); border: 1rpx solid var(--line);
+  border-left: 10rpx solid var(--ok); border-radius: 6rpx;
+}
+.verdict-word { font-size: 56rpx; line-height: 1.2; color: var(--ok); }
+.verdict-line { margin-top: 8rpx; font-size: 26rpx; color: var(--ink); }
+.verdict-sub { margin-top: 6rpx; font-size: 23rpx; color: var(--ink-2); }
+.v-comfort { border-left-color: var(--ok); }
+.v-comfort .verdict-word { color: var(--ok); }
+.v-edge { border-left-color: var(--warn); }
+.v-edge .verdict-word { color: var(--warn); }
+.v-reliant { border-left-color: var(--warn); background: #FBF4E6; }
+.v-reliant .verdict-word { color: var(--warn); }
+.v-redline, .v-nocash { border-left-color: var(--bad); background: #F9ECE9; }
+.v-redline .verdict-word, .v-nocash .verdict-word { color: var(--bad); }
+
+/* ---------- 签名:双栏资产负债表 ---------- */
+.bs-head { display: flex; justify-content: space-between; align-items: baseline; }
+.identity {
+  margin-top: 10rpx; padding-bottom: 18rpx; border-bottom: 1rpx solid var(--line);
+  font-size: 23rpx; color: var(--ink-2); letter-spacing: 0.5rpx;
+}
+.bs { display: flex; justify-content: space-between; margin-top: 22rpx; }
+.bs-col { width: 48%; }
+.bs-bar {
+  height: 460rpx; display: flex; flex-direction: column;
+  border: 1rpx solid var(--line); border-radius: 4rpx; overflow: hidden;
+}
+.bs-bar .seg {
+  display: flex; flex-direction: column; justify-content: center;
+  align-items: center; min-height: 0; overflow: hidden;
+  font-size: 19rpx; color: #fff; line-height: 1.25;
+  transition: height 0.25s ease;
+}
+.bs-bar .seg .num { font-size: 21rpx; }
+.s-house { background: #6E3B2E; }      /* 核心资产:深赭 */
+.s-dom   { background: #B89060; }       /* 境内可投:金 */
+.s-off   { background: #7C8B6A; }       /* 境外权益:橄榄 */
+.s-cash  { background: #3E6B4F; }       /* 安全垫:绿 */
+.s-eq    { background: #1A1814; }       /* 净资产:墨 */
+.s-comm  { background: #8B2C2C; }       /* 商贷:绛红 */
+.s-fund  { background: #2E5E6E; }       /* 公积金:青蓝 */
+/* 境外权益:斜纹标注"不可即时动用" */
+.hatch {
+  background-image: repeating-linear-gradient(45deg,
+    rgba(255,255,255,0.22) 0, rgba(255,255,255,0.22) 4rpx,
+    transparent 4rpx, transparent 12rpx);
+}
+.bs-cap { text-align: center; margin-top: 12rpx; font-size: 22rpx; color: var(--ink-2); letter-spacing: 3rpx; }
+.bs-foot { margin-top: 16rpx; font-size: 20rpx; color: var(--ink-2); line-height: 1.6; }
+
+/* ---------- 滑杆 ---------- */
+.srow { display: flex; justify-content: space-between; align-items: baseline; }
+.srow.mt { margin-top: 28rpx; }
+.sval .big { font-size: 52rpx; }
+.sval .unit { font-size: 24rpx; color: var(--ink-2); margin-left: 8rpx; }
+slider { margin: 12rpx 4rpx 0; }
+.zonechip {
+  display: inline-block; margin-top: 10rpx; padding: 6rpx 16rpx;
+  font-size: 21rpx; border-radius: 4rpx; border: 1rpx solid var(--line);
+}
+.z-ok { color: var(--ok); background: #EEF4EF; border-color: #CFE0D4; }
+.z-warn { color: var(--warn); background: #FBF4E6; border-color: #ECDCC0; }
+.z-bad { color: var(--bad); background: #F9ECE9; border-color: #EBD2CD; }
+
+/* ---------- 指标网格 ---------- */
+.grid { display: flex; flex-wrap: wrap; }
+.grid.mt { margin-top: 6rpx; }
+.cell {
+  width: 50%; box-sizing: border-box; padding: 14rpx 12rpx 14rpx 0;
+  display: flex; flex-direction: column;
+}
+.cell.hero { width: 100%; padding-bottom: 20rpx; }
+.cell.hero .cnum { font-size: 64rpx; color: var(--crimson); }
+.cnum { font-size: 40rpx; margin-top: 4rpx; }
+.cnum .slash { color: var(--line); font-size: 32rpx; }
+.csub { font-size: 20rpx; color: var(--ink-2); margin-top: 2rpx; }
+.c-ok { color: var(--ok); }
+.c-warn { color: var(--warn); }
+.c-bad { color: var(--bad); }
+
+/* ---------- 息差 ---------- */
+.carry { margin-top: 16rpx; }
+.carry-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16rpx; border: 1rpx solid var(--line); border-radius: 4rpx;
+  margin-bottom: 8rpx;
+}
+.carry-row .cl { display: flex; flex-direction: column; flex: 1; padding-right: 16rpx; }
+.carry-row .ct { font-size: 24rpx; color: var(--ink); }
+.carry-row .cd { font-size: 19rpx; color: var(--ink-2); margin-top: 2rpx; }
+.carry-row .cv { font-size: 36rpx; }
+.carry-row .em { color: var(--bad); font-weight: 600; }
+.pos-pos { border-left: 8rpx solid var(--ok); }
+.pos-pos .cv { color: var(--ok); }
+.pos-neg { border-left: 8rpx solid var(--bad); }
+.pos-neg .cv { color: var(--bad); }
+.pos-flat { border-left: 8rpx solid var(--gold); }
+.carry-tag {
+  display: inline-block; margin: -2rpx 0 12rpx; padding: 4rpx 14rpx;
+  font-size: 20rpx; border-radius: 4rpx;
+}
+.t-pos { color: var(--ok); background: #EEF4EF; }
+.t-neg { color: var(--bad); background: #F9ECE9; }
+.t-flat { color: var(--warn); background: #FAF6EC; }
+.warn-row { border-left: 8rpx solid var(--warn); background: #FBF4E6; }
+.warn-row .cv { color: var(--warn); }
+.carry-caveat {
+  font-size: 20rpx; color: #7a5a1e; line-height: 1.65;
+  background: #FBF4E6; padding: 14rpx 16rpx; border-radius: 4rpx; margin-bottom: 8rpx;
+}
+.npv {
+  margin-top: 12rpx; padding: 16rpx; font-size: 23rpx; border-radius: 4rpx;
+  border: 1rpx solid var(--line);
+}
+.npv.n-pos { border-left: 8rpx solid var(--crimson); background: #FAF1EC; }
+.npv.n-neg { border-left: 8rpx solid var(--aegean); background: #EEF3F4; }
+.npv.n-tie { border-left: 8rpx solid var(--gold); background: #FAF6EC; }
+.note { margin-top: 12rpx; font-size: 20rpx; color: var(--ink-2); line-height: 1.6; }
+
+/* ---------- 久期匹配 ---------- */
+.dur { }
+.dur-row { display: flex; align-items: center; margin-bottom: 14rpx; }
+.dur-lab { width: 130rpx; font-size: 22rpx; color: var(--ink-2); }
+.dur-track { flex: 1; height: 22rpx; background: #EDE4D0; border-radius: 11rpx; overflow: hidden; }
+.dur-fill { height: 100%; border-radius: 11rpx; transition: width 0.25s ease; }
+.dur-fill.asset { background: #6E3B2E; }
+.dur-fill.ok { background: var(--ok); }
+.dur-fill.bad { background: var(--bad); }
+.dur-val { width: 110rpx; text-align: right; font-size: 22rpx; }
+.dur-toggle { display: flex; justify-content: space-between; margin: 8rpx 0 14rpx; }
+.dur-toggle .chip { width: 48.5%; box-sizing: border-box; }
+.dur-msg { padding: 14rpx 16rpx; font-size: 21rpx; border-radius: 4rpx; line-height: 1.6; }
+.dur-msg.ok { color: var(--ok); background: #EEF4EF; }
+.dur-msg.bad { color: var(--bad); background: #F9ECE9; }
+
+/* ---------- 看跌期权 ---------- */
+.putnote { margin-top: 14rpx; font-size: 20rpx; color: var(--ink-2); line-height: 1.65; }
+
+/* ---------- 人力资本 ---------- */
+.hc { display: flex; justify-content: space-between; }
+.hc-side {
+  width: 48.5%; box-sizing: border-box; padding: 18rpx 16rpx;
+  border: 1rpx solid var(--line); border-radius: 4rpx;
+}
+.hc-side.fi { border-top: 6rpx solid var(--aegean); }
+.hc-side.eq { border-top: 6rpx solid var(--crimson); }
+.hc-name { font-size: 25rpx; font-weight: 600; }
+.hc-side.fi .hc-name { color: var(--aegean); }
+.hc-side.eq .hc-name { color: var(--crimson); }
+.hc-desc { font-size: 19rpx; color: var(--ink-2); margin: 4rpx 0 12rpx; line-height: 1.4; }
+.hc-num { font-size: 24rpx; }
+.hc-check { margin-top: 14rpx; padding: 14rpx 16rpx; font-size: 21rpx; border-radius: 4rpx; line-height: 1.65; }
+.hc-check.c-ok { color: var(--ok); background: #EEF4EF; }
+.hc-check.c-bad { color: var(--bad); background: #F9ECE9; }
+
+/* ---------- 参数表单 ---------- */
+.phead { display: flex; justify-content: space-between; align-items: center; }
+.arrow { font-size: 40rpx; color: var(--ink-2); transition: transform 0.2s; }
+.arrow.open { transform: rotate(90deg); }
+.form { margin-top: 20rpx; }
+.frow { margin-bottom: 20rpx; }
+.frow2 { display: flex; justify-content: space-between; margin-bottom: 20rpx; }
+.fcol { width: 48.5%; }
+.fcol.sw2 { display: flex; flex-direction: column; }
+.flab { display: block; font-size: 22rpx; color: var(--ink-2); margin-bottom: 8rpx; }
+.fin {
+  border: 1rpx solid var(--line); border-radius: 4rpx;
+  padding: 12rpx 16rpx; font-size: 28rpx; background: #FFFEFB;
+}
+.presets { display: flex; justify-content: space-between; margin-bottom: 12rpx; }
+.presets .chip { width: 31.8%; box-sizing: border-box; }
+.methods { display: flex; justify-content: space-between; }
+.methods .chip { width: 48.5%; box-sizing: border-box; }
+.chip {
+  text-align: center; font-size: 22rpx; padding: 12rpx 0;
+  border: 1rpx solid var(--line); border-radius: 4rpx;
+  color: var(--ink-2); background: #FFFEFB;
+}
+.chip.on { border-color: var(--crimson); color: var(--crimson); background: #FAF1EC; }
+
+/* ---------- 标题 / 页脚 ---------- */
+.ptitle { font-size: 32rpx; }
+.foot { margin: 8rpx 24rpx 48rpx; font-size: 20rpx; color: var(--ink-2); line-height: 1.7; }
+.footline { margin-bottom: 10rpx; }

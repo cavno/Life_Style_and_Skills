@@ -1,0 +1,13 @@
+{
+  "pages": ["pages/index/index"],
+  "window": {
+    "navigationBarTitleText": "资产负债表重组 · 置换",
+    "navigationBarBackgroundColor": "#F7F3EA",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F7F3EA",
+    "backgroundTextStyle": "dark"
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json"
+}

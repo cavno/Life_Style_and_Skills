@@ -1,0 +1,46 @@
+<view class="wrap">
+  <view wx:if="{{loading}}" class="empty">加载中…</view>
+
+  <block wx:elif="{{rec}}">
+    <view class="card">
+      <view class="row between">
+        <view class="h2">{{rec.name}}</view>
+        <text class="badge {{rec.status==='approved'?'ok':(rec.status==='rejected'?'no':'wait')}}">
+          {{rec.status==='approved'?'已通过':(rec.status==='rejected'?'已驳回':'待审核')}}
+        </text>
+      </view>
+      <view class="kv"><text class="k">楼栋房号</text><text class="v">{{rec.roomFull}}</text></view>
+      <view class="kv"><text class="k">房屋建筑面积</text><text class="v">{{rec.area}} ㎡（投票权数）</text></view>
+      <view class="kv"><text class="k">联系方式</text><text class="v">{{rec.phone}}</text></view>
+      <view wx:if="{{rec.certNo}}" class="kv"><text class="k">证号</text><text class="v">{{rec.certNo}}</text></view>
+      <view wx:if="{{rec.dupRoom}}" class="tip no mt16">注意：存在与该房号相同的其他提交，请核对避免重复计数。</view>
+      <view wx:if="{{rec.reviewNote}}" class="kv"><text class="k">审核备注</text><text class="v">{{rec.reviewNote}}</text></view>
+    </view>
+
+    <view class="card">
+      <view class="label">产权证 / 不动产权证照片</view>
+      <image wx:if="{{rec.certPhotoFileId}}" class="big" src="{{rec.certPhotoFileId}}" mode="widthFix" data-url="{{rec.certPhotoFileId}}" bindtap="preview" />
+      <view wx:else class="dim mt8">未上传照片</view>
+    </view>
+
+    <view class="card">
+      <view class="label">身份证照片</view>
+      <image wx:if="{{rec.idPhotoFileId}}" class="big" src="{{rec.idPhotoFileId}}" mode="widthFix" data-url="{{rec.idPhotoFileId}}" bindtap="preview" />
+      <view wx:else class="dim mt8">未上传照片</view>
+    </view>
+
+    <view class="card">
+      <view class="label">手写签名</view>
+      <image wx:if="{{rec.signatureFileId}}" class="sig" src="{{rec.signatureFileId}}" mode="widthFix" data-url="{{rec.signatureFileId}}" bindtap="preview" />
+      <view wx:else class="dim mt8">无签名</view>
+    </view>
+
+    <block wx:if="{{rec.status!=='approved'}}">
+      <button class="btn" bindtap="approve">通过，计入联名</button>
+      <button class="btn danger mt16" bindtap="reject">驳回</button>
+    </block>
+    <block wx:elif="{{rec.status==='approved'}}">
+      <button class="btn danger" bindtap="reject">撤销通过（改为驳回）</button>
+    </block>
+  </block>
+</view>

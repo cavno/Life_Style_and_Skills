@@ -1,0 +1,218 @@
+/* ---------- 分段切换 ---------- */
+.seg {
+  display: flex;
+  margin: 24rpx 24rpx 24rpx;
+  border: 1rpx solid var(--line);
+  border-radius: 6rpx;
+  overflow: hidden;
+  background: var(--paper);
+}
+.seg-item {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  color: var(--ink-2);
+  letter-spacing: 4rpx;
+}
+.seg-item.on {
+  background: var(--ink);
+  color: #F7F3EA;
+}
+
+/* ---------- 判定带(签名元素):左侧粗判定线 + 实时变色 ---------- */
+.verdict {
+  margin: 0 24rpx 24rpx;
+  padding: 28rpx 28rpx 28rpx 32rpx;
+  background: var(--paper);
+  border: 1rpx solid var(--line);
+  border-left: 10rpx solid var(--ok);
+  border-radius: 6rpx;
+}
+.verdict-word { font-size: 56rpx; line-height: 1.2; color: var(--ok); }
+.verdict-line { margin-top: 8rpx; font-size: 28rpx; color: var(--ink); }
+.verdict-sub { margin-top: 6rpx; font-size: 24rpx; color: var(--ink-2); }
+
+.v-comfort { border-left-color: var(--ok); }
+.v-comfort .verdict-word { color: var(--ok); }
+.v-edge { border-left-color: var(--warn); }
+.v-edge .verdict-word { color: var(--warn); }
+.v-reliant { border-left-color: var(--warn); background: #FBF4E6; }
+.v-reliant .verdict-word { color: var(--warn); }
+.v-redline { border-left-color: var(--bad); background: #F9ECE9; }
+.v-redline .verdict-word { color: var(--bad); }
+.v-nocash { border-left-color: var(--bad); background: #F9ECE9; }
+.v-nocash .verdict-word { color: var(--bad); }
+
+/* ---------- 滑杆区 ---------- */
+.srow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.srow.mt { margin-top: 28rpx; }
+.sval .big { font-size: 52rpx; }
+.sval .unit { font-size: 24rpx; color: var(--ink-2); margin-left: 8rpx; }
+slider { margin: 12rpx 4rpx 0; }
+
+/* 价格区带:刻度即结论 —— 绿(≤450 推荐)/ 琥珀(450–500 上限)/ 红(>500) */
+.zonewrap { position: relative; margin: 8rpx 10rpx 34rpx; }
+.zonebar {
+  height: 10rpx;
+  border-radius: 5rpx;
+  background: linear-gradient(90deg,
+    #3E6B4F 0%, #3E6B4F 50%,
+    #A8722A 50%, #A8722A 66.7%,
+    #8B2C2C 66.7%, #8B2C2C 100%);
+  opacity: 0.85;
+}
+.zonemark {
+  position: absolute;
+  top: -10rpx;
+  width: 0; height: 0;
+  margin-left: -8rpx;
+  border-left: 8rpx solid transparent;
+  border-right: 8rpx solid transparent;
+  border-top: 12rpx solid var(--ink);
+}
+.zoneticks { position: relative; height: 30rpx; }
+.zoneticks .t {
+  position: absolute;
+  top: 4rpx;
+  font-size: 20rpx;
+  color: var(--ink-2);
+  transform: translateX(-50%);
+}
+.t400 { left: 33.3%; }
+.t450 { left: 50%; }
+.t500 { left: 66.7%; }
+
+/* ---------- 指标网格 ---------- */
+.loanline {
+  font-size: 22rpx;
+  color: var(--ink-2);
+  padding-bottom: 16rpx;
+  border-bottom: 1rpx solid var(--line);
+  margin-bottom: 16rpx;
+}
+.grid { display: flex; flex-wrap: wrap; }
+.cell {
+  width: 50%;
+  box-sizing: border-box;
+  padding: 16rpx 12rpx 16rpx 0;
+  display: flex;
+  flex-direction: column;
+}
+.cell.hero { width: 100%; padding-bottom: 20rpx; }
+.cell.hero .cnum { font-size: 64rpx; color: var(--crimson); }
+.cnum { font-size: 40rpx; margin-top: 4rpx; }
+.csub { font-size: 20rpx; color: var(--ink-2); margin-top: 2rpx; }
+.c-ok { color: var(--ok); }
+.c-warn { color: var(--warn); }
+.c-bad { color: var(--bad); }
+.warnline {
+  margin-top: 8rpx;
+  padding: 12rpx 16rpx;
+  font-size: 22rpx;
+  color: var(--bad);
+  background: #F9ECE9;
+  border-radius: 4rpx;
+}
+
+/* ---------- 两条路径:暖 = 加杠杆,冷 = 去杠杆 ---------- */
+.ptitle { font-size: 32rpx; }
+.paths { display: flex; justify-content: space-between; margin-top: 20rpx; }
+.path {
+  width: 48.5%;
+  box-sizing: border-box;
+  border: 1rpx solid var(--line);
+  border-top: 6rpx solid var(--crimson);
+  border-radius: 4rpx;
+  padding: 18rpx 16rpx;
+  background: #FFFEFB;
+}
+.path.pb { border-top-color: var(--aegean); }
+.pname { font-size: 26rpx; font-weight: 600; }
+.pa .pname { color: var(--crimson); }
+.pb .pname { color: var(--aegean); }
+.pdesc { font-size: 20rpx; color: var(--ink-2); margin: 4rpx 0 12rpx; }
+.prow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 22rpx;
+  padding: 6rpx 0;
+  border-bottom: 1rpx dashed var(--line);
+}
+.prow:last-of-type { border-bottom: none; }
+.prow text:first-child { color: var(--ink-2); }
+.pwarn {
+  margin-top: 10rpx;
+  font-size: 20rpx;
+  color: var(--bad);
+}
+
+.npv {
+  margin-top: 16rpx;
+  padding: 16rpx;
+  font-size: 24rpx;
+  border-radius: 4rpx;
+  border: 1rpx solid var(--line);
+}
+.npv.n-pa { border-left: 8rpx solid var(--crimson); background: #FAF1EC; }
+.npv.n-pb { border-left: 8rpx solid var(--aegean); background: #EEF3F4; }
+.npv.n-tie { border-left: 8rpx solid var(--gold); background: #FAF6EC; }
+.note { margin-top: 12rpx; font-size: 20rpx; color: var(--ink-2); }
+
+/* ---------- 参数表单 ---------- */
+.phead { display: flex; justify-content: space-between; align-items: center; }
+.arrow {
+  font-size: 40rpx;
+  color: var(--ink-2);
+  transform: rotate(0deg);
+  transition: transform 0.2s;
+}
+.arrow.open { transform: rotate(90deg); }
+.form { margin-top: 20rpx; }
+.frow { margin-bottom: 20rpx; }
+.frow2 { display: flex; justify-content: space-between; margin-bottom: 20rpx; }
+.fcol { width: 48.5%; }
+.flab { display: block; font-size: 22rpx; color: var(--ink-2); margin-bottom: 8rpx; }
+.fin {
+  border: 1rpx solid var(--line);
+  border-radius: 4rpx;
+  padding: 12rpx 16rpx;
+  font-size: 28rpx;
+  background: #FFFEFB;
+}
+.frow.sw {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8rpx;
+}
+.presets { display: flex; justify-content: space-between; margin-bottom: 12rpx; }
+.presets .chip { width: 31.8%; box-sizing: border-box; }
+.methods { display: flex; justify-content: space-between; }
+.methods .chip { width: 48.5%; box-sizing: border-box; }
+.chip {
+  text-align: center;
+  font-size: 22rpx;
+  padding: 12rpx 0;
+  border: 1rpx solid var(--line);
+  border-radius: 4rpx;
+  color: var(--ink-2);
+  background: #FFFEFB;
+}
+.chip.on {
+  border-color: var(--crimson);
+  color: var(--crimson);
+  background: #FAF1EC;
+}
+
+/* ---------- 页脚 ---------- */
+.foot {
+  margin: 8rpx 24rpx 48rpx;
+  font-size: 20rpx;
+  color: var(--ink-2);
+  line-height: 1.7;
+}

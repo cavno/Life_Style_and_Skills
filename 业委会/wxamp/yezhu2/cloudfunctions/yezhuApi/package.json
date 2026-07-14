@@ -1,0 +1,9 @@
+{
+  "name": "yezhuApi",
+  "version": "1.0.0",
+  "description": "业主联名筹备组后端总入口",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

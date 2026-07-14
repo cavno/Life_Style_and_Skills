@@ -1,0 +1,53 @@
+<view class="wrap">
+  <view class="card">
+    <view class="h2">名词解释</view>
+    <view class="dim">手册里反复出现、又容易搞混的几个词，用大白话解释一遍。</view>
+  </view>
+
+  <view class="card term">
+    <view class="t-h">联名</view>
+    <view class="t-b">若干业主共同具名某个议题或事项。每位联名业主要提供：联名的具体事项、本人签名、联系电话、房号、投票权数、房屋权属（产权）证明复印件、身份证复印件。我们这次联名的事项就是"要求成立首次业主大会会议筹备组"。</view>
+  </view>
+
+  <view class="card term">
+    <view class="t-h">投票权数</view>
+    <view class="t-b">业主在表决中占的"票重"。在深圳/龙岗的口径里，投票权数 = 房屋的专有部分建筑面积（平方米）。官方申请书里直接写明"业主专有部分总建筑面积（总投票权数）"。所以联名登记时填的"房屋建筑面积"，就是你的投票权数。</view>
+  </view>
+
+  <view class="card term">
+    <view class="t-h">专有部分</view>
+    <view class="t-b">你自己那套房屋独自拥有、独立使用的部分（一般按产权证上的建筑面积算）。与之相对的是"共有部分"，如电梯、楼道、外墙、绿地等全体业主共有的部分。</view>
+  </view>
+
+  <view class="card term">
+    <view class="t-h">两个 20%（联名门槛）</view>
+    <view class="t-b">启动业主联名要求成立筹备组，需占业主总人数 20% 以上，"或者"占全体业主投票权 20% 以上——满足任意一条即可。所以小程序同时统计人数和建筑面积两条进度。</view>
+  </view>
+
+  <view class="card term">
+    <view class="t-h">筹备组</view>
+    <view class="t-b">首次业主大会会议筹备组，由 7–10 人组成（街道办代表任组长、社区党委代表、业主代表 3–5 名、公安派出所代表、社区居委会代表、建设单位代表）。负责把首次业主大会和业委会选举筹备起来。</view>
+  </view>
+
+  <view class="card term">
+    <view class="t-h">业主大会 与 业主委员会</view>
+    <view class="t-b">业主大会 = 全体业主，是小区的最高决策"机构"，重大事项由它表决。业主委员会 = 业主大会选出的执行机构，日常代表业主办事、对外签约。换物业等大事，由业委会牵头、业主大会表决。</view>
+  </view>
+
+  <view class="card term">
+    <view class="t-h">表决比例（双过半 / 双 2/3）</view>
+    <view class="t-b">业主共同决定事项，一般需"专有部分面积 2/3 以上且人数 2/3 以上"的业主参与表决；普通事项（如选聘物业）经参与表决的"面积过半且人数过半"同意即通过；筹集维修资金、改建重建等重大事项，则要参与表决的"面积 3/4 且人数 3/4"同意。</view>
+  </view>
+
+  <view class="card term">
+    <view class="t-h">公示</view>
+    <view class="t-b">在小区显著位置（楼栋/单元，并至少在公告栏、物业或业委会办公场所、主要出入口、人流密集场所之一）公开张贴，时间不少于十日。名单、方案、表决结果等都要公示。</view>
+  </view>
+
+  <view class="card term">
+    <view class="t-h">征集意见</view>
+    <view class="t-b">涉及全体业主权益、要召开业主大会表决的事项，须在小区公开征集意见，意见在公示期内提出。合理意见应当采纳，不采纳要说明理由；修订后方案要再次公示。</view>
+  </view>
+
+  <view class="dim foot">依据《龙岗区业主大会及业主委员会工作指导手册》及《深圳经济特区物业管理条例》。</view>
+</view>

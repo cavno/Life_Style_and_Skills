@@ -1,0 +1,61 @@
+<view class="wrap">
+
+  <view class="card">
+    <view class="h2">怎么换掉现在的物业</view>
+    <view class="muted mt8">换物业不是业委会或几个业主说了算，要走法定的"选聘物业服务企业"程序，由业主大会表决决定。前提通常是先把业主委员会成立起来。</view>
+  </view>
+
+  <view class="card">
+    <view class="h2">谁来牵头招标</view>
+    <view class="muted">业主大会是小区公开招标选聘物业的招标人。开展招标的主体有三类：</view>
+    <view class="lane mt16">
+      <view class="lane-i main"><view class="lane-t">业主委员会</view><view class="lane-d">主要方式（最常见）</view></view>
+      <view class="lane-i"><view class="lane-t">社区居民委员会</view><view class="lane-d">应急方式</view></view>
+      <view class="lane-i"><view class="lane-t">街道办事处</view><view class="lane-d">兜底方式</view></view>
+    </view>
+    <view class="dim mt16">所以最稳妥的路径：先用「联名」推动成立业委会，再由业委会牵头选聘新物业。</view>
+  </view>
+
+  <view class="card">
+    <view class="h2">业委会选聘新物业的 5 步</view>
+
+    <view class="pstep"><view class="pn">1</view><view class="pc">
+      <view class="pt">编制招标公告、招标文件</view>
+      <view class="pd">业委会在街道办指导下编制，内容含物业服务期限范围、投标人资格、报价要求、拟签合同文本等。按《龙岗区住宅区业主大会选聘物业服务企业工作指引》执行，参照市住建局示范文本制定。</view>
+    </view></view>
+
+    <view class="pstep"><view class="pn">2</view><view class="pc">
+      <view class="pt">确定业主大会议题</view>
+      <view class="pd">议题通常包含：是否通过选聘物业的招标文件；是否采用"定性评审法 + 票决/抽签定标"的评标定标方法。</view>
+    </view></view>
+
+    <view class="pstep"><view class="pn">3</view><view class="pc">
+      <view class="pt">公示并征集业主意见</view>
+      <view class="pd">将招标文件、招标公告及议题在小区公示，时间不少于十日，并征集业主意见。合理意见应当采纳，不采纳的要说明理由。</view>
+    </view></view>
+
+    <view class="pstep"><view class="pn">4</view><view class="pc">
+      <view class="pt">街道办审核</view>
+      <view class="pd">业委会将征集意见的相关资料及议题提交街道办，由街道办查看意见情况并审核议题合法性。</view>
+    </view></view>
+
+    <view class="pstep"><view class="pn">5</view><view class="pc">
+      <view class="pt">业主大会表决</view>
+      <view class="pd">召集业主大会会议表决。</view>
+    </view></view>
+  </view>
+
+  <!-- 表决比例 -->
+  <view class="card vote">
+    <view class="h2">表决要达到的比例</view>
+    <view class="vrow"><view class="vk">参与门槛</view><view class="vv">专有部分面积占比 ≥ 2/3 且 业主人数占比 ≥ 2/3 的业主参与表决</view></view>
+    <view class="vrow"><view class="vk">通过门槛</view><view class="vv">参与表决中，专有部分面积过半数 且 人数过半数的业主同意</view></view>
+    <view class="dim mt16">即"双 2/3 参与、双过半同意"。续聘原物业用的是同一表决比例。</view>
+  </view>
+
+  <view class="card tipcard">
+    提示：选聘物业属于业委会成立后的业主大会表决事项，本小程序当前主要解决前置的「联名成立业委会」。等业委会成立，再按上面流程推进换物业。
+  </view>
+
+  <view class="dim foot">依据《龙岗区业主大会及业主委员会工作指导手册》2.22，并参见《龙岗区住宅区业主大会选聘物业服务企业工作指引》。</view>
+</view>

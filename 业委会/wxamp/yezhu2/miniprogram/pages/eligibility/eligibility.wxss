@@ -1,0 +1,17 @@
+.redt { color: var(--danger); }
+.greent { color: var(--ok); }
+.mb { margin-bottom: 16rpx; }
+.opt { display: flex; align-items: flex-start; gap: 18rpx; padding: 18rpx 0; border-bottom: 1rpx solid var(--line); }
+.opt:last-child { border-bottom: none; }
+.box {
+  flex: none; width: 40rpx; height: 40rpx; border: 2rpx solid #c9d0d8; border-radius: 8rpx;
+  text-align: center; line-height: 40rpx; color: #fff; font-size: 26rpx; margin-top: 4rpx;
+}
+.opt.on.red .box { background: var(--danger); border-color: var(--danger); }
+.opt.on.green .box { background: var(--ok); border-color: var(--ok); }
+.opt-t { flex: 1; font-size: 28rpx; color: var(--ink); line-height: 1.6; }
+.opt.on.red .opt-t { color: var(--danger); }
+.result .r-title { font-size: 34rpx; font-weight: 700; }
+.result .r-title.red { color: var(--danger); }
+.result .r-title.green { color: var(--ok); }
+.foot { margin-top: 20rpx; padding: 0 8rpx; }
