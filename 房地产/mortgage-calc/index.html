@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>房贷计算器 · Mortgage Calculator</title>
+<meta name="description" content="精确的中国房贷计算器 — 等额本息/等额本金、当期还款状态、提前还款分析" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="masthead">
+    <div class="container">
+        <div class="title-block">
+            <p class="kicker">个人住房按揭 · Mortgage Analysis</p>
+            <h1>房贷<em>计算器</em></h1>
+            <p class="subtitle">精确至小数点 — 等额本息 · 等额本金 · 当期状态 · 提前还款</p>
+        </div>
+        <div class="meta-block">
+            <div class="meta-item">
+                <span class="meta-label">精度</span>
+                <span class="meta-value">IEEE 754 双精度</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">公式</span>
+                <span class="meta-value">Excel PMT · CUMPRINC · CUMIPMT</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<nav class="tabs">
+    <div class="container">
+        <button class="tab active" data-tab="calculator">贷款计算</button>
+        <button class="tab" data-tab="status">当前状态</button>
+        <button class="tab" data-tab="schedule">还款明细</button>
+        <button class="tab" data-tab="prepay">提前还款</button>
+        <button class="tab" data-tab="lpr">LPR 利率</button>
+    </div>
+</nav>
+
+<main class="container">
+
+<!-- ============ 贷款计算 (Loan Calculator) ============ -->
+<section class="panel active" data-panel="calculator">
+    <div class="layout">
+        <aside class="inputs">
+            <h2>输入条件</h2>
+
+            <fieldset>
+                <legend>房产</legend>
+                <label>
+                    <span>房产购买总额 <em>(元)</em></span>
+                    <input type="number" id="purchasePrice" value="2514931.60" step="1" />
+                </label>
+                <label>
+                    <span>面积 <em>(㎡)</em></span>
+                    <input type="number" id="area" value="59.93" step="0.01" />
+                </label>
+                <label>
+                    <span>房产现评估价值 <em>(元，可选)</em></span>
+                    <input type="number" id="assessedValue" value="2300000" step="1" />
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>贷款</legend>
+                <label>
+                    <span>贷款类别</span>
+                    <select id="loanType">
+                        <option value="commercial">商业贷款</option>
+                        <option value="fund">公积金贷款</option>
+                        <option value="combo">组合型贷款</option>
+                    </select>
+                </label>
+                <label>
+                    <span>按揭成数 <em>(0–1)</em></span>
+                    <input type="number" id="ltv" value="0.7" step="0.01" min="0" max="1" />
+                </label>
+                <label class="combo-only hidden">
+                    <span>公积金贷款本金 <em>(元)</em></span>
+                    <input type="number" id="fundPrincipal" value="0" step="1" />
+                </label>
+                <label>
+                    <span>按揭年数 <em>(年)</em></span>
+                    <input type="number" id="years" value="22.5" step="0.5" min="1" max="30" />
+                </label>
+                <label>
+                    <span>还款方式</span>
+                    <select id="repayMethod">
+                        <option value="equalPayment">等额本息</option>
+                        <option value="equalPrincipal">等额本金</option>
+                    </select>
+                </label>
+            </fieldset>
+
+            <fieldset id="commercialRateFs">
+                <legend>商业贷款利率</legend>
+                <label>
+                    <span>LPR 5年期以上 <em>(%)</em></span>
+                    <input type="number" id="lprRate" value="3.6" step="0.01" />
+                </label>
+                <label>
+                    <span>加减基点 BP <em>(%)</em></span>
+                    <input type="number" id="bpRate" value="-0.3" step="0.01" />
+                </label>
+                <div class="computed">
+                    <span>商业贷款年利率</span>
+                    <span id="commercialRate" class="num">3.30%</span>
+                </div>
+            </fieldset>
+
+            <fieldset id="fundRateFs" class="hidden">
+                <legend>公积金贷款利率</legend>
+                <label>
+                    <span>公积金年利率 <em>(%)</em></span>
+                    <input type="number" id="fundRate" value="3.1" step="0.01" />
+                </label>
+            </fieldset>
+
+            <fieldset>
+                <legend>还款日期</legend>
+                <label>
+                    <span>还款起始日</span>
+                    <input type="date" id="startDate" value="2018-07-04" />
+                </label>
+            </fieldset>
+        </aside>
+
+        <div class="results">
+            <h2>计算结果</h2>
+
+            <div class="result-grid">
+                <div class="result-card primary">
+                    <p class="result-label">月供 <em>(等额本息)</em></p>
+                    <p class="result-value" id="r-monthly">—</p>
+                    <p class="result-sub" id="r-monthly-sub"></p>
+                </div>
+
+                <div class="result-card">
+                    <p class="result-label">贷款本金</p>
+                    <p class="result-value" id="r-principal">—</p>
+                    <p class="result-sub" id="r-principal-sub"></p>
+                </div>
+
+                <div class="result-card">
+                    <p class="result-label">首期付款</p>
+                    <p class="result-value" id="r-down">—</p>
+                </div>
+
+                <div class="result-card">
+                    <p class="result-label">总还款额</p>
+                    <p class="result-value" id="r-total">—</p>
+                </div>
+
+                <div class="result-card">
+                    <p class="result-label">总利息</p>
+                    <p class="result-value" id="r-interest">—</p>
+                </div>
+
+                <div class="result-card">
+                    <p class="result-label">总期数</p>
+                    <p class="result-value" id="r-periods">—</p>
+                    <p class="result-sub" id="r-periods-sub"></p>
+                </div>
+            </div>
+
+            <div class="result-section">
+                <h3>房产估值</h3>
+                <table class="kv">
+                    <tr><th>房产购买均价</th><td id="r-buyAvg" class="num">—</td></tr>
+                    <tr><th>当前评估均价</th><td id="r-assessAvg" class="num">—</td></tr>
+                    <tr><th>房产资产增值率</th><td id="r-appreciation" class="num">—</td></tr>
+                </table>
+            </div>
+
+            <div class="result-section">
+                <h3>利率与公式</h3>
+                <table class="kv">
+                    <tr><th>商业贷款年利率</th><td id="r-cRate" class="num">—</td></tr>
+                    <tr><th>公积金贷款年利率</th><td id="r-fRate" class="num">—</td></tr>
+                    <tr><th>等额本息公式</th><td class="formula">PMT(r/12, n, −P)</td></tr>
+                    <tr><th>等额本金公式</th><td class="formula">首月 = P/n + P·(r/12)</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ 当前状态 (Current Status) ============ -->
+<section class="panel" data-panel="status">
+    <div class="status-controls">
+        <h2>当期还款状态</h2>
+        <label>
+            <span>当期日期</span>
+            <input type="date" id="currentDate" />
+        </label>
+        <button id="setToday" type="button">今日</button>
+    </div>
+
+    <div class="status-grid">
+        <div class="status-card highlight">
+            <p class="status-label">当期期数</p>
+            <p class="status-value" id="s-period">—</p>
+            <p class="status-sub" id="s-period-sub"></p>
+        </div>
+        <div class="status-card">
+            <p class="status-label">期初本金余额</p>
+            <p class="status-value" id="s-balance">—</p>
+        </div>
+        <div class="status-card">
+            <p class="status-label">已还本金累计</p>
+            <p class="status-value" id="s-paid-principal">—</p>
+        </div>
+        <div class="status-card">
+            <p class="status-label">已还利息累计</p>
+            <p class="status-value" id="s-paid-interest">—</p>
+        </div>
+        <div class="status-card">
+            <p class="status-label">已还总额累计</p>
+            <p class="status-value" id="s-paid-total">—</p>
+        </div>
+        <div class="status-card">
+            <p class="status-label">完成进度</p>
+            <p class="status-value" id="s-progress">—</p>
+            <div class="progress-bar"><div class="progress-fill" id="s-progress-bar"></div></div>
+        </div>
+    </div>
+
+    <div class="status-detail">
+        <h3>当期还款明细 <span class="muted" id="s-period-info"></span></h3>
+        <table class="kv">
+            <tr><th>当期应还总额</th><td id="s-due" class="num">—</td></tr>
+            <tr><th>　· 当期应还利息</th><td id="s-due-interest" class="num">—</td></tr>
+            <tr><th>　· 当期应还本金</th><td id="s-due-principal" class="num">—</td></tr>
+            <tr><th>期末本金余额</th><td id="s-end-balance" class="num">—</td></tr>
+        </table>
+    </div>
+</section>
+
+<!-- ============ 还款明细 (Amortization Schedule) ============ -->
+<section class="panel" data-panel="schedule">
+    <div class="schedule-header">
+        <h2>逐月还款明细</h2>
+        <div class="schedule-actions">
+            <button id="exportCsv" type="button">导出 CSV</button>
+        </div>
+    </div>
+    <div class="schedule-summary" id="scheduleSummary"></div>
+    <div class="schedule-wrap">
+        <table class="schedule">
+            <thead>
+                <tr>
+                    <th>期数</th>
+                    <th>还款日</th>
+                    <th class="num">月供</th>
+                    <th class="num">利息</th>
+                    <th class="num">本金</th>
+                    <th class="num">剩余本金</th>
+                </tr>
+            </thead>
+            <tbody id="scheduleBody"></tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ============ 提前还款 (Early Repayment) ============ -->
+<section class="panel" data-panel="prepay">
+    <div class="layout">
+        <aside class="inputs">
+            <h2>提前还款</h2>
+            <fieldset>
+                <legend>方案设置</legend>
+                <label>
+                    <span>提前还款日期</span>
+                    <input type="date" id="prepayDate" />
+                </label>
+                <label>
+                    <span>提前还款金额 <em>(元)</em></span>
+                    <input type="number" id="prepayAmount" value="200000" step="1000" />
+                </label>
+                <label>
+                    <span>提前还款方式</span>
+                    <select id="prepayMethod">
+                        <option value="shortenTerm">缩短期限，月供不变</option>
+                        <option value="reducePayment">减少月供，期限不变</option>
+                    </select>
+                </label>
+                <button id="computePrepay" type="button" class="primary-btn">计算</button>
+            </fieldset>
+        </aside>
+
+        <div class="results">
+            <h2>提前还款分析</h2>
+            <div class="result-grid">
+                <div class="result-card primary">
+                    <p class="result-label">节省利息</p>
+                    <p class="result-value" id="p-savings">—</p>
+                </div>
+                <div class="result-card">
+                    <p class="result-label">原月供</p>
+                    <p class="result-value" id="p-old-payment">—</p>
+                </div>
+                <div class="result-card">
+                    <p class="result-label">新月供</p>
+                    <p class="result-value" id="p-new-payment">—</p>
+                </div>
+                <div class="result-card">
+                    <p class="result-label">原总利息</p>
+                    <p class="result-value" id="p-old-int">—</p>
+                </div>
+                <div class="result-card">
+                    <p class="result-label">新总利息</p>
+                    <p class="result-value" id="p-new-int">—</p>
+                </div>
+                <div class="result-card">
+                    <p class="result-label">提前结清</p>
+                    <p class="result-value" id="p-early">—</p>
+                </div>
+            </div>
+            <div class="result-section">
+                <h3>详情</h3>
+                <table class="kv" id="prepayDetail"></table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ LPR 利率 (LPR History) ============ -->
+<section class="panel" data-panel="lpr">
+    <h2>LPR 利率历史</h2>
+    <p class="lede">5 年期以上 LPR 直接影响商业按揭利率。下表为人民银行公布的历次 LPR 报价（数据更新至 2025-10）。</p>
+    <div class="lpr-grid">
+        <table class="lpr-table">
+            <thead>
+                <tr>
+                    <th>报价日期</th>
+                    <th class="num">LPR 1年</th>
+                    <th class="num">LPR 5年</th>
+                </tr>
+            </thead>
+            <tbody id="lprBody"></tbody>
+        </table>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <div class="container">
+        <p>房贷计算器 · 数值精度匹配 Microsoft Excel — 公式参考 PMT / CUMPRINC / CUMIPMT</p>
+        <p class="small">本工具仅用于参考，实际放款条件以银行为准。</p>
+    </div>
+</footer>
+
+<script src="finance.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
