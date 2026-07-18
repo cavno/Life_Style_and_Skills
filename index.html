@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生活与技能 · 综合工作台 · CAVNO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --parchment:#F3EAD3; --paper:#FBF6E9; --card:#F8F1DF;
+  --teal:#3F7E6B; --teal-dk:#2C5A4C; --teal-wash:#E4EFEA;
+  --terra:#BC4B33; --ink:#2B2620; --muted:#7A7263;
+  --line:#D8CCAE; --line-soft:#E0D2B2; --gold:#C9A869; --faint:#A39781;
+  --rack-w:278px; --bar-h:52px;
+  --serif:"Noto Serif SC","Songti SC",serif;
+  --mono:"JetBrains Mono","SFMono-Regular",Consolas,monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:var(--serif); color:var(--ink); background:var(--parchment);
+  display:flex; overflow:hidden;
+}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--teal); outline-offset:2px; border-radius:2px}
+
+/* ───────── 仪器架（侧栏） ───────── */
+#rack{
+  width:var(--rack-w); flex:0 0 var(--rack-w); height:100%;
+  background:var(--paper); border-right:1px solid var(--line);
+  display:flex; flex-direction:column; z-index:40;
+}
+.brand{padding:20px 18px 16px; border-bottom:3px double var(--line)}
+.brand .eyebrow{
+  font-family:var(--mono); font-size:10px; letter-spacing:.22em;
+  color:var(--terra); margin-bottom:8px;
+}
+.brand h1{font-size:19px; font-weight:900; line-height:1.35; letter-spacing:.02em}
+.brand .tagline{
+  margin-top:7px; font-size:11px; color:var(--muted); letter-spacing:.05em;
+}
+#racknav{
+  flex:1; overflow-y:auto; padding:6px 0 14px;
+  scrollbar-width:thin; scrollbar-color:var(--line) transparent;
+}
+#racknav::-webkit-scrollbar{width:8px}
+#racknav::-webkit-scrollbar-thumb{background:var(--line); border-radius:4px; border:2px solid var(--paper)}
+#racknav::-webkit-scrollbar-track{background:transparent}
+.g-block{margin-top:14px}
+#racknav .g-head{
+  display:flex; align-items:center; gap:9px;
+  margin:0 14px 5px; padding:10px 3px;
+  border-bottom:1px solid var(--line-soft);
+}
+.g-mark{
+  width:7px; height:7px; flex:0 0 auto;
+  background:var(--ga,var(--teal)); transform:rotate(45deg);
+}
+#racknav .g-name{
+  font-size:15.5px; font-weight:900; letter-spacing:.1em;
+  color:var(--ink); line-height:1.3;
+}
+#racknav .g-count{
+  margin-left:auto; font-family:var(--mono);
+  font-size:10px; letter-spacing:.08em; color:var(--faint);
+}
+.navitem{
+  display:flex; align-items:baseline; gap:10px; width:100%;
+  padding:9px 18px 9px 15px; border:0; border-left:3px solid transparent;
+  background:none; text-align:left; cursor:pointer; text-decoration:none;
+  font-family:var(--serif); font-size:14.5px; font-weight:600; color:var(--ink);
+  line-height:1.5; transition:background .15s,border-color .15s,color .15s;
+}
+.navitem .idx{font-family:var(--mono); font-size:10px; color:var(--faint); flex:0 0 auto; transform:translateY(-1px)}
+.navitem.home{margin:6px 0 2px}
+.navitem:hover{background:var(--gw,var(--teal-wash)); border-left-color:var(--ga,var(--teal))}
+.navitem[aria-current="page"]{
+  background:var(--gd,var(--teal-dk)); border-left-color:var(--ga,var(--teal)); color:var(--paper);
+}
+.navitem[aria-current="page"] .idx{color:var(--parchment); opacity:.8}
+.rackfoot{
+  padding:12px 18px; border-top:1px solid var(--line);
+  font-family:var(--mono); font-size:10px; letter-spacing:.06em; color:var(--muted);
+  display:flex; justify-content:space-between; align-items:center;
+}
+.rackfoot a{text-decoration:none; color:var(--teal-dk)}
+.rackfoot a:hover{color:var(--terra)}
+
+/* ───────── 舞台 ───────── */
+#stage{flex:1; height:100%; display:flex; flex-direction:column; min-width:0}
+#topbar{
+  height:var(--bar-h); flex:0 0 var(--bar-h);
+  display:flex; align-items:center; gap:12px; padding:0 16px;
+  background:var(--parchment); border-bottom:1px solid var(--line);
+}
+#menuBtn{display:none}
+.crumb{min-width:0; flex:1; display:flex; align-items:baseline; gap:10px; overflow:hidden}
+.crumb .fn{
+  font-family:var(--mono); font-size:10px; letter-spacing:.18em;
+  color:var(--terra); white-space:nowrap;
+}
+.crumb .cur{
+  font-size:15px; font-weight:700; white-space:nowrap;
+  overflow:hidden; text-overflow:ellipsis;
+}
+.tbtn{
+  font-family:var(--serif); font-size:12.5px; font-weight:600;
+  color:var(--teal-dk); background:var(--paper);
+  border:1px solid var(--line); padding:6px 11px; cursor:pointer;
+  white-space:nowrap; text-decoration:none; line-height:1; border-radius:2px;
+  transition:border-color .15s,color .15s,background .15s;
+}
+.tbtn:hover{border-color:var(--teal); color:var(--paper); background:var(--teal)}
+.tbtn.sq{padding:6px 9px; font-family:var(--mono); font-size:12px}
+.toolonly{display:none}
+body.in-tool .toolonly{display:inline-block}
+
+#main{flex:1; position:relative; min-height:0; background:var(--parchment)}
+
+/* ───────── 总览 ───────── */
+#overview{position:absolute; inset:0; overflow-y:auto; padding:34px 34px 60px}
+.hero{max-width:1060px; margin:0 auto 8px}
+.hero .eyebrow{
+  font-family:var(--mono); font-size:11px; letter-spacing:.26em; color:var(--terra);
+}
+.hero h2{font-size:33px; font-weight:900; margin:10px 0 12px; letter-spacing:.02em}
+.hero .rule{height:3px; border-top:1px solid var(--ink); border-bottom:1px solid var(--ink); margin:0 0 14px}
+.hero p{font-size:14px; line-height:1.9; color:var(--muted); max-width:760px}
+.hero p b{color:var(--teal-dk); font-weight:700}
+
+.group{max-width:1060px; margin:36px auto 0}
+.group .g-head{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding-bottom:10px; border-bottom:3px double var(--line)}
+.group h3{font-size:19px; font-weight:900; letter-spacing:.08em}
+.group .note{font-size:12px; color:var(--muted)}
+.group .note em{font-style:normal; color:var(--terra); font-weight:600}
+.cards{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(302px,1fr));
+  gap:14px; padding-top:16px;
+}
+.card{
+  position:relative; background:var(--card); border:1px solid var(--line);
+  padding:16px 17px 13px; display:flex; flex-direction:column; gap:9px;
+  transition:border-color .15s, box-shadow .15s, transform .15s;
+}
+.card:hover{border-color:var(--ga,var(--teal)); box-shadow:0 3px 0 rgba(43,38,32,.10); transform:translateY(-1px)}
+.card .meta{display:flex; justify-content:space-between; align-items:baseline; gap:8px}
+.card .fn{font-family:var(--mono); font-size:10px; letter-spacing:.18em; color:var(--terra)}
+.card .idx{font-family:var(--mono); font-size:10px; color:var(--gold)}
+.card h4{font-size:18.5px; font-weight:700; line-height:1.4}
+.card h4 a{text-decoration:none}
+.card h4 a::after{content:""; position:absolute; inset:0}  /* stretched link */
+.card .sub{
+  font-size:13px; line-height:1.8; color:var(--muted);
+  display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden;
+}
+.card .foot{
+  margin-top:auto; padding-top:10px; border-top:1px solid var(--line-soft);
+  display:flex; justify-content:space-between; align-items:center; font-size:12.5px;
+}
+.card .go{color:var(--gd,var(--teal-dk)); font-weight:700}
+.card:hover .go{color:var(--ga,var(--teal))}
+.card .ext{
+  position:relative; z-index:2; text-decoration:none;
+  font-family:var(--mono); font-size:11px; color:var(--muted);
+}
+.card .ext:hover{color:var(--terra)}
+.dl-items{display:flex; flex-wrap:wrap; gap:10px; padding-top:14px}
+.dl-items a{
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.02em;
+  color:var(--gd,var(--teal-dk)); text-decoration:none;
+  border:1px solid var(--line); background:var(--card);
+  padding:7px 12px; border-radius:2px;
+  transition:border-color .15s,color .15s;
+}
+.dl-items a:hover{border-color:var(--ga); color:var(--ga)}
+.card .attach{
+  position:relative; z-index:2; display:flex; gap:12px;
+  font-family:var(--mono); font-size:10.5px; padding-top:2px;
+}
+.attach a{color:var(--teal-dk); text-decoration:none; border-bottom:1px dotted var(--line)}
+.attach a:hover{color:var(--terra); border-bottom-color:var(--terra)}
+.ovfoot{
+  max-width:1060px; margin:44px auto 0; padding-top:12px; border-top:1px solid var(--line);
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; color:var(--muted);
+  display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+}
+
+/* ───────── 工具帧 ───────── */
+.frame{position:absolute; inset:0; background:var(--parchment)}
+.frame iframe{width:100%; height:100%; border:0; display:block; background:var(--parchment)}
+.veil{
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:14px;
+  background:var(--parchment); z-index:2;
+}
+.veil .vt{font-family:var(--mono); font-size:10px; letter-spacing:.3em; color:var(--terra)}
+.veil .vn{font-size:18px; font-weight:700}
+.veil .bar{width:150px; height:2px; background:var(--line); overflow:hidden}
+.veil .bar i{display:block; width:40%; height:100%; background:var(--teal); animation:sweep 1.1s infinite ease-in-out}
+@keyframes sweep{0%{transform:translateX(-110%)}100%{transform:translateX(390%)}}
+[hidden]{display:none !important}
+
+/* ───────── 响应式 ───────── */
+#backdrop{display:none}
+@media (max-width:880px){
+  #rack{
+    position:fixed; left:0; top:0; bottom:0; transform:translateX(-100%);
+    transition:transform .22s ease; box-shadow:4px 0 18px rgba(43,38,32,.18);
+  }
+  body.rack-open #rack{transform:translateX(0)}
+  #backdrop{
+    display:block; position:fixed; inset:0; background:rgba(43,38,32,.35);
+    opacity:0; pointer-events:none; transition:opacity .2s; z-index:30;
+  }
+  body.rack-open #backdrop{opacity:1; pointer-events:auto}
+  #menuBtn{display:inline-block}
+  #overview{padding:22px 16px 50px}
+  .hero h2{font-size:25px}
+  .crumb .fn{display:none}
+}
+@media (max-width:560px){
+  #topbar{gap:8px; padding:0 10px}
+  #homeBtn,.btxt{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important; transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<aside id="rack" aria-label="工具导航">
+  <div class="brand">
+    <div class="eyebrow">CAVNO · LIFE &amp; SKILLS</div>
+    <h1>生活与技能<br>综合工作台</h1>
+    <div class="tagline">十四座仪器 · 四个分区 · 零构建</div>
+  </div>
+  <nav id="racknav"></nav>
+  <div class="rackfoot">
+    <span>LIFE_SKILLS / 14</span>
+    <a href="https://github.com/cavno/Life_Style_and_Skills" target="_blank" rel="noopener">源仓库 ↗</a>
+  </div>
+</aside>
+<div id="backdrop"></div>
+
+<div id="stage">
+  <header id="topbar">
+    <button id="menuBtn" class="tbtn sq" aria-label="打开导航">☰</button>
+    <div class="crumb">
+      <span class="fn" id="crumbFn">OVERVIEW</span>
+      <span class="cur" id="crumbCur">总览</span>
+    </div>
+    <button id="prevBtn" class="tbtn sq toolonly" title="上一台">‹</button>
+    <button id="nextBtn" class="tbtn sq toolonly" title="下一台">›</button>
+    <a id="homeBtn" class="tbtn toolonly" href="#/">总览</a>
+    <a id="extBtn" class="tbtn toolonly" href="#" target="_blank" rel="noopener"><span class="btxt">新窗口打开 </span>↗</a>
+  </header>
+
+  <main id="main">
+    <section id="overview" aria-label="总览">
+      <div class="hero">
+        <div class="eyebrow">CAVNO · LIFE &amp; SKILLS BENCH</div>
+        <h2>生活与技能 · 综合工作台</h2>
+        <div class="rule"></div>
+        <p>十四座工作台聚合于一处：<b>驾考速查</b>三科贴身应试，<b>房产与学位</b>五台支撑置业决策——成交查询 × 对比 × 房贷 × 评分 × 积分入学，<b>中国底图</b>三张读地形与制度，<b>事务平台</b>收录业主之家双版本与报单原型。本页仅作聚合与导航，<b>各台内容一字未改</b>。</p>
+      </div>
+      <div id="groups"></div>
+      <section class="group dl" style="--ga:#C9A869;--gd:#8F7434;--gw:#F5EDD8">
+        <div class="g-head"><span class="g-mark"></span><h3>资料目录</h3><span class="note">与仓库 README 同源目录 · 新窗口打开</span></div>
+        <div class="dl-items">
+          <a href="https://github.com/cavno/Life_Style_and_Skills/tree/main/AI" target="_blank" rel="noopener">AI 资料 ↗</a>
+          <a href="https://github.com/cavno/Life_Style_and_Skills/tree/main/Skills" target="_blank" rel="noopener">技能资料 · LLM 知识库等 ↗</a>
+          <a href="https://github.com/cavno/Life_Style_and_Skills/tree/main/%E8%82%B2%E5%84%BF" target="_blank" rel="noopener">育儿资料 ↗</a>
+        </div>
+      </section>
+      <div class="ovfoot">
+        <span>SINGLE-FILE · ZERO-BUILD · PARCHMENT / TEAL / TERRA</span>
+        <span>cavno.github.io/Life_Style_and_Skills</span>
+      </div>
+    </section>
+  </main>
+</div>
+
+<noscript><div style="padding:24px;font-family:serif">
+  本页导航需要 JavaScript。可直接访问各工作台：
+  <a href="./Driving/科目1/index.html">科目一速查</a> ·
+  <a href="./Driving/科目3/index.html">科目三速查</a> ·
+  <a href="./Driving/科目4/index.html">科目四速查</a> ·
+  <a href="./房地产/sz-apartment-web/index.html">深圳全市真实成交查询</a> ·
+  <a href="./房地产/szfzsz-apartment-web/index.html">房产成交对比查询</a> ·
+  <a href="./房地产/mortgage-calc/index.html">房贷计算器</a> ·
+  <a href="./房地产/Comprehensive-Housing-Quality-Assessment-Tool-web/index.html">购房综合评分对比</a> ·
+  <a href="./School/schoolscore-web/index.html">积分入学计算器</a> ·
+  <a href="./中国/cengdie/index.html">层叠的中国</a> ·
+  <a href="./中国/gba/index.html">大湾区底图</a> ·
+  <a href="./中国/shenzhen/index.html">深圳底图</a> ·
+  <a href="./业委会/yezhu-linuxserver/yezhu-web/web/index.html">业主之家 · Linux 版</a> ·
+  <a href="./业委会/yezhu-winserver/web/index.html">业主之家 · Windows 版</a> ·
+  <a href="./报单/index.html">报单管理系统</a>
+</div></noscript>
+
+<script>
+/* ════════ 数据（卡片文案取自各页面自身的标题与副标题，原文照录或按其自有字句拼合） ════════ */
+const TOOLS = [
+ {slug:"km1", src:"./Driving/科目1/index.html", fn:"科目一", name:"科目一核心知识点速查",
+  sub:"肖肖 3 小时精华课三节（课件＋字幕）整理 · 只收知识点与口诀，不含例题 · 开「背诵模式」自测。"},
+ {slug:"km3", src:"./Driving/科目3/index.html", fn:"科目三 · 自动挡", name:"水头考场科目三速查",
+  sub:"GA 1026 主干：综合评判＋16 项专项＋三条路线（每步独立定义）· 每条标注来源层级 · 红＝不合格、橙＝扣 10、黄＝扣 5。"},
+ {slug:"km4", src:"./Driving/科目4/index.html", fn:"科目四", name:"科目四核心知识点速查",
+  sub:"肖肖精华课两节（课件＋字幕）整理 · 只收知识点与口诀，不含例题 · 开「背诵模式」自测。"},
+ {slug:"sz-deals", src:"./房地产/sz-apartment-web/index.html", fn:"真实成交", name:"深圳全市真实成交查询系统",
+  sub:"覆盖 10 个行政区、52 个片区、约 810 条真实成交记录（2026 年 3 月中下旬）。"},
+ {slug:"deal-compare", src:"./房地产/szfzsz-apartment-web/index.html", fn:"成交对比", name:"房产成交对比查询系统",
+  sub:"基于 341 条成交记录 · 数据范围 2018–2026 · 11 个小区。"},
+ {slug:"mortgage", src:"./房地产/mortgage-calc/index.html", fn:"房贷", name:"房贷计算器 · Mortgage Calculator",
+  sub:"精确至小数点——等额本息 · 等额本金 · 当期状态 · 提前还款。"},
+ {slug:"housing-score", src:"./房地产/Comprehensive-Housing-Quality-Assessment-Tool-web/index.html", fn:"五层评分", name:"购房综合评分对比系统",
+  sub:"基于五层决策框架 · 数据存于浏览器本地 · 关闭页面不丢失。"},
+ {slug:"school-score", src:"./School/schoolscore-web/index.html", fn:"龙岗区", name:"义务教育积分入学计算器",
+  sub:"计算积分 · 对比历年录取线 · 评估录取机会。"},
+ {slug:"cengdie", src:"./中国/cengdie/index.html", fn:"省界之下", name:"层叠的中国",
+  sub:"省界之下：方言、族群与山川的另一张地图——一次滚动完成的论证。"},
+ {slug:"gba", src:"./中国/gba/index.html", fn:"GBA", name:"大湾区 · 地形—制度叠加底图",
+  sub:"八门山框 · 拉链齿序 · 三极四膜 · 五港五场 · 代谢管线。"},
+ {slug:"shenzhen", src:"./中国/shenzhen/index.html", fn:"SHENZHEN", name:"深圳 · 地形—战略叠加底图",
+  sub:"山链 · 流域 · 口岸 · 通道——「四个面向」的地理底稿。"},
+ {slug:"yezhu-linux", src:"./业委会/yezhu-linuxserver/yezhu-web/web/index.html", fn:"成立业委会", name:"业主之家 · Linux 版",
+  sub:"联名征集平台：进度按人数 / 建筑面积两条口径达标其一；达标后导出申请书与联名清单，向街道办提交。含流程与法律依据、官方文书指引。多文件静态前端（css / js / docs）。"},
+ {slug:"yezhu-win", src:"./业委会/yezhu-winserver/web/index.html", fn:"成立业委会", name:"业主之家 · Windows 版",
+  sub:"同一联名征集平台的 Windows 服务器部署版前端——本地预览模式数据仅存当前浏览器，正式使用需在 js/config.js 配置后端地址。"},
+ {slug:"baodan", src:"./报单/index.html", fn:"P0 原型", name:"报单管理系统",
+  sub:"P0 演示原型：报单提交 · 截图规范（地址 / 店铺 / 用券 / 实付 / 订单号）· 返款审核状态流转；数据存于浏览器本地。"}
+];
+const GROUPS = [
+ {title:"驾考速查", ga:"#3F7E6B", gd:"#2C5A4C", gw:"#E4EFEA",
+  note:'科目一 · 科目三（水头考场）· 科目四——只收知识点与口诀', idx:[0,1,2]},
+ {title:"房产与学位", ga:"#A9853C", gd:"#856727", gw:"#F0E6C9",
+  note:'成交查询 × 对比 × 房贷 × 五层评分 × <em>积分入学</em>——置业决策五件套', idx:[3,4,5,6,7]},
+ {title:"中国底图", ga:"#BC4B33", gd:"#9A3A26", gw:"#F3DED5",
+  note:'省界之下 · 地形—制度 · 地形—战略——三张叠加底图', idx:[8,9,10]},
+ {title:"事务平台", ga:"#7C8A4D", gd:"#5E6B39", gw:"#ECEEDF",
+  note:'业主之家双版本 × 报单管理 P0 原型', idx:[11,12,13]}
+];
+
+/* ════════ 渲染：仪器架 + 总览卡片 ════════ */
+const pad = n => String(n+1).padStart(2,"0");
+const racknav = document.getElementById("racknav");
+const groupsEl = document.getElementById("groups");
+const home = document.createElement("a");
+home.className = "navitem home"; home.href = "#/"; home.dataset.slug = "";
+home.innerHTML = `<span class="idx">00</span><span>总览</span>`;
+racknav.appendChild(home);
+GROUPS.forEach(g=>{
+  const vars = `--ga:${g.ga};--gd:${g.gd};--gw:${g.gw}`;
+  const blk = document.createElement("div");
+  blk.className = "g-block"; blk.style.cssText = vars;
+  blk.innerHTML = `<div class="g-head"><span class="g-mark"></span><span class="g-name">${g.title}</span><span class="g-count">${g.idx.length} 台</span></div>`;
+  g.idx.forEach(i=>{
+    const t = TOOLS[i];
+    const a = document.createElement("a");
+    a.className = "navitem"; a.href = "#/"+t.slug; a.dataset.slug = t.slug;
+    a.innerHTML = `<span class="idx">${pad(i)}</span><span>${t.name}</span>`;
+    blk.appendChild(a);
+  });
+  racknav.appendChild(blk);
+
+  const sec = document.createElement("section");
+  sec.className = "group"; sec.style.cssText = vars;
+  sec.innerHTML = `<div class="g-head"><span class="g-mark"></span><h3>${g.title}</h3><span class="note">${g.note}</span></div>`;
+  const grid = document.createElement("div");
+  grid.className = "cards";
+  g.idx.forEach(i=>{
+    const t = TOOLS[i];
+    const card = document.createElement("article");
+    card.className = "card";
+    card.innerHTML =
+      `<div class="meta"><span class="fn">${t.fn}</span><span class="idx">${pad(i)}</span></div>`+
+      `<h4><a href="#/${t.slug}">${t.name}</a></h4>`+
+      `<p class="sub">${t.sub}</p>`+
+      `<div class="foot"><span class="go">进入工作台 →</span><a class="ext" href="${encodeURI(t.src)}" target="_blank" rel="noopener">新窗口 ↗</a></div>`;
+    grid.appendChild(card);
+  });
+  sec.appendChild(grid);
+  groupsEl.appendChild(sec);
+});
+
+/* ════════ 路由：#/slug ⇄ 视图；iframe 懒加载并保活 ════════ */
+const main = document.getElementById("main");
+const overview = document.getElementById("overview");
+const crumbFn = document.getElementById("crumbFn");
+const crumbCur = document.getElementById("crumbCur");
+const extBtn = document.getElementById("extBtn");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const frames = {};
+let current = null;
+
+function ensureFrame(t){
+  if (frames[t.slug]) return frames[t.slug];
+  const wrap = document.createElement("div");
+  wrap.className = "frame"; wrap.hidden = true;
+  const veil = document.createElement("div");
+  veil.className = "veil";
+  veil.innerHTML = `<div class="vt">LOADING</div><div class="vn">${t.name}</div><div class="bar"><i></i></div>`;
+  const ifr = document.createElement("iframe");
+  ifr.src = encodeURI(t.src);
+  ifr.title = t.name;
+  ifr.addEventListener("load", ()=> veil.remove(), {once:true});
+  wrap.appendChild(veil); wrap.appendChild(ifr);
+  main.appendChild(wrap);
+  frames[t.slug] = wrap;
+  return wrap;
+}
+function setNav(slug){
+  document.querySelectorAll(".navitem").forEach(a=>{
+    if (a.dataset.slug === (slug||"")) a.setAttribute("aria-current","page");
+    else a.removeAttribute("aria-current");
+  });
+}
+function show(slug){
+  const t = TOOLS.find(x=>x.slug===slug);
+  Object.values(frames).forEach(f=> f.hidden = true);
+  if (!t){
+    overview.hidden = false;
+    document.body.classList.remove("in-tool");
+    crumbFn.textContent = "OVERVIEW";
+    crumbCur.textContent = "总览";
+    document.title = "生活与技能 · 综合工作台 · CAVNO";
+    setNav(null); current = null;
+    return;
+  }
+  overview.hidden = true;
+  ensureFrame(t).hidden = false;
+  document.body.classList.add("in-tool");
+  crumbFn.textContent = t.fn;
+  crumbCur.textContent = t.name;
+  extBtn.href = encodeURI(t.src);
+  document.title = t.name + " · 生活技能综合台";
+  setNav(slug); current = slug;
+  closeRack();
+}
+function route(){
+  const h = decodeURIComponent(location.hash.replace(/^#\/?/, ""));
+  show(TOOLS.some(t=>t.slug===h) ? h : null);
+}
+function step(d){
+  const i = TOOLS.findIndex(t=>t.slug===current);
+  const n = (i + d + TOOLS.length) % TOOLS.length;
+  location.hash = "#/"+TOOLS[n].slug;
+}
+prevBtn.addEventListener("click", ()=>step(-1));
+nextBtn.addEventListener("click", ()=>step(+1));
+window.addEventListener("hashchange", route);
+
+/* ════════ 移动端仪器架抽屉 ════════ */
+const menuBtn = document.getElementById("menuBtn");
+const backdrop = document.getElementById("backdrop");
+function closeRack(){ document.body.classList.remove("rack-open"); }
+menuBtn.addEventListener("click", ()=> document.body.classList.toggle("rack-open"));
+backdrop.addEventListener("click", closeRack);
+window.addEventListener("keydown", e=>{ if (e.key==="Escape") closeRack(); });
+
+route();
+</script>
+</body>
+</html>
