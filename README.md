@@ -4,6 +4,7 @@
 
 | 分类 | 内容 | 访问链接 |
 | --- | --- | --- |
+| 总入口 | 生活与技能 · 综合工作台 | https://cavno.github.io/Life_Style_and_Skills/ |
 | Driving | 科目一核心知识点速查 | https://cavno.github.io/Life_Style_and_Skills/Driving/%E7%A7%91%E7%9B%AE1/ |
 | Driving | 水头考场科目三速查（自动挡） | https://cavno.github.io/Life_Style_and_Skills/Driving/%E7%A7%91%E7%9B%AE3/ |
 | Driving | 科目四核心知识点速查 | https://cavno.github.io/Life_Style_and_Skills/Driving/%E7%A7%91%E7%9B%AE4/ |
