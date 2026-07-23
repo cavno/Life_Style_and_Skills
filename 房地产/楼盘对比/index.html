@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="布吉六盘 + 坂田四季花城 + 香蜜湖参照 · 按学位、保值、流动性、居住品质、价格、通勤六维对比 · 含十年脆弱度光谱">
+<title>购房决策 · 八盘对比图表</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --parchment:#F3EAD3;
+  --paper:#FAF5E8;
+  --ink:#2B2620;
+  --ink-soft:#5A5348;
+  --ink-faint:#8A8272;
+  --teal:#1F6E63;
+  --teal-deep:#14524A;
+  --teal-mist:#DCE8E2;
+  --terra:#C05B3C;
+  --terra-deep:#9A3F26;
+  --terra-mist:#EFDCCF;
+  --sand:#E4D8BC;
+  --line:#C9BC9C;
+  --serif:'Noto Serif SC','Songti SC',serif;
+  --sans:'Noto Sans SC','PingFang SC',sans-serif;
+  --mono:'JetBrains Mono','SF Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--parchment);
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:15px;
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+/* ============ MASTHEAD ============ */
+header{padding:56px 0 40px;border-bottom:2px solid var(--ink)}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.22em;
+  color:var(--terra-deep);text-transform:uppercase;margin-bottom:18px;
+  display:flex;align-items:center;gap:12px;
+}
+.eyebrow::before{content:'';width:26px;height:2px;background:var(--terra)}
+h1{
+  font-family:var(--serif);font-weight:900;
+  font-size:clamp(38px,5.6vw,64px);line-height:1.12;
+  letter-spacing:.01em;margin-bottom:18px;
+}
+h1 em{font-style:normal;color:var(--teal-deep)}
+.lede{
+  font-family:var(--serif);font-size:17px;color:var(--ink-soft);
+  max-width:760px;line-height:1.8;
+}
+.meta{
+  display:flex;flex-wrap:wrap;gap:10px 36px;margin-top:26px;
+  font-family:var(--mono);font-size:12px;color:var(--ink-faint);letter-spacing:.06em;
+}
+.meta b{color:var(--ink-soft);font-weight:500}
+
+/* ============ SECTIONS ============ */
+section{padding:52px 0;border-bottom:1px solid var(--line)}
+section:last-of-type{border-bottom:none}
+.sec-label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;
+  color:var(--teal-deep);text-transform:uppercase;margin-bottom:12px;
+  display:flex;align-items:center;gap:10px;
+}
+.sec-label::before{content:'';width:20px;height:1px;background:var(--teal)}
+h2{
+  font-family:var(--serif);font-weight:700;
+  font-size:clamp(26px,3.4vw,38px);line-height:1.2;margin-bottom:12px;
+}
+.sec-intro{font-size:14.5px;color:var(--ink-soft);max-width:780px;margin-bottom:32px}
+.sec-intro b{color:var(--terra-deep)}
+
+/* ============ VERDICT ============ */
+.verdict{
+  background:var(--paper);border:2px solid var(--ink);
+  padding:30px 34px;margin-top:36px;position:relative;
+}
+.verdict::before{
+  content:'结论先行';position:absolute;top:-13px;left:26px;
+  background:var(--ink);color:var(--parchment);
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;
+  padding:4px 14px;
+}
+.verdict p{font-family:var(--serif);font-size:16px;line-height:1.9;margin-bottom:10px}
+.verdict p:last-child{margin-bottom:0}
+.verdict strong{color:var(--teal-deep)}
+.verdict .t{color:var(--terra-deep);font-weight:700}
+
+/* ============ MASTER TABLE ============ */
+.tbl-scroll{overflow-x:auto;background:var(--paper);border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:980px}
+thead th{
+  background:var(--ink);color:var(--parchment);
+  font-family:var(--serif);font-weight:700;font-size:14px;
+  padding:14px 14px;text-align:left;white-space:nowrap;
+}
+thead th:first-child{position:sticky;left:0;z-index:2;background:var(--ink)}
+tbody td{
+  padding:13px 14px;border-bottom:1px solid var(--line);
+  vertical-align:top;line-height:1.6;
+}
+tbody td:first-child{
+  position:sticky;left:0;background:var(--paper);
+  font-family:var(--serif);font-weight:700;font-size:14.5px;
+  white-space:nowrap;border-right:1px solid var(--line);z-index:1;
+}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:rgba(31,110,99,.045)}
+tbody tr:hover td:first-child{background:#F0E9D6}
+.num{font-family:var(--mono);font-size:12.5px}
+.tag{
+  display:inline-block;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.06em;padding:2px 8px;border:1px solid currentColor;
+  border-radius:2px;margin-top:4px;
+}
+.tag.good{color:var(--teal-deep)}
+.tag.warn{color:var(--terra-deep)}
+.note-ref{color:var(--terra-deep);font-weight:700}
+
+/* ============ HEATMAP ============ */
+.heat-scroll{overflow-x:auto}
+.heat{width:100%;border-collapse:separate;border-spacing:4px;min-width:820px}
+.heat th{
+  font-family:var(--serif);font-size:13.5px;font-weight:700;
+  padding:8px 10px;text-align:center;color:var(--ink-soft);white-space:nowrap;
+}
+.heat th.rowh{text-align:left;font-size:14.5px;color:var(--ink);white-space:nowrap}
+.heat td{
+  text-align:center;padding:14px 6px;
+  font-family:var(--mono);font-size:15px;font-weight:500;
+  border-radius:3px;min-width:82px;
+}
+.s5{background:var(--teal-deep);color:var(--parchment)}
+.s4{background:#3E8377;color:var(--parchment)}
+.s3{background:var(--sand);color:var(--ink)}
+.s2{background:#D89A7E;color:var(--ink)}
+.s1{background:#B0532F;color:var(--parchment)}
+.heat .fork-cell{position:relative}
+.heat .fork-cell::after{
+  content:'◇';position:absolute;top:2px;right:5px;
+  font-size:10px;opacity:.85;
+}
+.legend{
+  display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;
+  font-size:12px;color:var(--ink-soft);align-items:center;
+}
+.legend .sw{
+  display:inline-block;width:13px;height:13px;border-radius:2px;
+  vertical-align:-2px;margin-right:5px;
+}
+.fine{font-size:12.5px;color:var(--ink-faint);margin-top:12px;line-height:1.7}
+
+/* ============ SPECTRUM (signature) ============ */
+.spectrum-box{background:var(--paper);border:1px solid var(--line);padding:38px 30px 26px;margin-top:8px}
+.spec-axis{position:relative;height:230px;margin:0 10px}
+.spec-line{
+  position:absolute;left:0;right:0;top:120px;height:3px;
+  background:linear-gradient(90deg,var(--terra-deep) 0%,var(--sand) 50%,var(--teal-deep) 100%);
+}
+.spec-end{
+  position:absolute;top:138px;font-family:var(--mono);
+  font-size:11px;letter-spacing:.1em;color:var(--ink-soft);
+}
+.spec-end.l{left:0}
+.spec-end.r{right:0;text-align:right}
+.spec-pt{position:absolute;transform:translateX(-50%);text-align:center;width:92px}
+.spec-pt .dot{
+  width:13px;height:13px;border-radius:50%;margin:0 auto;
+  border:2.5px solid var(--paper);box-shadow:0 0 0 1.5px var(--ink);
+}
+.spec-pt .nm{
+  font-family:var(--serif);font-size:12.5px;font-weight:700;line-height:1.35;margin-top:7px;
+}
+.spec-pt .sub{font-family:var(--mono);font-size:10px;color:var(--ink-faint);margin-top:2px}
+.spec-pt.up{top:64px}
+.spec-pt.up .dot{margin-top:36px}
+.spec-pt.up .nm,.spec-pt.up .sub{position:relative;top:-76px}
+.spec-pt.dn{top:114px}
+.spec-pt.dn .dot{margin-bottom:7px}
+.d-terra{background:var(--terra-deep)}
+.d-terra2{background:#C97954}
+.d-sand{background:#B7A87F}
+.d-teal2{background:#3E8377}
+.d-teal{background:var(--teal-deep)}
+.fork-arc{
+  position:absolute;top:34px;height:26px;
+  border:1.5px dashed var(--terra-deep);border-bottom:none;
+  border-radius:12px 12px 0 0;
+}
+.fork-lbl{
+  position:absolute;top:8px;transform:translateX(-50%);
+  font-family:var(--mono);font-size:10.5px;color:var(--terra-deep);
+  letter-spacing:.08em;white-space:nowrap;
+}
+.axis-note{
+  margin-top:18px;font-size:12.5px;color:var(--ink-faint);
+  text-align:center;font-family:var(--mono);letter-spacing:.05em;
+}
+
+/* ============ THREE AXIS TABLE ============ */
+.axes{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--paper);border:1px solid var(--line)}
+.axes th{
+  background:var(--teal-deep);color:var(--parchment);
+  font-family:var(--serif);font-size:13.5px;padding:11px 14px;text-align:left;
+}
+.axes td{padding:11px 14px;border-bottom:1px solid var(--line);line-height:1.6}
+.axes tr:last-child td{border-bottom:none}
+.axes td:first-child{font-family:var(--serif);font-weight:700;white-space:nowrap}
+.hi{color:var(--terra-deep);font-weight:700}
+.lo{color:var(--teal-deep);font-weight:700}
+
+/* ============ SCATTER ============ */
+.scatter-box{background:var(--paper);border:1px solid var(--line);padding:24px 18px 10px}
+.scatter-box svg{width:100%;height:auto;display:block}
+.sc-axis{font-family:var(--mono);font-size:11px;fill:var(--ink-faint)}
+.sc-lbl{font-family:var(--serif);font-size:12.5px;font-weight:700;fill:var(--ink)}
+.sc-sub{font-family:var(--mono);font-size:9.5px;fill:var(--ink-faint)}
+.sc-title{font-family:var(--mono);font-size:11px;fill:var(--ink-soft);letter-spacing:.1em}
+
+/* ============ DECISION ============ */
+.dec{width:100%;border-collapse:collapse;background:var(--paper);border:1px solid var(--line);font-size:14px}
+.dec th{
+  background:var(--ink);color:var(--parchment);font-family:var(--serif);
+  padding:12px 16px;text-align:left;font-size:14px;
+}
+.dec td{padding:13px 16px;border-bottom:1px solid var(--line);line-height:1.65}
+.dec tr:last-child td{border-bottom:none}
+.dec td:first-child{font-weight:700;width:34%;font-family:var(--serif)}
+.dec td b{color:var(--teal-deep)}
+
+/* ============ CHECKLIST ============ */
+.checks{list-style:none;counter-reset:ck}
+.checks li{
+  counter-increment:ck;position:relative;
+  padding:13px 0 13px 46px;border-bottom:1px dashed var(--line);
+  line-height:1.65;font-size:14px;
+}
+.checks li:last-child{border-bottom:none}
+.checks li::before{
+  content:counter(ck,decimal-leading-zero);
+  position:absolute;left:0;top:13px;
+  font-family:var(--mono);font-size:13px;color:var(--terra-deep);font-weight:500;
+}
+.checks li b{color:var(--ink)}
+.checks .why{display:block;font-size:12.5px;color:var(--ink-faint);margin-top:2px}
+
+/* ============ FOOTER ============ */
+footer{
+  background:var(--ink);color:#CFC7B4;padding:44px 0 36px;margin-top:8px;
+  font-size:12.5px;line-height:1.8;
+}
+footer .wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:40px}
+footer h3{font-family:var(--serif);color:var(--parchment);font-size:15px;margin-bottom:12px}
+footer p{margin-bottom:8px;opacity:.85}
+
+@media (max-width:760px){
+  .wrap{padding:0 18px}
+  header{padding:40px 0 30px}
+  section{padding:38px 0}
+  footer .wrap{grid-template-columns:1fr;gap:24px}
+  .spec-pt{width:70px}
+  .spec-pt .nm{font-size:11px}
+}
+@media print{
+  body{background:#fff}
+  .tbl-scroll,.heat-scroll{overflow:visible}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">购房决策档案 · 布吉六盘 + 坂田四季花城 + 香蜜湖参照</div>
+    <h1>八盘对比：<br>你付的钱里，<em>有多少不折旧</em></h1>
+    <p class="lede">沿着这一路的讨论收敛：学位、保值、流动性、长期居住品质、价格、通勤六个维度；再叠加"建筑物占比 × 不折旧含金量 × 楼龄阈值"三轴模型，推演十年后的相对脆弱度。所有判断为结构性比较，非绝对预测。</p>
+    <div class="meta">
+      <div><b>编制</b> 2026.07 · v2</div>
+      <div><b>范围</b> 万科麓城二期 / 三期 · 特发臻华府 · 宇宏健康花城 · 鸿荣源尚峰 · 万科四季花城 · 茵悦之生 · 香蜜湖老破小（参照）</div>
+      <div><b>孩子入学</b> 2029.09</div>
+    </div>
+
+    <div class="verdict">
+      <p>① 布吉盘中，<strong>茵悦之生</strong>是唯一握有麓城外国语<strong>优享学位（+2.5 分）</strong>的标的，且单价最低——但它的十年命运被这一个变量二值化：<span class="t">学位在则相对抗跌，学位被重划则跌幅最大</span>。</p>
+      <p>② 新加入的<strong>坂田万科四季花城</strong>是八盘唯一"无短板"选手：华为就业圈 + 容积率 1.4 低密 + 自带公办花城小学（单校划片，免共享竞争）+ 10/5 号线双地铁；楼龄 23–27 年但<strong>折旧已大半释放</strong>——结构上是香蜜湖逻辑的平价缩小版。</p>
+      <p>③ 十年相对脆弱度：靠"次新 + 品牌"支撑、缺乏不折旧属性的 <span class="t">万科麓城二期 / 三期最脆弱</span>；含金量压倒性的 <strong>香蜜湖参照最抗跌</strong>，四季花城与茵悦（学位在）紧随其后。全表回报最高的一次核实仍是：<strong>茵悦优享学位在新水径方案下是否存续</strong>。</p>
+    </div>
+  </div>
+</header>
+
+<section id="master">
+  <div class="wrap">
+    <div class="sec-label">硬指标总览</div>
+    <h2>八盘基本面</h2>
+    <p class="sec-intro">价格为二手挂牌/成交与备案的粗估区间（下行市场中挂牌与成交可差 15%+），标 <span class="note-ref">※</span> 项须以最新成交与官方文件核实。香蜜湖为片区概念参照，非特定小区。</p>
+    <div class="tbl-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>标的</th><th>板块 · 地铁</th><th>开发商 · 物业</th><th>入伙 → 10年后楼龄</th><th>容积率 · 户数</th><th>参考单价<span class="note-ref">※</span></th><th>三房总价段<span class="note-ref">※</span></th><th>学位要点</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>万科麓城三期</td>
+            <td>水径 · 5号线上水径</td>
+            <td>万科 · 万科物业</td>
+            <td class="num">2018 → 18 年</td>
+            <td class="num">3.0 · 1325 户</td>
+            <td class="num">~4.2–4.6 万/㎡</td>
+            <td class="num">365–408 万 (88㎡)</td>
+            <td>麓城外国语共享<b>无优享</b>；初中布吉中学偏弱<br><span class="tag good">4栋楼王 · 次卧山景 · 车位95%</span></td>
+          </tr>
+          <tr>
+            <td>万科麓城二期</td>
+            <td>水径 · 5号线上水径 607m</td>
+            <td>万科 · 万科物业</td>
+            <td class="num">2017 → 19 年</td>
+            <td class="num">2.5 · ~1010 户</td>
+            <td class="num">~4.2–4.5 万/㎡</td>
+            <td class="num">~370–400 万 (88㎡)</td>
+            <td>同三期：共享无优享<br><span class="tag good">容积率次新盘最低</span></td>
+          </tr>
+          <tr>
+            <td>特发臻华府</td>
+            <td>石芽岭 · 14号线上盖 + 17号线在建</td>
+            <td>特发(国企) · 待定</td>
+            <td class="num">期房 → 10 年</td>
+            <td class="num">7.0 · 2250+373 户</td>
+            <td class="num">备案 5.09 万/㎡</td>
+            <td class="num">412–702 万 (89–126㎡)</td>
+            <td>自带54班九年一贯，2026 动工<b>名校未定</b><br><span class="tag warn">混居 · 一层六户 · 楼间距16–18m</span></td>
+          </tr>
+          <tr>
+            <td>宇宏健康花城</td>
+            <td>石芽岭/丹竹头 · 14号线 + 3号线大芬</td>
+            <td>宇宏(民企) · 一般</td>
+            <td class="num">2017 → 19 年</td>
+            <td class="num">3.2 · 2677 户</td>
+            <td class="num">~5.0–5.9 万/㎡</td>
+            <td class="num">~440–525 万 (87–89㎡)</td>
+            <td>对口南湾学校等（九年一贯，中游）<br><span class="tag warn">大体量抛压 · 梯户比杂</span></td>
+          </tr>
+          <tr>
+            <td>鸿荣源尚峰</td>
+            <td>石芽岭公园侧 · 14号线 + 3号线</td>
+            <td>鸿荣源 · 自营物业</td>
+            <td class="num">2017 → 19 年</td>
+            <td class="num">3.0 · 1926 户</td>
+            <td class="num">~5.5–6.7 万/㎡</td>
+            <td class="num">~400–530 万 (71–79㎡三房)</td>
+            <td>同上南湾片学位<br><span class="tag good">89㎡可做4房 · 高得房率</span></td>
+          </tr>
+          <tr>
+            <td>万科四季花城</td>
+            <td>坂田五和 · <b>10号线+5号线双地铁</b> 325–722m</td>
+            <td>万科 · 万科物业</td>
+            <td class="num">1999–2003 → 33–37 年</td>
+            <td class="num">1.4 · 4855 户</td>
+            <td class="num">~4.2–5.0 万/㎡</td>
+            <td class="num">~400–500 万 (90–106㎡)</td>
+            <td>自带<b>花城小学</b>（公办·单校划片）；初中或对口科技城外国语<span class="note-ref">※</span>待核实<br><span class="tag good">华为腹地 · 万科成名作 · 公摊小</span> <span class="tag warn">楼龄老 · 停车难</span></td>
+          </tr>
+          <tr>
+            <td>茵悦之生</td>
+            <td>三联/丽湖 · 5号线上水径 ~1km</td>
+            <td>光南茵悦(民企) · 一般</td>
+            <td class="num">2002–05 → 32 年</td>
+            <td class="num">1.1(一期) · ~2200 户</td>
+            <td class="num">~4.0 万/㎡</td>
+            <td class="num">~300–370 万 (74–92㎡)</td>
+            <td><b>麓城外国语优享 +2.5 分</b>（唯一）<br><span class="tag warn">错层户型 · 22年楼龄</span></td>
+          </tr>
+          <tr>
+            <td>香蜜湖老破小</td>
+            <td>福田核心 · 地铁多线</td>
+            <td>—（片区参照）</td>
+            <td class="num">~30 年 → 40 年</td>
+            <td class="num">因盘而异</td>
+            <td class="num">~8–12 万/㎡</td>
+            <td class="num">大几百万–千万级</td>
+            <td>福田<b>顶级学区梯队</b><br><span class="tag good">地段学位占比压倒性 · 旧改期权</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="heat">
+  <div class="wrap">
+    <div class="sec-label">六维评分</div>
+    <h2>你关心的维度，逐盘打分</h2>
+    <p class="sec-intro">1–5 分，5 为对买家最有利。评分是<b>比较工具而非结论</b>：总分没有意义，谁赢取决于你给每个维度的权重。◇ 标记 = 该项高度依赖优享学位是否坐实（茵悦之生的分叉变量）。</p>
+    <div class="heat-scroll">
+      <table class="heat">
+        <thead>
+          <tr>
+            <th class="rowh"></th><th>价格门槛</th><th>学位含金</th><th>保值抗跌</th><th>流动性</th><th>居住品质</th><th>通勤福田</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th class="rowh">万科麓城三期</th><td class="s4">4</td><td class="s2">2</td><td class="s3">3</td><td class="s4">4</td><td class="s4">4</td><td class="s2">2</td></tr>
+          <tr><th class="rowh">万科麓城二期</th><td class="s5">5</td><td class="s2">2</td><td class="s3">3</td><td class="s4">4</td><td class="s4">4</td><td class="s2">2</td></tr>
+          <tr><th class="rowh">特发臻华府</th><td class="s2">2</td><td class="s3">3</td><td class="s3">3</td><td class="s3">3</td><td class="s2">2</td><td class="s5">5</td></tr>
+          <tr><th class="rowh">宇宏健康花城</th><td class="s3">3</td><td class="s3">3</td><td class="s3">3</td><td class="s4">4</td><td class="s3">3</td><td class="s4">4</td></tr>
+          <tr><th class="rowh">鸿荣源尚峰</th><td class="s2">2</td><td class="s3">3</td><td class="s4">4</td><td class="s3">3</td><td class="s4">4</td><td class="s4">4</td></tr>
+          <tr><th class="rowh">万科四季花城</th><td class="s3">3</td><td class="s4">4</td><td class="s4">4</td><td class="s4">4</td><td class="s4">4</td><td class="s4">4</td></tr>
+          <tr><th class="rowh">茵悦之生</th><td class="s5">5</td><td class="s5 fork-cell">5</td><td class="s3 fork-cell">3</td><td class="s3">3</td><td class="s3 fork-cell">3</td><td class="s2">2</td></tr>
+          <tr><th class="rowh">香蜜湖老破小</th><td class="s1">1</td><td class="s5">5</td><td class="s5">5</td><td class="s4">4</td><td class="s1">1</td><td class="s5">5</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span><span class="sw" style="background:var(--teal-deep)"></span>5 最优</span>
+      <span><span class="sw" style="background:#3E8377"></span>4</span>
+      <span><span class="sw" style="background:var(--sand)"></span>3</span>
+      <span><span class="sw" style="background:#D89A7E"></span>2</span>
+      <span><span class="sw" style="background:#B0532F"></span>1 最弱</span>
+      <span>◇ = 取决于优享学位存续</span>
+    </div>
+    <p class="fine">读法提示：四季花城是唯一一行没有 1 分或 2 分的（全能均衡型），其"学位含金 4"的前提是花城小学单校划片确定 + 初中对口科技城外国语待核实。茵悦之生"学位含金 5"以优享身份坐实为前提；若新水径九年制方案重划片区，该格与"保值抗跌"同步降档。香蜜湖与茵悦的学位 5 分不同量级——前者福田顶级梯队，后者布吉级优享；同分只表示"在各自可选范围内最优"。</p>
+  </div>
+</section>
+
+<section id="spectrum">
+  <div class="wrap">
+    <div class="sec-label">十年推演 · 签名图</div>
+    <h2>2036 相对脆弱度光谱</h2>
+    <p class="sec-intro">同样的系统性冲击下，谁额外多跌。位置由三轴模型给出：建筑物占比 × 不折旧含金量 × 楼龄阈值。<b>这是相对排序，不是绝对预测</b>——大盘方向由宏观决定，此图只回答"结构上谁更受伤"。茵悦之生以分叉呈现：一个标的、两种命运。</p>
+
+    <div class="spectrum-box">
+      <div class="spec-axis">
+        <div class="spec-line"></div>
+        <div class="spec-end l">← 相对跌幅更大</div>
+        <div class="spec-end r">相对更抗跌 →</div>
+
+        <div class="fork-arc" style="left:29%;width:50%"></div>
+        <div class="fork-lbl" style="left:54%">优享学位 存续与否 = 分叉变量</div>
+
+        <div class="spec-pt dn" style="left:4%">
+          <div class="dot d-terra"></div>
+          <div class="nm">麓城二期</div>
+          <div class="sub">次新光环耗尽</div>
+        </div>
+        <div class="spec-pt up" style="left:12%">
+          <div class="dot d-terra"></div>
+          <div class="nm">麓城三期</div>
+          <div class="sub">同构 · 略新</div>
+        </div>
+        <div class="spec-pt dn" style="left:22%">
+          <div class="dot d-terra2"></div>
+          <div class="nm">健康花城</div>
+          <div class="sub">大体量抛压</div>
+        </div>
+        <div class="spec-pt up" style="left:32%">
+          <div class="dot d-terra2"></div>
+          <div class="nm">茵悦·学位丢</div>
+          <div class="sub">32年错层老盘</div>
+        </div>
+        <div class="spec-pt dn" style="left:45%">
+          <div class="dot d-sand"></div>
+          <div class="nm">特发臻华府</div>
+          <div class="sub">跌少涨也少</div>
+        </div>
+        <div class="spec-pt up" style="left:56%">
+          <div class="dot d-teal2"></div>
+          <div class="nm">鸿荣源尚峰</div>
+          <div class="sub">布吉盘最扎实</div>
+        </div>
+        <div class="spec-pt dn" style="left:67%">
+          <div class="dot d-teal2"></div>
+          <div class="nm">四季花城</div>
+          <div class="sub">华为盘·折旧已释放</div>
+        </div>
+        <div class="spec-pt up" style="left:79%">
+          <div class="dot d-teal2"></div>
+          <div class="nm">茵悦·学位在</div>
+          <div class="sub">刚需学位锚</div>
+        </div>
+        <div class="spec-pt dn" style="left:93%">
+          <div class="dot d-teal"></div>
+          <div class="nm">香蜜湖参照</div>
+          <div class="sub">折无可折</div>
+        </div>
+      </div>
+      <div class="axis-note">位置 = 结构性判断，非精确刻度 · 三个政策/产业期权可重构排序：茵悦优享存续 / 香蜜湖旧改启动 / 华为坂田基本盘变动</div>
+    </div>
+
+    <div style="margin-top:34px">
+      <div class="tbl-scroll" style="background:transparent;border:none">
+      <table class="axes" style="min-width:720px">
+        <thead>
+          <tr><th>标的</th><th>建筑物占比<br><span style="font-weight:400;font-size:11.5px">越高越吃折旧</span></th><th>不折旧含金量<br><span style="font-weight:400;font-size:11.5px">学位·地段·稀缺</span></th><th>2036 楼龄位置</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>麓城三期</td><td class="hi">高</td><td class="hi">低</td><td>18 年 · 近 20 年坎</td></tr>
+          <tr><td>麓城二期</td><td class="hi">高</td><td class="hi">最低</td><td>19 年 · 临 20 年坎</td></tr>
+          <tr><td>特发臻华府</td><td class="hi">高</td><td>中</td><td class="lo">10 年 · 次新末段</td></tr>
+          <tr><td>健康花城</td><td class="hi">高</td><td>中</td><td>19 年 · 临 20 年坎</td></tr>
+          <tr><td>鸿荣源尚峰</td><td>中高</td><td>中</td><td>19 年 · 临 20 年坎</td></tr>
+          <tr><td>万科四季花城</td><td class="lo">低—中</td><td class="lo">中高</td><td class="hi">33–37 年 · 折旧大半释放</td></tr>
+          <tr><td>茵悦之生</td><td class="lo">低</td><td>中 → <span class="lo">高</span>（学位定）</td><td class="hi">32 年 · 跨入 30+ 区</td></tr>
+          <tr><td>香蜜湖参照</td><td class="lo">极低</td><td class="lo">极高</td><td>40 年 · 折无可折</td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="scatter">
+  <div class="wrap">
+    <div class="sec-label">价格 × 含金量</div>
+    <h2>单价买到了多少"不折旧"</h2>
+    <p class="sec-intro">横轴 = 参考单价；纵轴 = 不折旧属性含金量（学位·地段·稀缺的综合，1–5）。左上为甜区（低价高含金），右下为陷阱（高价低含金）。茵悦之生带虚线晕圈：其纵轴位置随学位存续上下浮动。</p>
+    <div class="scatter-box">
+      <svg viewBox="0 0 700 430" role="img" aria-label="单价与不折旧含金量散点图：茵悦之生约4万单价、含金量3.6随学位浮动；麓城二期三期约4.3-4.4万、含金量1.6-1.7；万科四季花城约4.6万、含金量3.4；臻华府5.09万、2.6；健康花城5.4万、2.5；尚峰5.9万、3.1；香蜜湖约10万、4.9。">
+        <rect x="70" y="30" width="200" height="130" fill="rgba(31,110,99,.07)"/>
+        <text x="80" y="50" class="sc-title">甜区 · 低价高含金</text>
+        <rect x="430" y="250" width="220" height="110" fill="rgba(192,91,60,.07)"/>
+        <text x="522" y="350" class="sc-title">高价低含金 · 避</text>
+
+        <line x1="70" y1="360" x2="650" y2="360" stroke="#C9BC9C" stroke-width="1.5"/>
+        <line x1="70" y1="360" x2="70" y2="30" stroke="#C9BC9C" stroke-width="1.5"/>
+        <text x="360" y="398" text-anchor="middle" class="sc-axis">参考单价（万元/㎡）</text>
+        <text x="26" y="195" text-anchor="middle" class="sc-axis" transform="rotate(-90 26 195)">不折旧含金量</text>
+
+        <g class="sc-axis">
+          <text x="108" y="378" text-anchor="middle">4</text>
+          <text x="186" y="378" text-anchor="middle">5</text>
+          <text x="263" y="378" text-anchor="middle">6</text>
+          <text x="418" y="378" text-anchor="middle">8</text>
+          <text x="573" y="378" text-anchor="middle">10</text>
+          <text x="58" y="330" text-anchor="end">1</text>
+          <text x="58" y="257" text-anchor="end">2</text>
+          <text x="58" y="183" text-anchor="end">3</text>
+          <text x="58" y="110" text-anchor="end">4</text>
+          <text x="58" y="37" text-anchor="end">5</text>
+        </g>
+
+        <circle cx="109" cy="169" r="26" fill="none" stroke="#C05B3C" stroke-width="1.3" stroke-dasharray="4,4"/>
+        <line x1="109" y1="143" x2="109" y2="96" stroke="#C05B3C" stroke-width="1.2" stroke-dasharray="3,3"/>
+        <line x1="109" y1="195" x2="109" y2="238" stroke="#C05B3C" stroke-width="1.2" stroke-dasharray="3,3"/>
+        <circle cx="109" cy="169" r="8" fill="#1F6E63"/>
+        <text x="96" y="86" text-anchor="middle" class="sc-lbl">茵悦之生</text>
+        <text x="109" y="255" text-anchor="middle" class="sc-sub">纵向浮动 = 学位存续</text>
+
+        <circle cx="136" cy="316" r="8" fill="#B0532F"/>
+        <text x="136" y="341" text-anchor="middle" class="sc-lbl">麓城二期</text>
+        <circle cx="140" cy="308" r="8" fill="#C97954"/>
+        <text x="172" y="294" text-anchor="middle" class="sc-lbl">麓城三期</text>
+
+        <circle cx="155" cy="184" r="8" fill="#3E8377"/>
+        <text x="192" y="168" text-anchor="middle" class="sc-lbl">万科四季花城</text>
+
+        <circle cx="193" cy="243" r="8" fill="#B7A87F"/>
+        <text x="196" y="228" text-anchor="middle" class="sc-lbl">特发臻华府</text>
+        <circle cx="217" cy="250" r="8" fill="#C97954"/>
+        <text x="243" y="273" text-anchor="middle" class="sc-lbl">健康花城</text>
+        <circle cx="256" cy="206" r="8" fill="#3E8377"/>
+        <text x="277" y="191" text-anchor="middle" class="sc-lbl">鸿荣源尚峰</text>
+
+        <circle cx="573" cy="74" r="8" fill="#14524A"/>
+        <text x="573" y="56" text-anchor="middle" class="sc-lbl">香蜜湖参照</text>
+        <text x="573" y="97" text-anchor="middle" class="sc-sub">贵，但几乎全是含金</text>
+      </svg>
+    </div>
+    <p class="fine">读图：四季花城落在甜区右缘——单价与麓城相当，但含金量高出一整档（坂田华为就业圈 + 低密 1.4 + 自带公办小学 + 双地铁均为不折旧属性）。它与茵悦之生构成"甜区双雄"：一个赌学位存续，一个吃产业基本盘。</p>
+  </div>
+</section>
+
+<section id="decision">
+  <div class="wrap">
+    <div class="sec-label">决策矩阵</div>
+    <h2>按你的第一优先级选</h2>
+    <div class="tbl-scroll" style="background:transparent;border:none">
+    <table class="dec" style="min-width:640px">
+      <thead><tr><th>如果第一优先级是</th><th>推荐与理由</th></tr></thead>
+      <tbody>
+        <tr><td>学位（布吉预算内）</td><td><b>茵悦之生</b>——唯一优享 +2.5 分，且单价最低；选平层户型、避错层，室内重装解决楼龄体验。前提：优享身份坐实。</td></tr>
+        <tr><td>学位（预算充足，冲顶级）</td><td><b>香蜜湖老破小</b>——买的是福田核心占位 + 顶级学位权，接受居住将就或不自住；旧改当免费期权，不当买入理由。</td></tr>
+        <tr><td>均衡无短板 + 产业基本盘</td><td><b>万科四季花城</b>——八盘唯一全 3 分以上；华为就业圈托底需求，学位自带确定、双地铁、低密社区成熟。代价：楼龄老、停车难，且初中对口需核实。</td></tr>
+        <tr><td>通勤福田 + 升值弹性</td><td><b>鸿荣源尚峰</b>——14 号线 + 品牌 + 高得房率，布吉盘中不折旧支撑最扎实；能接受高密新盘则臻华府可并行核实。</td></tr>
+        <tr><td>低密舒适 + 次新 + 好物业</td><td><b>万科麓城二期 / 三期4栋</b>——住得最舒服的次新组合；但要清楚其价格主要由会流失的"次新+品牌"支撑，持有期越长越吃亏。</td></tr>
+        <tr><td>流动性 + 配套折中</td><td><b>宇宏健康花城</b>——大体量成交活跃、影城超市公园齐全；接受民企物业与梯户比杂。</td></tr>
+        <tr><td>纯粹十年抗跌</td><td><b>香蜜湖 &gt; 茵悦（学位在）≈ 四季花城 &gt; 尚峰</b>——含金量排序即抗跌排序；跌幅小 ≠ 该买，自住价值另算。</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<section id="checks">
+  <div class="wrap">
+    <div class="sec-label">行动清单</div>
+    <h2>待核实（按回报排序）</h2>
+    <ol class="checks">
+      <li><b>茵悦之生优享学位存续</b>——比对现行划分与水径九年制新方案终稿（预计 7–9 月发布）。<span class="why">同时决定入学概率与十年资产命运，全表回报最高的一次核实。</span></li>
+      <li><b>四季花城初中对口</b>——坂田梯队文章列其入科技城外国语对应楼盘，但须以 2026 年官方划分为准（另一可能：坂田实验学校）。<span class="why">科外是龙岗统考前五，对口与否直接改写"学位含金 4 分"的成色。</span></li>
+      <li><b>八盘最新真实成交价</b>——链家/贝壳成交记录，不看挂牌（四季花城挂牌 ~4.96 万 vs 实际成交 ~4.2 万即是例证）。<span class="why">下行市场挂牌与成交可差 15–25%，所有价格判断的地基。</span></li>
+      <li><b>茵悦之生目标房源：平层 or 错层 + 学位锁定</b>——i 龙岗查房屋编码。<span class="why">错层收窄接盘客群；老小区学位可能已被占用。</span></li>
+      <li><b>四季花城具体期数与停车实况</b>——七期品质差异大（多层/洋房/小高层），车位配比低是老盘通病；同时确认目标房源学位锁定。<span class="why">1999 与 2003 的房子体验差半代；停车难是每天的摩擦成本。</span></li>
+      <li><b>臻华府自带学校承办方与交付标准</b>——要书面文件，不听销售口头。<span class="why">名校未定 + 期房毛坯/精装未明，两大不确定性。</span></li>
+      <li><b>麓城二期楼王栋定位</b>——取二期总平面图逐栋标注朝向与噪音源。<span class="why">方法同三期4栋分析，锁定西北侧朝南山景栋。</span></li>
+      <li><b>香蜜湖具体标的的贷款年限与学位锁定</b>——30 年+ 房龄逐家银行确认。<span class="why">老房金融约束是该策略唯一的交易端硬伤。</span></li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <h3>数据与方法</h3>
+      <p>基础数据：咚咚地产·老牛评楼（2016）、乐有家/吉屋/搜狐焦点/房天下小区档案、百度百科（四季花城）、特发臻华府备案公示（2026.03）、龙岗区学位划分文件（2023–2025）及水径九年制征求意见稿（2026.05）、坂田教育梯队分析（2025.03）。</p>
+      <p>分析框架：建筑物 vs 不折旧属性拆解 · 三轴脆弱度模型 · 折旧非线性阈值。评分与光谱位置为结构性判断，非预测。</p>
+    </div>
+    <div>
+      <h3>边界声明</h3>
+      <p>价格、学区、政策随时间变化，以最新官方公告与实地核实为准。本档案为个人决策辅助，不构成投资建议。</p>
+      <p style="font-family:var(--mono);font-size:11px;letter-spacing:.1em;margin-top:16px;opacity:.6">COMPILED 2026.07 · v2 · FOR PERSONAL USE</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
