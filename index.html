@@ -235,7 +235,7 @@ body.in-tool .toolonly{display:inline-block}
   <div class="brand">
     <div class="eyebrow">CAVNO · LIFE &amp; SKILLS</div>
     <h1>生活与技能<br>综合工作台</h1>
-    <div class="tagline">十四座仪器 · 四个分区 · 零构建</div>
+    <div class="tagline">十六座仪器 · 四个分区 · 零构建</div>
   </div>
   <nav id="racknav"></nav>
   <div class="rackfoot">
@@ -264,7 +264,7 @@ body.in-tool .toolonly{display:inline-block}
         <div class="eyebrow">CAVNO · LIFE &amp; SKILLS BENCH</div>
         <h2>生活与技能 · 综合工作台</h2>
         <div class="rule"></div>
-        <p>十四座工作台聚合于一处：<b>驾考速查</b>三科贴身应试，<b>房产与学位</b>五台支撑置业决策——成交查询 × 对比 × 房贷 × 评分 × 积分入学，<b>中国底图</b>三张读地形与制度，<b>事务平台</b>收录业主之家双版本与报单原型。本页仅作聚合与导航，<b>各台内容一字未改</b>。</p>
+        <p>十六座工作台聚合于一处：<b>驾考速查</b>三科贴身应试，<b>房产与学位</b>五台支撑置业决策——成交查询 × 对比 × 房贷 × 评分 × 积分入学，<b>中国底图</b>三张读地形与制度，<b>事务平台</b>收录业主之家双版本与报单原型。本页仅作聚合与导航，<b>各台内容一字未改</b>。</p>
       </div>
       <div id="groups"></div>
       <section class="group dl" style="--ga:#C9A869;--gd:#8F7434;--gw:#F5EDD8">
@@ -332,12 +332,16 @@ const TOOLS = [
   sub:"同一联名征集平台的 Windows 服务器部署版前端——本地预览模式数据仅存当前浏览器，正式使用需在 js/config.js 配置后端地址。"},
  {slug:"baodan", src:"./报单/index.html", fn:"P0 原型", name:"报单管理系统",
   sub:"P0 演示原型：报单提交 · 截图规范（地址 / 店铺 / 用券 / 实付 / 订单号）· 返款审核状态流转；数据存于浏览器本地。"}
+ {slug:"tesla-seat", src:"./Driving/特斯拉/配件/安全座椅/index.html", fn:"特斯拉 · 用车", name:"Model Y 安全座椅决策 · Cybex 四款对比",
+  sub:"CYBEX × Tesla Model Y 四款安全座椅对比决策：两娃配置（老二 3 个月 / 老大 3 岁半）· 预算无约束选双铂金、总持有成本最低选一步到 12 岁、安全边际/元最优选混搭，数据截至 2026-07。"},
+ {slug:"lp-compare", src:"./房地产/楼盘对比/index.html", fn:"楼盘对比", name:"购房决策 · 八盘对比图表",
+  sub:"布吉六盘＋坂田四季花城＋香蜜湖参照：沿学位、保值、流动性、居住品质、价格、通勤六维收敛，叠加「建筑物占比 × 不折旧含金量 × 楼龄阈值」三轴模型，推演十年相对脆弱度。"},
 ];
 const GROUPS = [
  {title:"驾考速查", ga:"#3F7E6B", gd:"#2C5A4C", gw:"#E4EFEA",
-  note:'科目一 · 科目三（水头考场）· 科目四——只收知识点与口诀', idx:[0,1,2]},
+  note:'科目一 · 科目三（水头考场）· 科目四——只收知识点与口诀', idx:[0,1,2,14]},
  {title:"房产与学位", ga:"#A9853C", gd:"#856727", gw:"#F0E6C9",
-  note:'成交查询 × 对比 × 房贷 × 五层评分 × <em>积分入学</em>——置业决策五件套', idx:[3,4,5,6,7]},
+  note:'成交查询 × 对比 × 房贷 × 五层评分 × <em>积分入学</em>——置业决策五件套', idx:[3,4,5,6,7,15]},
  {title:"中国底图", ga:"#BC4B33", gd:"#9A3A26", gw:"#F3DED5",
   note:'省界之下 · 地形—制度 · 地形—战略——三张叠加底图', idx:[8,9,10]},
  {title:"事务平台", ga:"#7C8A4D", gd:"#5E6B39", gw:"#ECEEDF",
