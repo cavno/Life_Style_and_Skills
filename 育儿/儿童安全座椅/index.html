@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cybex 四款对比 · Model Y 双娃座椅决策页</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --parchment:#F3EAD3;
+    --parchment-card:#FAF3E1;
+    --ink:#26332E;
+    --ink-soft:#54615B;
+    --teal:#1F6F6B;
+    --teal-deep:#14524F;
+    --teal-wash:#DCE9E4;
+    --terra:#BC5B3C;
+    --terra-deep:#9A4529;
+    --terra-wash:#F0DECF;
+    --line:#D9CCAB;
+    --labelw:128px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+  body{
+    background:var(--parchment);
+    color:var(--ink);
+    font-family:"Noto Serif SC","Songti SC","SimSun",serif;
+    line-height:1.85;
+    font-size:16px;
+  }
+  .wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+  /* ---------- header ---------- */
+  header{padding:52px 0 8px;border-bottom:3px double var(--teal-deep)}
+  .kicker{font-size:13px;letter-spacing:.35em;color:var(--terra-deep);font-weight:700}
+  h1{font-size:clamp(26px,4.6vw,40px);font-weight:900;color:var(--teal-deep);line-height:1.35;margin:10px 0 6px}
+  .sub{color:var(--ink-soft);font-size:14.5px;padding-bottom:22px}
+  .sub b{color:var(--terra-deep)}
+
+  /* ---------- section scaffold ---------- */
+  section{padding:34px 0 6px}
+  .sec-tag{display:inline-block;background:var(--teal-deep);color:var(--parchment);font-size:13px;letter-spacing:.18em;padding:3px 14px;font-weight:700;margin-bottom:14px}
+  .sec-tag.terra{background:var(--terra-deep)}
+  h2{font-size:22px;font-weight:900;color:var(--teal-deep);margin-bottom:12px}
+  p{margin-bottom:12px;text-align:justify}
+  .note{font-size:13.5px;color:var(--ink-soft);border-left:3px solid var(--terra);padding-left:12px;margin:14px 0}
+
+  /* ---------- verdict ---------- */
+  .verdict{background:var(--parchment-card);border:1px solid var(--line);border-top:5px solid var(--terra);padding:22px 24px;margin-top:6px}
+  .verdict p:last-child{margin-bottom:0}
+  .verdict strong{color:var(--terra-deep)}
+  .verdict em{font-style:normal;color:var(--teal-deep);font-weight:700}
+
+  /* ---------- height ruler (signature) ---------- */
+  .ruler{background:var(--parchment-card);border:1px solid var(--line);padding:26px 22px 18px;margin-top:10px;position:relative}
+  .ruler-title{font-size:14px;font-weight:700;color:var(--ink-soft);letter-spacing:.08em;margin-bottom:18px}
+  .r-grid{display:grid;grid-template-columns:var(--labelw) 1fr;row-gap:16px;position:relative}
+  .r-label{font-size:13.5px;font-weight:700;color:var(--teal-deep);align-self:center;padding-right:12px;line-height:1.4}
+  .r-label small{display:block;font-weight:400;color:var(--ink-soft);font-size:11.5px}
+  .r-label.fwd{color:var(--terra-deep)}
+  .r-track{position:relative;height:26px;background:repeating-linear-gradient(90deg,transparent 0,transparent calc(100%/11 - 1px),var(--line) calc(100%/11 - 1px),var(--line) calc(100%/11))}
+  .band{position:absolute;top:3px;bottom:3px;border-radius:2px}
+  .band.teal{background:linear-gradient(180deg,var(--teal),var(--teal-deep))}
+  .band.terra{background:linear-gradient(180deg,var(--terra),var(--terra-deep))}
+  .band span{position:absolute;left:8px;top:50%;transform:translateY(-50%);color:var(--parchment);font-size:11px;letter-spacing:.05em;white-space:nowrap;font-weight:500}
+  .r-overlay{position:absolute;top:0;bottom:0;left:var(--labelw);right:0;pointer-events:none}
+  .marker{position:absolute;top:-6px;bottom:-2px;border-left:2px dashed var(--terra-deep);opacity:.85}
+  .marker.m2{border-left-color:var(--teal-deep)}
+  .marker i{position:absolute;top:-22px;left:-4px;transform:translateX(-50%);font-style:normal;font-size:11.5px;font-weight:700;background:var(--terra-deep);color:var(--parchment);padding:1px 8px;white-space:nowrap;border-radius:2px}
+  .marker.m2 i{background:var(--teal-deep)}
+  .r-axis{display:grid;grid-template-columns:var(--labelw) 1fr;margin-top:10px}
+  .r-axis .ticks{position:relative;height:20px;font-size:11px;color:var(--ink-soft)}
+  .ticks b{position:absolute;transform:translateX(-50%);font-weight:400}
+  .ruler-cap{font-size:12.5px;color:var(--ink-soft);margin-top:12px;line-height:1.7}
+  .ruler-cap .sw{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:-1px;margin-right:4px}
+
+  /* ---------- model cards ---------- */
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:8px}
+  .card{background:var(--parchment-card);border:1px solid var(--line);padding:18px 20px;display:flex;flex-direction:column}
+  .card h3{font-size:18px;font-weight:900;color:var(--teal-deep);line-height:1.4}
+  .card h3 small{font-size:12px;color:var(--ink-soft);font-weight:400;display:block;letter-spacing:.05em}
+  .badge{align-self:flex-start;font-size:11.5px;font-weight:700;letter-spacing:.12em;padding:2px 10px;margin:8px 0 10px;color:var(--parchment)}
+  .badge.pt{background:var(--teal-deep)}
+  .badge.gd{background:var(--terra)}
+  .card p{font-size:14px;margin-bottom:8px}
+  .card ul{list-style:none;font-size:13.5px;color:var(--ink-soft);flex:1}
+  .card li{padding:3px 0 3px 16px;position:relative}
+  .card li::before{content:"·";position:absolute;left:2px;color:var(--terra);font-weight:900}
+  .price{border-top:1px dashed var(--line);margin-top:12px;padding-top:10px;font-size:13.5px}
+  .price b{color:var(--terra-deep);font-size:16px}
+
+  /* ---------- compare table ---------- */
+  .tscroll{overflow-x:auto;margin-top:8px;border:1px solid var(--line);background:var(--parchment-card)}
+  table{border-collapse:collapse;min-width:820px;width:100%;font-size:13.8px}
+  thead th{background:var(--teal-deep);color:var(--parchment);font-weight:700;padding:10px 12px;text-align:left;white-space:nowrap}
+  thead th:first-child{position:sticky;left:0;background:var(--teal-deep);z-index:3}
+  tbody th{position:sticky;left:0;background:var(--parchment-card);color:var(--terra-deep);font-weight:700;text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap;z-index:2;border-right:1px solid var(--line)}
+  tbody td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;min-width:170px}
+  tbody tr:last-child th,tbody tr:last-child td{border-bottom:none}
+  td b{color:var(--teal-deep)}
+  td .warn{color:var(--terra-deep);font-weight:700}
+
+  /* ---------- plans ---------- */
+  .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:8px}
+  .plan{background:var(--parchment-card);border:1px solid var(--line);border-top:4px solid var(--teal);padding:18px 20px}
+  .plan.rec{border-top-color:var(--terra);box-shadow:0 3px 0 var(--terra-wash)}
+  .plan h3{font-size:16.5px;font-weight:900;color:var(--teal-deep)}
+  .plan .who{font-size:13px;color:var(--ink-soft);margin:6px 0 10px}
+  .plan .sum{font-size:13.5px;border-top:1px dashed var(--line);margin-top:10px;padding-top:10px}
+  .plan .sum b{font-size:15px;color:var(--terra-deep)}
+  .plan .fit{font-size:13px;color:var(--ink-soft);margin-top:8px}
+  .rec-flag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.15em;background:var(--terra-deep);color:var(--parchment);padding:1px 8px;margin-left:6px;vertical-align:2px}
+
+  /* ---------- model y notes / checklist ---------- */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+  .panel{background:var(--parchment-card);border:1px solid var(--line);padding:18px 20px}
+  .panel h3{font-size:16.5px;font-weight:900;color:var(--teal-deep);margin-bottom:8px}
+  .panel ol{padding-left:20px;font-size:14px}
+  .panel ol li{margin-bottom:8px}
+  .panel li b{color:var(--terra-deep)}
+
+  footer{margin-top:44px;border-top:3px double var(--teal-deep);padding:16px 0 46px;font-size:12.5px;color:var(--ink-soft);line-height:1.8}
+
+  @media (max-width:760px){
+    :root{--labelw:88px}
+    .cards,.plans,.duo{grid-template-columns:1fr}
+    .r-label{font-size:12px}
+    body{font-size:15px}
+    .marker i{font-size:10.5px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">CYBEX × TESLA MODEL Y</div>
+    <h1>四款安全座椅对比决策页</h1>
+    <div class="sub">两娃配置:老二 3 个月(身长约 60cm)· 老大 3 岁半(身高约 100cm)· 数据截至 <b>2026-07</b>,价格为旗舰店挂牌参考,大促通常再降 20–35%</div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ 结论 ============ -->
+  <section id="verdict">
+    <span class="sec-tag terra">结论先行</span>
+    <h2>一句话判词</h2>
+    <div class="verdict">
+      <p><strong>预算无约束选方案 A</strong>(Sirona T + Anoris T2,铂金线双椅,挂牌约 1.09–1.19 万);<strong>总持有成本最低选方案 B</strong>(Sirona Gi + Solution T,大促实付约 6–7 千,老大一步用到 12 岁);<strong>安全边际/元最优选方案 C 混搭</strong>(Sirona Gi + Anoris T2)——把差价集中投放在事故后果更重的<em>正向乘坐阶段</em>,老二用 Gold 主力线不牺牲实质安全,老大拿到气囊护体的安全上限。</p>
+      <p>两道身高门槛决定可选集:老二须<em>实测身长 ≥61cm</em> 方可入 Gi(未达标只能 45cm 起步的 Sirona T);老大须<em>实测身高 ≥100cm</em> 方可入 Solution T(未达标由 Anoris/Pallas 过渡)。先量身高,再谈型号。</p>
+    </div>
+  </section>
+
+  <!-- ============ 身高标尺 ============ -->
+  <section id="ruler">
+    <span class="sec-tag">身高覆盖标尺</span>
+    <h2>四款座椅的适用区间与两娃当前位置</h2>
+    <div class="ruler">
+      <div class="ruler-title">横轴:儿童身高 40–150cm · 虚线:两娃当前身高</div>
+      <div class="r-grid">
+        <div class="r-label">Sirona T<small>铂金线 · 0–4 岁</small></div>
+        <div class="r-track"><span class="band teal" style="left:4.55%;width:54.54%"><span>45–105cm</span></span></div>
+        <div class="r-label">Sirona Gi<small>Gold 线 · 3 个月–4 岁</small></div>
+        <div class="r-track"><span class="band teal" style="left:19.09%;width:40%"><span>61–105cm</span></span></div>
+        <div class="r-label fwd">Anoris T2<small>铂金线 · 15 个月–7 岁</small></div>
+        <div class="r-track"><span class="band terra" style="left:32.73%;width:44.54%"><span>76–125cm</span></span></div>
+        <div class="r-label fwd">Solution T<small>铂金线 · 3–12 岁</small></div>
+        <div class="r-track"><span class="band terra" style="left:54.55%;width:45.45%"><span>100–150cm</span></span></div>
+        <div class="r-overlay">
+          <span class="marker m2" style="left:18.18%"><i>老二 ≈60cm</i></span>
+          <span class="marker" style="left:54.55%"><i>老大 ≈100cm</i></span>
+        </div>
+      </div>
+      <div class="r-axis">
+        <div></div>
+        <div class="ticks">
+          <b style="left:0%">40</b><b style="left:18.18%">60</b><b style="left:36.36%">80</b><b style="left:54.55%">100</b><b style="left:72.73%">120</b><b style="left:100%">150cm</b>
+        </div>
+      </div>
+      <div class="ruler-cap">
+        <span class="sw" style="background:var(--teal-deep)"></span>反向为主的 0–4 岁旋转椅 &nbsp;&nbsp;
+        <span class="sw" style="background:var(--terra-deep)"></span>正向阶段座椅。
+        读图:老二的虚线落在 Gi 起点(61cm)左侧约 1cm 处——<b>差这一厘米,就是 T 与 Gi 之争的全部</b>;老大的虚线恰好压在 Solution T 的 100cm 门槛上,也完全落在 Anoris T2 区间内,两条路线均可走,分歧只在安全上限与持有成本。
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 四款卡片 ============ -->
+  <section id="models">
+    <span class="sec-tag">型号档案</span>
+    <h2>四款各是什么</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Sirona T i-Size<small>老二候选 · 出生即用</small></h3>
+        <span class="badge pt">PLATINUM 铂金线</span>
+        <p>45–105cm(0–4 岁),双向安装支持长反向,360° 旋转。</p>
+        <ul>
+          <li>ISOFIX + 支撑腿,新生儿衬垫从出生可用</li>
+          <li>L.S.P. 侧撞保护,2023 年 ADAC 测试优胜产品</li>
+          <li>铂金线做工与面料,躺角与头枕调节余量充足</li>
+        </ul>
+        <div class="price">挂牌约 <b>¥5,400</b></div>
+      </div>
+      <div class="card">
+        <h3>Sirona Gi i-Size<small>老二候选 · 性价比主力</small></h3>
+        <span class="badge gd">GOLD 主力线</span>
+        <p>61–105cm(约 3 个月–4 岁),双向,任意角度可旋转、90° 悬停。</p>
+        <ul>
+          <li>ISOFIX 5.0 双专利接口 + 支撑腿</li>
+          <li>较上代加宽 5cm 加深 3cm,AirVent 全通风网眼</li>
+          <li>新生儿+早产儿双衬垫,躺角改善约 15°;一体式 L.S.P. 侧防</li>
+        </ul>
+        <div class="price">挂牌 ¥4,400–5,900,活动常见 <b>¥3,400</b> 上下</div>
+      </div>
+      <div class="card">
+        <h3>Anoris T2 i-Size<small>老大候选 · 安全上限</small></h3>
+        <span class="badge pt">PLATINUM 铂金线</span>
+        <p>76–125cm(约 15 个月–7 岁),仅正向,五点式之外的第三条技术路线。</p>
+        <ul>
+          <li>前置护体内置 C 型全身气囊,正碰毫秒级弹出,较常规正向座椅安全性提升约 50%</li>
+          <li>前代 Anoris T 为 ADAC 测试冠军(史上最高分档)</li>
+          <li>ISOFIX + 支撑腿,安装指示灯;6 倍透气网眼 + UPF50+ 遮阳篷</li>
+        </ul>
+        <div class="price">T2 约 <b>¥5,500–6,500</b>;国内部分渠道售一代 Anoris T 约 ¥4,500–5,500</div>
+      </div>
+      <div class="card">
+        <h3>Solution T i-Fix<small>老大候选 · 一步到位</small></h3>
+        <span class="badge pt">PLATINUM 铂金线</span>
+        <p>100–150cm(约 3–12 岁)高背增高椅,正向,车辆三点式安全带约束。</p>
+        <ul>
+          <li>ISOFIX 刚性连接,无支撑腿,拆装最省事</li>
+          <li>12 档头枕、通风背板、可调躺角</li>
+          <li>2022 年 ADAC 测试优胜产品;终点站型号,用到 12 岁无需再换</li>
+        </ul>
+        <div class="price">挂牌约 <b>¥4,800</b>,活动常见 ¥2,500–3,500</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 参数对比表 ============ -->
+  <section id="table">
+    <span class="sec-tag">参数对比</span>
+    <h2>全参数一表</h2>
+    <div class="tscroll">
+      <table>
+        <thead>
+          <tr><th>参数</th><th>Sirona T</th><th>Sirona Gi</th><th>Anoris T2</th><th>Solution T i-Fix</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>产线</th><td>Platinum 铂金线</td><td>Gold 主力线</td><td>Platinum 铂金线</td><td>Platinum 铂金线</td></tr>
+          <tr><th>适用身高</th><td><b>45–105cm</b>(出生即用)</td><td>61–105cm(<span class="warn">≥61cm 门槛</span>)</td><td>76–125cm</td><td>100–150cm(<span class="warn">≥100cm 门槛</span>)</td></tr>
+          <tr><th>适用年龄</th><td>0–4 岁</td><td>约 3 个月–4 岁</td><td>约 15 个月–7 岁</td><td>约 3–12 岁</td></tr>
+          <tr><th>朝向</th><td>双向,支持长反向</td><td>双向</td><td>仅正向</td><td>仅正向</td></tr>
+          <tr><th>约束方式</th><td>五点式安全带</td><td>五点式安全带</td><td><b>前置护体 + 内置全身气囊</b></td><td>车辆三点式安全带</td></tr>
+          <tr><th>安装</th><td>ISOFIX + 支撑腿</td><td>ISOFIX 5.0 + 支撑腿</td><td>ISOFIX + 支撑腿,安装指示</td><td>ISOFIX 刚性连接</td></tr>
+          <tr><th>旋转</th><td>360°</td><td>360°,任意角度操作,90° 悬停</td><td>—</td><td>—</td></tr>
+          <tr><th>核心配置</th><td>L.S.P. 侧防、新生儿衬垫、铂金面料</td><td>AirVent 全通风、加宽加深、双衬垫改善躺角</td><td>C 型气囊、深度可调护体、6 倍透气网眼、遮阳篷</td><td>12 档头枕、通风背板、可调躺角</td></tr>
+          <tr><th>ADAC 血统</th><td>2023 测试优胜</td><td>成绩优秀,德系 0–4 岁首选级</td><td>前代 1.5 分史上最高档</td><td>2022 测试优胜</td></tr>
+          <tr><th>后续衔接</th><td>105cm/约 4 岁后换正向阶段座椅</td><td>同左</td><td>125cm/约 7 岁后换增高椅</td><td><b>终点站</b>,150cm/约 12 岁毕业</td></tr>
+          <tr><th>Model Y 适配</th><td>平地板承托支撑腿,椅缝式锚点首装费力</td><td>同左,ISOFIX 5.0 对接顺滑</td><td>同左,气囊为独立系统与车辆气囊无关</td><td>无支撑腿,拆装换车最灵活</td></tr>
+          <tr><th>挂牌价</th><td>约 ¥5,400</td><td>¥4,400–5,900</td><td>¥5,500–6,500(一代 ¥4,500–5,500)</td><td>约 ¥4,800</td></tr>
+          <tr><th>大促参考</th><td>约 ¥4,000–4,500</td><td>约 ¥3,400</td><td>约 ¥4,500–5,000</td><td>约 ¥2,500–3,500</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">价格为 2026-07 旗舰店口径,波动大;Anoris 国内渠道存在 T 一代与 T2 二代并售情形,下单前核对具体批次与 3C + i-Size(R129)双认证。</div>
+  </section>
+
+  <!-- ============ 方案 ============ -->
+  <section id="plans">
+    <span class="sec-tag terra">方案对比</span>
+    <h2>三套配置的账</h2>
+    <div class="plans">
+      <div class="plan">
+        <h3>方案 A · 安全优先</h3>
+        <div class="who">老二 Sirona T &nbsp;+&nbsp; 老大 Anoris T2</div>
+        <p style="font-size:13.5px">铂金线双椅。老二出生即用无门槛,老大拿到气囊护体的安全上限,7 岁后补一台增高椅收尾。</p>
+        <div class="sum">挂牌 ¥10,900–11,900<br>大促实付约 <b>¥8,000–9,000</b></div>
+        <div class="fit">适合:预算无约束,追求两端都是最高配置。</div>
+      </div>
+      <div class="plan">
+        <h3>方案 B · 经济长线</h3>
+        <div class="who">老二 Sirona Gi &nbsp;+&nbsp; 老大 Solution T</div>
+        <p style="font-size:13.5px">老大一步用到 12 岁,全程无二次购置;老二用 Gold 主力线,前提是身长实测过 61cm。</p>
+        <div class="sum">挂牌 ¥9,200–10,700<br>大促实付约 <b>¥5,900–6,900</b></div>
+        <div class="fit">适合:总持有成本最敏感,老大已满 100cm。</div>
+      </div>
+      <div class="plan rec">
+        <h3>方案 C · 混搭<span class="rec-flag">推荐</span></h3>
+        <div class="who">老二 Sirona Gi &nbsp;+&nbsp; 老大 Anoris T2</div>
+        <p style="font-size:13.5px">差价集中投放在事故后果更重的正向乘坐阶段:老二反向乘坐本身就是安全冗余,Gold 线不牺牲实质防护;老大拿到气囊上限。</p>
+        <div class="sum">挂牌 ¥9,900–12,400<br>大促实付约 <b>¥7,500–8,500</b></div>
+        <div class="fit">适合:按"安全边际 / 元"配置预算的理性买家。</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Model Y + 清单 ============ -->
+  <section id="fit">
+    <span class="sec-tag">落地执行</span>
+    <h2>Model Y 适配要点与下单核对清单</h2>
+    <div class="duo">
+      <div class="panel">
+        <h3>Model Y 装椅五条</h3>
+        <ol>
+          <li>ISOFIX 锚点为<b>椅缝式</b>(ㄇ 型金属件藏在座垫缝内),首装预留 20 分钟扒开皮革对准,装稳后极牢固。</li>
+          <li>后排<b>平地板</b>完美承托支撑腿,Sirona / Anoris 的支撑腿方案在此车无短板。</li>
+          <li>后排坐垫约 130cm,两椅分装两侧 ISOFIX 位,中间仍可坐一名成人。</li>
+          <li>儿童在二排时<b>关闭「便捷进出」主驾联动</b>,防止主驾座椅后移挤压儿童腿部(特斯拉手册明示警告)。</li>
+          <li>安装完成后握住座椅底部前后左右摇晃,位移应小于 2.5cm。</li>
+        </ol>
+      </div>
+      <div class="panel">
+        <h3>下单前核对六项</h3>
+        <ol>
+          <li><b>量老二身长</b>:≥61cm 入 Gi,未达标改 Sirona T。</li>
+          <li><b>量老大身高</b>:≥100cm 方可入 Solution T;差一点则 Anoris 直接覆盖,无需等待。</li>
+          <li>核对批次为<b>中国 3C + i-Size(R129)双认证</b>。</li>
+          <li>Anoris 分 T 一代 / T2 二代,确认页面型号与实发一致。</li>
+          <li>价格波动大,蹲 618 / 双 11 / 百亿补贴节点,历史低价可比挂牌低 20–35%。</li>
+          <li>收货先验外箱与气囊指示(Anoris),再拆封安装。</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap" style="padding:0">
+      数据口径:产品参数来自 Cybex 官网与德系媒体测评;价格为 2026 年 7 月天猫/京东旗舰店挂牌与常见活动价,仅作决策参考,以下单实时价为准。ADAC 分数体系中数值越低越好,「测试优胜 / Best in Class」为德国全德汽车俱乐部官方评定口径。本页为单文件零构建 HTML,可直接部署至 GitHub Pages。
+    </div>
+  </footer>
+
+</main>
+</body>
+</html>
